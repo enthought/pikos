@@ -36,7 +36,7 @@ libzmq to compile and link against. Specify the path to the include
 directory (containing ``zmq.h``) and the path to the library file with
 which to link::
 
-    python setup.py install --include /path/to/include --zmq-path=/path/to/libzmq.so
+    python setup.py install --include /path/to/include --zmq-path /path/to/libzmq.so
 
 The installation assumes that the libzqm library will be accessible
 from within Python (i.e. you already have pyzmq installed).
