@@ -1,7 +1,7 @@
 import StringIO
 import unittest
 
-from pikos.monitor import Monitor as monitor
+from pikos.monitor_decorator import MonitorDecorator as monitor
 from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.recorders.text_stream_recorder import TextStreamRecorder

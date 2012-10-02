@@ -14,9 +14,9 @@ from pikos._internal.keep_track import KeepTrack
 
 class PythonCProfiler(cProfile.Profile):
     """ The normal python :class:`~cProfiler.Profile` subclassed and adapted to
-    work with the pikos Monitor decorator.
+    work with the pikos MonitorDecorator decorator.
 
-    The class fully supports the ``Monitor`` decorator for functions and
+    The class fully supports the ``MonitorDecorator`` decorator for functions and
     generators but does not support recorders.
 
     Notes
