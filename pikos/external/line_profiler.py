@@ -15,7 +15,7 @@ class LineProfiler(CLineProfiler):
     """ A class wrapper for CLineProfiler.
 
     The CLineProfiler is already a context manager so it is compatible with
-    the pikos Monitor class for functions. However it does not support
+    the pikos MonitorDecorator class for functions. However it does not support
     recorders.
 
     Notes
