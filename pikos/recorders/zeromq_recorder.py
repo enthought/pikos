@@ -15,7 +15,8 @@ import zmq
 from pikos.recorders.abstract_recorder import AbstractRecorder
 
 
-class RecordingStopped(object): pass
+class RecordingStopped(object):
+    pass
 
 
 class ZeroMQRecorder(AbstractRecorder):
@@ -52,7 +53,7 @@ class ZeroMQRecorder(AbstractRecorder):
         if wait_for_ready:
             self._prepare_socket = self._context.socket(zmq.REQ)
             self._prepare_socket.connect('tcp://{0}:{1}'.format(
-                    zmq_host, zmq_port+1))
+                    zmq_host, zmq_port + 1))
         else:
             self._prepare_socket = None
         self._filter = (lambda x: True) if filter_ is None else filter_

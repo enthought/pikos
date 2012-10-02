@@ -11,6 +11,7 @@ import csv
 
 from pikos.recorders.abstract_recorder import AbstractRecorder
 
+
 class ListRecorder(AbstractRecorder):
     """ The  ListRecorder is simple recorder that records the
     tuple of values in memory as a list.

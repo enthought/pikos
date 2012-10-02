@@ -1,8 +1,10 @@
-# Run this with ``python -m pikos.monitors.cProfile_rt examples/cprofile_rt.py``
+# Run this with
+# ``python -m pikos.monitors.cProfile_rt examples/cprofile_rt.py``
 
 import time
 import random
 import numpy as np
+
 
 def main():
     for i in xrange(10):

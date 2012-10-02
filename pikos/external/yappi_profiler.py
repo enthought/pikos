@@ -11,6 +11,7 @@ from __future__ import absolute_import
 
 import yappi
 
+
 class YappiProfiler(object):
     """ A pikos compatible profiler class using the yappi library.
 

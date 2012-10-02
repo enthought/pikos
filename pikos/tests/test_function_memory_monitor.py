@@ -1,10 +1,10 @@
-import StringIO
 import unittest
 
 from pikos.monitor import Monitor as monitor
 from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.test_assistant import TestAssistant
+
 
 class TestFunctionMemoryMonitor(unittest.TestCase, TestAssistant):
 
@@ -13,7 +13,7 @@ class TestFunctionMemoryMonitor(unittest.TestCase, TestAssistant):
         logger = FunctionMemoryMonitor(recorder)
 
         @monitor(logger)
-        def gcd(x,y):
+        def gcd(x, y):
             while x > 0:
                 x, y = y % x, x
             return y
@@ -40,11 +40,11 @@ class TestFunctionMemoryMonitor(unittest.TestCase, TestAssistant):
         logger = FunctionMemoryMonitor(recorder)
 
         @monitor(logger)
-        def gcd(x,y):
+        def gcd(x, y):
             return x if y == 0 else gcd(y, (x % y))
 
         def boo():
-            return gcd(7,12)
+            return gcd(7, 12)
 
         result = boo()
         self.assertEqual(result, 1)

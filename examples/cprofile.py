@@ -10,6 +10,7 @@ from pikos.external.api import PythonCProfiler
 
 cprofiler = PythonCProfiler()
 
+
 class Leaker(object):
 
     def __init__(self, number, shape):
@@ -19,7 +20,7 @@ class Leaker(object):
 
     def _make_array(self, big=False):
         if big:
-            shape = (self.shape[0]*5, self.shape[1]*2)
+            shape = (self.shape[0] * 5, self.shape[1] * 2)
         else:
             shape = self.shape
         return np.empty(shape)

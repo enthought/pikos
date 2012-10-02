@@ -64,7 +64,7 @@ def main():
     if args.recording == 'text':
         recorder = TextStreamRecorder(stream, auto_flush=(not args.buffered),
                                                            formated=True)
-    elif args.recording == 'csv':
+    else:
         if not args.buffered:
             msg = ('Unbuffer output is not supported yet for csv recording.'
                    'The default options for the CSVWriter will be used.')

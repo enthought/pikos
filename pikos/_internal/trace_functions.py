@@ -34,4 +34,3 @@ class TraceFunctions(object):
         sys.settrace(None)
         if has_threading:
             threading.settrace(None)
-

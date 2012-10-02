@@ -12,6 +12,7 @@ import cProfile
 
 from pikos._internal.keep_track import KeepTrack
 
+
 class PythonCProfiler(cProfile.Profile):
     """ The normal python :class:`~cProfiler.Profile` subclassed and adapted to
     work with the pikos Monitor decorator.

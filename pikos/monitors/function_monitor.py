@@ -18,6 +18,7 @@ from pikos._internal.keep_track import KeepTrack
 FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
 FUNCTION_RECORD_TEMPLATE = '{:<8} {:<11} {:<30} {:<5} {}{newline}'
 
+
 class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
 
     __slots__ = ()

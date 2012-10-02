@@ -11,6 +11,7 @@ import csv
 
 from pikos.recorders.abstract_recorder import AbstractRecorder, RecorderError
 
+
 class CSVRecorder(AbstractRecorder):
     """ The CSV Recorder is a simple text based recorder that records the
     tuple of values using a scv writer.
