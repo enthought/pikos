@@ -21,6 +21,7 @@ from pikos.recorders.zeromq_recorder import ZeroMQRecorder
 
 memory = FunctionMemoryMonitor(ZeroMQRecorder())
 
+
 @monitor(memory)
 def legacy(size):
     b = np.mat(np.random.random(size).T)
@@ -29,6 +30,7 @@ def legacy(size):
     a = np.matrix(np.random.random(size))
     final = a * b
     return final.I
+
 
 @monitor(memory)
 def fixed(size):

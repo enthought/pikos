@@ -54,7 +54,8 @@ def run_setup(extensions=None):
     setup(**kwargs)
 
 
-class ArgumentParseError(RuntimeError): pass
+class ArgumentParseError(RuntimeError):
+    pass
 
 
 def _parse_argv_item(argv, name):
@@ -63,8 +64,8 @@ def _parse_argv_item(argv, name):
     index = sys.argv.index(name) + 1
     if index == len(sys.argv):
         raise ArgumentParseError('Missing argument for {}'.format(name))
-    opt, value = sys.argv[index-1:index+1]
-    sys.argv = sys.argv[:index-1] +sys.argv[index+1:]
+    opt, value = sys.argv[index - 1: index + 1]
+    sys.argv = sys.argv[:index - 1] + sys.argv[index + 1:]
     return value
 
 
@@ -77,7 +78,8 @@ def _parse_argv(argv):
     include_dir = _parse_argv_item(argv, INCLUDE)
     lib_path = _parse_argv_item(argv, ZMQ_PATH)
 
-    if not os.path.isdir(include_dir) or not 'zmq.h' in os.listdir(include_dir):
+    if not os.path.isdir(include_dir) or \
+            not 'zmq.h' in os.listdir(include_dir):
         raise ArgumentParseError(('{} option should be a directory containing '
                                   'zmq.h').format(INCLUDE))
     if not os.path.isfile(lib_path):

@@ -1,9 +1,9 @@
-import StringIO
 import unittest
 
 from pikos.monitor_decorator import MonitorDecorator as monitor
 from pikos.monitors.line_monitor import LineMonitor
 from pikos.recorders.list_recorder import ListRecorder
+
 
 class TestLineMonitor(unittest.TestCase):
 
@@ -24,6 +24,7 @@ def foo():
 
 foo()
         """
+
         @monitor(logger)
         def boo():
             code = compile(FOO, 'foo', 'exec')

@@ -11,6 +11,7 @@ import os
 
 from pikos.recorders.abstract_recorder import AbstractRecorder, RecorderError
 
+
 class TextStreamRecorder(AbstractRecorder):
     """ The TextStreamRecorder is simple recorder that formats and writes the
     records directly to a stream.
@@ -145,7 +146,8 @@ class TextStreamRecorder(AbstractRecorder):
         if self._formated:
             header = data.header()
         else:
-            header = ' '.join(str(value) for value in data._fields) + os.linesep
+            header = ' '.join(str(value) for value in data._fields)
+            header += os.linesep
 
         separator = '-' * (len(header) - len(os.linesep)) + os.linesep
         self._stream.write(header)

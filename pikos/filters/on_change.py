@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+
+
 class OnChange(object):
     """ A record filter that checks if the record field has changed.
 

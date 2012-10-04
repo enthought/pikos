@@ -3,7 +3,8 @@ import collections
 
 from pikos.filters.on_change import OnChange
 
-MockRecord = collections.namedtuple('MockRecord',['function', 'filename','line'])
+MockRecord = collections.namedtuple('MockRecord',
+                                    ['function', 'filename', 'line'])
 
 
 class TestOnChange(unittest.TestCase):
@@ -17,11 +18,11 @@ class TestOnChange(unittest.TestCase):
     def test_call(self):
 
         my_filter = OnChange('filename')
-        record = MockRecord('foo','bar.py', 3)
+        record = MockRecord('foo', 'bar.py', 3)
         self.assertTrue(my_filter(record))
-        record = MockRecord('bar','foo.py', 7)
+        record = MockRecord('bar', 'foo.py', 7)
         self.assertTrue(my_filter(record))
-        record = MockRecord('foo','foo.py', 123)
+        record = MockRecord('foo', 'foo.py', 123)
         self.assertFalse(my_filter(record))
 
 

@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+
+
 class OnValue(object):
     """ A record filter that checks the value of a record field.
 

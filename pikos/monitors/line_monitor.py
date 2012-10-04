@@ -19,6 +19,7 @@ from pikos._internal.keep_track import KeepTrack
 LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
 LINE_RECORD_TEMPLATE = '{:<12} {:<50} {:<7} {} -- {}{newline}'
 
+
 class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
 
     __slots__ = ()
@@ -32,6 +33,7 @@ class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
     def line(self):
         """ Return a formated header line """
         return LINE_RECORD_TEMPLATE.format(*self, newline=os.linesep)
+
 
 class LineMonitor(object):
     """ Record python line events.

@@ -32,4 +32,3 @@ class LineProfiler(CLineProfiler):
         """ Write out the results of the timing so far. """
         stats = self.get_stats()
         show_text(stats.timings, stats.unit, stream=stream)
-

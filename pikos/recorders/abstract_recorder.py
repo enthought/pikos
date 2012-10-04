@@ -9,8 +9,10 @@
 #------------------------------------------------------------------------------
 import abc
 
+
 class RecorderError(Exception):
     pass
+
 
 class AbstractRecorder(object):
     """ Abstract recorder class.

@@ -12,6 +12,7 @@ import functools
 
 from pikos._internal.util import is_context_manager
 
+
 class MonitorDecorator(object):
     """ The monitor class decorator.
 
@@ -122,7 +123,7 @@ class MonitorDecorator(object):
         @functools.wraps(self._function)
         def wrapper(*args, **kwds):
             with self._monitor_object:
-                 return self._function(*args, **kwds)
+                return self._function(*args, **kwds)
         return wrapper
 
     def _wrap_generator(self):
