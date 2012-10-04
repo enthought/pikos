@@ -13,11 +13,11 @@ import functools
 from pikos._internal.util import is_context_manager
 
 
-class Monitor(object):
+class MonitorDecorator(object):
     """ The monitor class decorator.
 
     This is the main entry point for all the monitors, inspectors, loggers and
-    profilers that are supported by pikos. The :class:`Monitor` is simplifies
+    profilers that are supported by pikos. The :class:`MonitorDecorator` is simplifies
     setting up and invoking the actual monitoring/profiling class.
 
 
@@ -38,7 +38,7 @@ class Monitor(object):
     -----
 
     # as a decorator
-    @Monitor(FunctionMonitor())
+    @MonitorDecorator(FunctionMonitor())
     def my_function():
         ...
         return
@@ -48,7 +48,7 @@ class Monitor(object):
         ...
         return
 
-    logfunctions = Monitor(FunctionMonitor())
+    logfunctions = MonitorDecorator(FunctionMonitor())
     logfunctions(my_function, *args, **kwrgs)
     ...
 

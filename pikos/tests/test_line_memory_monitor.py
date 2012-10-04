@@ -1,6 +1,6 @@
 import unittest
 
-from pikos.monitor import Monitor as monitor
+from pikos.monitor_decorator import MonitorDecorator as monitor
 from pikos.monitors.line_memory_monitor import LineMemoryMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.test_assistant import TestAssistant

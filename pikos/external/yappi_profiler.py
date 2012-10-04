@@ -20,7 +20,7 @@ class YappiProfiler(object):
     _buildins : bool
         Boolean to enable.disable profiling of the buildins.
 
-    The class partially supports the ``Monitor`` decorator for functions (not
+    The class partially supports the ``MonitorDecorator`` decorator for functions (not
     generators) but does not support recorders.
 
 
