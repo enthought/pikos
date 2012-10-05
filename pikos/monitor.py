@@ -68,7 +68,6 @@ class Monitor(object):
             function while it is executed.
 
         """
-        self._function = None
         self._monitor_object = obj
 
     def __call__(self, function):
@@ -93,14 +92,13 @@ class Monitor(object):
             context manager interface.
 
         """
-        self._function = function
         if is_context_manager(self._monitor_object):
-            return self._wrap()
+            return self._wrap(function)
         else:
             msg = "provided monitor object '{}' is not a context manager"
             ValueError(msg.format(self._monitor_object))
 
-    def _wrap(self):
+    def _wrap(self, function):
         """ Wrap the callable.
 
         Returns
@@ -111,27 +109,27 @@ class Monitor(object):
             generator.
 
         """
-        if inspect.isgeneratorfunction(self._function):
-            fn = self._wrap_generator()
+        if inspect.isgeneratorfunction(function):
+            fn = self._wrap_generator(function)
         else:
-            fn = self._wrap_function()
+            fn = self._wrap_function(function)
         return fn
 
-    def _wrap_function(self):
+    def _wrap_function(self, function):
         """ Wrap a normal callable object.
         """
-        @functools.wraps(self._function)
+        @functools.wraps(function)
         def wrapper(*args, **kwds):
             with self._monitor_object:
-                return self._function(*args, **kwds)
+                return function(*args, **kwds)
         return wrapper
 
-    def _wrap_generator(self):
+    def _wrap_generator(self, function):
         """ Wrap a generator function.
         """
         def wrapper(*args, **kwds):
             with self._monitor_object:
-                g = self._function(*args, **kwds)
+                g = function(*args, **kwds)
                 value = g.next()
             yield value
             while True:
