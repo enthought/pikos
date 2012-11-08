@@ -13,7 +13,7 @@ import os
 import psutil
 
 from collections import namedtuple
-from pikos._internal.trace_functions import TraceFunctions
+from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
 
 
@@ -55,7 +55,7 @@ class LineMemoryMonitor(object):
 
     _tracer : object
         An instance of the
-        :class:`~pikos._internal.trace_functions.TraceFunctions` utility
+        :class:`~pikos._internal.trace_functions.TraceFunctionManager` utility
         class that is used to set and unset the settrace function as required
         by the monitor.
 
@@ -86,7 +86,7 @@ class LineMemoryMonitor(object):
 
         """
         self._recorder = recorder
-        self._tracer = TraceFunctions()
+        self._tracer = TraceFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
         self._process = None
@@ -102,7 +102,7 @@ class LineMemoryMonitor(object):
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
             self._recorder.prepare(LineMemoryRecord)
-            self._tracer.set(self.on_line_event)
+            self._tracer.replace(self.on_line_event)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """ Exit the monitor context.
@@ -113,7 +113,7 @@ class LineMemoryMonitor(object):
 
         """
         if self._call_tracker('pong'):
-            self._tracer.unset()
+            self._tracer.recover()
             self._recorder.finalize()
 
     def on_line_event(self, frame, why, arg):
