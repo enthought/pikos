@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitor.py
+#  File: monitors/monitor_attach.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
@@ -13,13 +13,12 @@ import functools
 from pikos._internal.util import is_context_manager
 
 
-class Monitor(object):
-    """ The monitor class decorator.
+class MonitorAttach(object):
+    """ The monitor attach decorator.
 
     This is the main entry point for all the monitors, inspectors, loggers and
     profilers that are supported by pikos. The :class:`Monitor` is simplifies
     setting up and invoking the actual monitoring/profiling class.
-
 
     Private
     -------

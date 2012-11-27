@@ -8,7 +8,7 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 
-from pikos.monitor import Monitor
+from pikos.monitors.monitor_attach import MonitorAttach
 
 def baserecorder(filter_=None):
     """ Factory function that returns a basic recorder.
@@ -22,31 +22,31 @@ def monitor_functions(filter_=None):
     """ Factory function that returns a basic function monitor.
     """
     from pikos.monitors.function_monitor import FunctionMonitor
-    return Monitor(FunctionMonitor(baserecorder(filter_=filter_)))
+    return MonitorAttach(FunctionMonitor(baserecorder(filter_=filter_)))
 
 def monitor_lines(filter_=None):
     """ Factory function that returns a basic line monitor.
     """
     from pikos.monitors.line_monitor import LineMonitor
-    return Monitor(LineMonitor(baserecorder(filter_=filter_)))
+    return MonitorAttach(LineMonitor(baserecorder(filter_=filter_)))
 
 def memory_on_functions(filter_=None):
     """ Factory function that returns a basic function memory monitor.
     """
     from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
-    return Monitor(FunctionMemoryMonitor(baserecorder(filter_=filter_)))
+    return MonitorAttach(FunctionMemoryMonitor(baserecorder(filter_=filter_)))
 
 def memory_on_lines(filter_=None):
     """ Factory function that returns a basic line memory monitor.
     """
     from pikos.monitors.line_memory_monitor import LineMemoryMonitor
-    return Monitor(LineMemoryMonitor(baserecorder(filter_=filter_)))
+    return MonitorAttach(LineMemoryMonitor(baserecorder(filter_=filter_)))
 
 def yappi_profile(buildins=None):
     """ Factory function that returns a yappi monitor.
     """
     from pikos.external.yappi_profiler import YappiProfiler
-    return Monitor(YappiProfiler(buildins))
+    return MonitorAttach(YappiProfiler(buildins))
 
 def line_profile(*args, **kwrds):
     """ Factory function that returns a line profiler.
@@ -56,8 +56,8 @@ def line_profile(*args, **kwrds):
     for initialization options.
     """
     from pikos.external.line_profiler import LineProfiler
-    return Monitor(LineProfiler(*args, **kwrds))
+    return MonitorAttach(LineProfiler(*args, **kwrds))
 
 
 #: Easy to find placeholder for the Monitor decorator class.
-monitor = Monitor
+monitor_attach = MonitorAttach

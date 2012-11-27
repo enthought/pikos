@@ -11,8 +11,10 @@ from __future__ import absolute_import
 
 import yappi
 
+from pikos.monitors.monitor import Monitor
 
-class YappiProfiler(object):
+
+class YappiProfiler(Monitor):
     """ A pikos compatible profiler class using the yappi library.
 
     Private

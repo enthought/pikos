@@ -10,10 +10,11 @@
 from __future__ import absolute_import
 import os
 import inspect
-
 from collections import namedtuple
+
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
+from pikos.monitors.monitor import Monitor
 
 
 LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
@@ -35,7 +36,7 @@ class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
         return LINE_RECORD_TEMPLATE.format(*self, newline=os.linesep)
 
 
-class LineMonitor(object):
+class LineMonitor(Monitor):
     """ Record python line events.
 
     The class hooks on the settrace function to receive trace events and

@@ -10,10 +10,11 @@
 from __future__ import absolute_import
 import os
 import inspect
-
 from collections import namedtuple
+
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
+from pikos.monitors.monitor import Monitor
 
 FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
 FUNCTION_RECORD_TEMPLATE = '{:<8} {:<11} {:<30} {:<5} {}{newline}'
@@ -34,7 +35,7 @@ class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
         return FUNCTION_RECORD_TEMPLATE.format(*self, newline=os.linesep)
 
 
-class FunctionMonitor(object):
+class FunctionMonitor(Monitor):
     """ Record python function events.
 
     The class hooks on the setprofile function to receive function events and

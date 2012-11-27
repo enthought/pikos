@@ -11,9 +11,10 @@ from __future__ import absolute_import
 import cProfile
 
 from pikos._internal.keep_track import KeepTrack
+from pikos.monitors.monitor import Monitor
 
 
-class PythonCProfiler(cProfile.Profile):
+class PythonCProfiler(cProfile.Profile, Monitor):
     """ The normal python :class:`~cProfiler.Profile` subclassed and adapted to
     work with the pikos Monitor decorator.
 

@@ -1,10 +1,8 @@
 import unittest
 
-from pikos.monitor import Monitor as monitor
+from pikos.monitors.monitor import Monitor
 
-
-# FIXME: might be better to use a mock library
-class MockNativeMonitor():
+class MockNativeMonitor(Monitor):
 
     def __init__(self):
         self._enter_called = 0
@@ -23,7 +21,7 @@ class TestMonitor(unittest.TestCase):
 
         mock_logger = MockNativeMonitor()
 
-        @monitor(mock_logger)
+        @mock_logger.attach
         def my_function(value):
             return "I was called with {}".format(value)
 
@@ -35,7 +33,7 @@ class TestMonitor(unittest.TestCase):
     def test_recursive_with_context_manager(self):
         mock_logger = MockNativeMonitor()
 
-        @monitor(mock_logger)
+        @mock_logger.attach
         def gcd(x, y):
             return x if y == 0 else gcd(y, (x % y))
 
@@ -48,7 +46,7 @@ class TestMonitor(unittest.TestCase):
 
         mock_logger = MockNativeMonitor()
 
-        @monitor(mock_logger)
+        @mock_logger.attach
         def my_generator(value):
             for i in range(value):
                 yield i

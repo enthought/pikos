@@ -10,11 +10,13 @@
 from __future__ import absolute_import
 import inspect
 import os
+from collections import namedtuple
+
 import psutil
 
-from collections import namedtuple
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
+from pikos.monitors.monitor import Monitor
 
 FUNCTION_MEMORY_RECORD = ('index', 'type', 'function', 'RSS', 'VMS', 'lineNo',
                           'filename')
@@ -41,7 +43,7 @@ class FunctionMemoryRecord(namedtuple('FunctionMemoryRecord',
                                                       newline=os.linesep)
 
 
-class FunctionMemoryMonitor(object):
+class FunctionMemoryMonitor(Monitor):
     """ Record process memory on python function events.
 
     The class hooks on the setprofile function to receive function events and

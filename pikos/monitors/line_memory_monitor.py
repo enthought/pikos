@@ -10,11 +10,13 @@
 from __future__ import absolute_import
 import inspect
 import os
+from collections import namedtuple
+
 import psutil
 
-from collections import namedtuple
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
+from pikos.monitors.monitor import Monitor
 
 
 LINE_MEMORY_RECORD = (
@@ -40,7 +42,7 @@ class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
         return LINE_MEMORY_RECORD_TEMPLATE.format(*self, newline=os.linesep)
 
 
-class LineMemoryMonitor(object):
+class LineMemoryMonitor(Monitor):
     """ Record process memory on python function events.
 
     The class hooks on the settrace function to receive trace events and

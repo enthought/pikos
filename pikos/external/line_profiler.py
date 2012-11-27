@@ -10,8 +10,10 @@
 from __future__ import absolute_import
 from line_profiler import CLineProfiler, show_text
 
+from pikos.monitors.monitor import Monitor
 
-class LineProfiler(CLineProfiler):
+
+class LineProfiler(CLineProfiler, Monitor):
     """ A class wrapper for CLineProfiler.
 
     The CLineProfiler is already a context manager so it is compatible with
