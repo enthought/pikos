@@ -31,15 +31,25 @@ The package requires a recent version of psutil (>=0.4.1)::
 
     python setup.py install
 
-To build with the real-time fork of cProfile, you will need a build of
-libzmq to compile and link against. Specify the path to the include
-directory (containing ``zmq.h``) and the path to the library file with
-which to link::
+To build with the real-time fork of cProfile please provide the
+`--with-real-time-lsprof` before any setup command::
 
-    python setup.py install --include /path/to/include --zmq-path /path/to/libzmq.so
+    python setup.py --with-real-time-lsprof install
 
-The installation assumes that the libzqm library will be accessible
-from within Python (i.e. you already have pyzmq installed).
+You will need a build of libzmq to compile and link against. If the needed files
+are not available at system default locations, they will need to be manually 
+provided to the ``build_ext`` command::
+
+    python setup.py --with-real-time-lsprof build_ext -I <include directory for zmq> -L <libary directory for zmq>
+    python setup.py --with-real-time-lsprof install
+
+or in one line as::
+
+    python setup.py --with-real-time-lsprof build_ext -I <include directory for zmq> -L <library directory for zmq> install
+
+Finally to run the test suite please give::
+
+    python setup.py test
 
 Optional packages of external profilers:
 
