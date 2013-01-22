@@ -16,7 +16,7 @@ class KeepTrack(object):
     """ A simple object to keep track of start and stop calls
 
     The object is used to decide if a initialization or destroy operation needs
-    to be performed when a context manager is called recursivly.
+    to be performed when a context manager is called recursively.
 
     usage:
         - Calling the instance with ``ping`` will increase the
@@ -36,16 +36,16 @@ class KeepTrack(object):
         ----------
         mode : string
             mode is a String with value 'ping' or 'pong' to indicate the
-            operation that is perfomed in the internal counter.
+            operation that is performed in the internal counter.
 
         Returns
         -------
-        A boolean value inidicating that an actual *ping* or *pong* needs
-        to be perfomed.
+        A boolean value indicating that an actual *ping* or *pong* needs
+        to be performed.
 
         Note
         ----
-        Perfoming a 'pong' without a coresponding 'ping' will return false.
+        Performing a 'pong' without a corresponding 'ping' will return false.
 
         """
         self._counter += _MODES[mode]
@@ -54,3 +54,6 @@ class KeepTrack(object):
             return False
         else:
             return self._counter == _CHECKS[mode]
+
+    def __nonzero__(self):
+        return self._counter > 0

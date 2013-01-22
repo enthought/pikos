@@ -24,7 +24,7 @@ Monitors
 
 A monitor is a context manager object. The class is initialized with a
 recorder class. Each instance of a monitor class can be reused, the
-``__enter__`` method makes sure that the code that is executed insider
+``__enter__`` method makes sure that the code that is executed inside
 the context will be monitored and that the associated recorder has
 been initialized. During the execution of the decorated function The
 information is collected into a name tuple and the tuple is forwarded
@@ -38,6 +38,10 @@ Pikos currently provides the following monitors:
     pikos.monitors.line_monitor.LineMonitor
     pikos.monitors.function_memory_monitor.FunctionMemoryMonitor
     pikos.monitors.line_memory_monitor.LineMemoryMonitor
+    pikos.monitors.focused_function_monitor.FocusedFunctionMonitor
+    pikos.monitors.focused_line_monitor.FocusedLineMonitor
+    pikos.monitors.focused_function_memory_monitor.FocusedFunctionMemoryMonitor
+    pikos.monitors.focused_line_memory_monitor.FocusedLineMemoryMonitor
 
 External Monitors
 *****************
@@ -51,7 +55,7 @@ Pikos can act as entry point for external libraries and profilers.
    pikos.external.yappi_profiler.YappiProfiler
 
 .. note:: These profilers are experimental and not yet integrated fully
-  in the pikos framework. Please check individual documentation for
+  with the pikos framework. Please check individual documentation for
   more information.
 
 Recorders
@@ -95,14 +99,14 @@ Records
 -------
 
 Each monitor uses a specific record. A record is a subclass of named
-tuple augmented with two methods, ``header``, ``line`` that can
-optionally used for formating by the recorders.
+tuple augmented with two methods, ``header``, ``line`` that can be
+optionally used to format the output.
 
 .. note::
 
     Currently only the
     :class:`~pikos.recorders.test_stream_recorder.TextStreamRecorder`
-    can take advantage of the additional formating functionality.
+    can take advantage of the additional format information.
 
 The monitor records available are:
 

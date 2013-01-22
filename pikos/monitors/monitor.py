@@ -9,6 +9,7 @@
 #------------------------------------------------------------------------------
 from pikos.monitors.monitor_attach import MonitorAttach
 
+
 class Monitor(object):
     """ Base class of Pikos provides monitors.
 

@@ -70,8 +70,7 @@ class TestCSVRecorder(unittest.TestCase):
             recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
-    def test_exceptions(self):
-        fields = ('one', 'two', 'three')
+    def test_exception_when_no_prepare(self):
         values = [(5, 'pikos', 'apikos')]
         recorder = CSVRecorder(self.temp)
 

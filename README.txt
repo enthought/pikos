@@ -4,9 +4,8 @@ Pikos
 Pikos is a profiling and investigation tool suite for python
 applications. The name is inspired by Pikos Apikos the main character
 in a mid 80s Greek puppet TV series. Pikos was an investigative journalist 
-that was assigned to find out about a missing person in the remote
-and strange land of Froutopia, a country populated by fruits that
-can talk.
+assigned to find out about a missing person case in the remote and strange
+land of "Froutopia", a country populated by large fruits that can talk.
 
 Key aims of Pikos are:
 
@@ -16,13 +15,12 @@ Key aims of Pikos are:
     - Provide effective memory monitoring throughout python.
     - Be multi-platform.
     - Provide real-time access to profile data and allow live analysis
-      of this while the application is running.
+      while the application is running.
 
 Repository
 ----------
 
 .. todo:: Add repository info
-
 
 Installation
 ------------

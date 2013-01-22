@@ -3,6 +3,7 @@ import unittest
 
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 
+
 class MockNativeMonitor():
 
     def __init__(self):
@@ -17,12 +18,15 @@ class MockNativeMonitor():
     def event(self, frame, event, arg):
         pass
 
+
 class TestProfileFunctionsManager(unittest.TestCase):
 
     def setUp(self):
         self.old = sys.getprofile()
+
         def foo():
             pass
+
         def bar(frame, event, arg):
             pass
         self.foo = foo

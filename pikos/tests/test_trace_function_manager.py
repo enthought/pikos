@@ -3,6 +3,7 @@ import unittest
 
 from pikos._internal.trace_function_manager import TraceFunctionManager
 
+
 class MockNativeMonitor():
 
     def __init__(self):
@@ -17,12 +18,15 @@ class MockNativeMonitor():
     def event(self, frame, event, arg):
         return self.event
 
+
 class TestTraceFunctionsManager(unittest.TestCase):
 
     def setUp(self):
         self.old = sys.gettrace()
+
         def foo():
             pass
+
         def bar(frame, event, arg):
             pass
         self.foo = foo

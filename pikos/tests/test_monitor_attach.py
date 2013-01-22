@@ -2,6 +2,7 @@ import unittest
 
 from pikos.monitors.monitor import Monitor
 
+
 class MockNativeMonitor(Monitor):
 
     def __init__(self):

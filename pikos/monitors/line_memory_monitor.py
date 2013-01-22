@@ -82,9 +82,9 @@ class LineMemoryMonitor(Monitor):
         Parameters
         ----------
         recorder : object
-            A subclass of :class:`~pikos.recorders.AbstractRecorder` or a class
-            that implements the same interface to handle the values to be
-            recorded.
+            A subclass of :class:`~pikos.recorders.AbstractRecorder` or a
+            class that implements the same interface to handle the values
+            to be recorded.
 
         """
         self._recorder = recorder
@@ -97,8 +97,8 @@ class LineMemoryMonitor(Monitor):
         """ Enter the monitor context.
 
         The first time the method is called (the context is entered) it will
-        initialze the Process class, set the settrace hook and initialize the
-        recorder.
+        initialize the Process class, set the settrace hook and initialize
+        the recorder.
 
         """
         if self._call_tracker('ping'):
@@ -133,8 +133,9 @@ class LineMemoryMonitor(Monitor):
                 inspect.getframeinfo(frame, context=1)
             if line is None:
                 line = ['<compiled string>']
-            record = LineMemoryRecord(self._index, function, lineno, usage.rss,
-                                      usage.vms, line[0], filename)
+            record = LineMemoryRecord(self._index, function, lineno,
+                                      usage.rss, usage.vms, line[0],
+                                      filename)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
