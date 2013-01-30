@@ -13,8 +13,8 @@ from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
 from pikos.monitors.focused_function_mixin import FocusedFunctionMixin
 
 
-class FocusedFunctionMemoryMonitor(FunctionMemoryMonitor,
-                                   FocusedFunctionMixin):
+class FocusedFunctionMemoryMonitor(FocusedFunctionMixin,
+                                   FunctionMemoryMonitor):
     """ Record process memory on python function events.
 
     The class hooks on the setprofile function to receive function events and
