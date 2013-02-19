@@ -26,12 +26,12 @@ class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
 
     @classmethod
     def header(cls):
-        """ Return a formated header line """
+        """ Return a formatted header line """
         return FUNCTION_RECORD_TEMPLATE.format(*cls._fields,
                                                newline=os.linesep)
 
     def line(self):
-        """ Return a formated header line """
+        """ Return a formatted header line """
         return FUNCTION_RECORD_TEMPLATE.format(*self, newline=os.linesep)
 
 

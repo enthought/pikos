@@ -20,29 +20,28 @@ class TextStreamRecorder(AbstractRecorder):
     -------
 
     _stream : TextIOBase
-        A text stream what supports the TextIOBase interface. The Recorder will
-        write the values as a single line.
+        A text stream what supports the TextIOBase interface. The Recorder
+        will write the values as a single line.
 
     _filter : callable
         Used to check if the set `record` should be `recorded`. The function
         accepts a tuple of the `record` values and return True is the input
-        sould be recored.
+        should be recorded.
 
     _template : str
-        A string (using the `Format Specification Mini-Language`) to format the
-        set of values in a line. It is constructed when the `prepare` method is
-        called.
+        A string (using the `Format Specification Mini-Language`) to format
+        the set of values in a line. It is constructed when the `prepare`
+        method is called.
 
     _auto_flush : bool
         A bool to enable/disable automatic flushing of the string after each
         record process.
 
     _ready : bool
-        Singify that the Recorder is ready to accept data.
+        Signify that the Recorder is ready to accept data.
 
     """
-
-    def __init__(self, text_stream, filter_=None, formated=False,
+    def __init__(self, text_stream, filter_=None, formatted=False,
                  auto_flush=False):
         """ Class initialization.
 
@@ -55,8 +54,8 @@ class TextStreamRecorder(AbstractRecorder):
             A callable function that accepts a data tuple and returns True
             if the input sould be recorded.
 
-        formated : Bool
-            Use the predefined formating in the records. Default value is
+        formatted : Bool
+            Use the predefined formatting in the records. Default value is
             false.
 
         auto_flush : Bool
@@ -66,7 +65,7 @@ class TextStreamRecorder(AbstractRecorder):
         """
         self._filter = (lambda x: True) if filter_ is None else filter_
         self._stream = text_stream
-        self._formated = formated
+        self._formatted = formatted
         self._auto_flush = auto_flush
         self._ready = False
 
@@ -76,8 +75,8 @@ class TextStreamRecorder(AbstractRecorder):
         Parameters
         ----------
         data : NamedTuple
-            An example data record to prepare the recorder and write the header
-            to the stream
+            An example data record to prepare the recorder and write the
+            header to the stream
 
         """
         if not self._ready:
@@ -143,7 +142,7 @@ class TextStreamRecorder(AbstractRecorder):
             The class of the data entry record.
 
         """
-        if self._formated:
+        if self._formatted:
             header = data.header()
         else:
             header = ' '.join(str(value) for value in data._fields)
@@ -169,7 +168,7 @@ class TextStreamRecorder(AbstractRecorder):
             The string representation of the data entry.
 
         """
-        if self._formated:
+        if self._formatted:
             line = data.line()
         else:
             line = ' '.join(str(value) for value in data) + os.linesep

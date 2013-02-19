@@ -16,7 +16,7 @@ def baserecorder(filter_=None):
     import sys
     from pikos.recorders.text_stream_recorder import TextStreamRecorder
     return TextStreamRecorder(sys.stdout, filter_=filter_,
-                               auto_flush=True, formated=True)
+                               auto_flush=True, formatted=True)
 
 
 def monitor_functions(filter_=None, focus_on=None):
@@ -30,7 +30,7 @@ def monitor_functions(filter_=None, focus_on=None):
             FocusedFunctionMonitor
         monitor = FocusedFunctionMonitor(baserecorder(filter_=filter_),
                                   functions=focus_on)
-        return MonitorAttach(monitor)
+    return MonitorAttach(monitor)
 
 
 def monitor_lines(filter_=None, focus_on=None):
@@ -58,7 +58,7 @@ def memory_on_functions(filter_=None, focus_on=None):
             FocusedFunctionMemoryMonitor
         monitor = FocusedFunctionMemoryMonitor(baserecorder(filter_=filter_),
                                                functions=focus_on)
-        return MonitorAttach(monitor)
+    return MonitorAttach(monitor)
 
 
 def memory_on_lines(filter_=None, focus_on=None):
@@ -72,7 +72,7 @@ def memory_on_lines(filter_=None, focus_on=None):
             FocusedLineMemoryMonitor
         monitor = FocusedLineMemoryMonitor(baserecorder(filter_=filter_),
                                            functions=focus_on)
-        return MonitorAttach(monitor)
+    return MonitorAttach(monitor)
 
 
 def yappi_profile(buildins=None):

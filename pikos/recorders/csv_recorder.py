@@ -75,7 +75,7 @@ class CSVRecorder(AbstractRecorder):
             raise RecorderError(msg)
 
     def record(self, data):
-        """ Rerord the data entry when the filter function returns True.
+        """ Record the data entry when the filter function returns True.
 
         Parameters
         ----------

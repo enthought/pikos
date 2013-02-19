@@ -91,7 +91,7 @@ class TestTextStreamRecorder(TestCase):
         record = MockRecord(5, 'pikos', 'apikos')
         output = ('one   two   three{newline}-----------------{newline}'
                   '5     pikos apikos{newline}'.format(newline=os.linesep))
-        recorder = TextStreamRecorder(self.temp, formated=True)
+        recorder = TextStreamRecorder(self.temp, formatted=True)
         recorder.prepare(MockRecord)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)

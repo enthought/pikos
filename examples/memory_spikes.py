@@ -15,14 +15,9 @@ created even when there is no apparent memory error.
 """
 
 import numpy as np
-from pikos.api import monitor
-from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
-from pikos.recorders.zeromq_recorder import ZeroMQRecorder
+from pikos.api import memory_on_functions
 
-memory = FunctionMemoryMonitor(ZeroMQRecorder())
-
-
-@monitor(memory)
+@memory_on_functions()
 def legacy(size):
     b = np.mat(np.random.random(size).T)
     # very bad example that makes copies of numpy arrays when converting them
@@ -32,22 +27,17 @@ def legacy(size):
     return final.I
 
 
-@monitor(memory)
+@memory_on_functions()
 def fixed(size):
-    # more approprate way using a numpy.mat
+    # more appropriate way using a numpy.mat
     b = np.mat(np.random.random(size).T)
     a = np.mat(np.random.random(size))
     final = a * b
     return final.I
 
 
-def simple_loop():
-    for i in range(5):
-        time.sleep(0.05)
-
 if __name__ == '__main__':
     import sys
-    import time
 
     if '--help' in sys.argv[1:]:
         print \
@@ -66,5 +56,3 @@ if __name__ == '__main__':
         fixed(size)
     else:
         legacy(size)
-
-    simple_loop()

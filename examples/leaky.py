@@ -4,7 +4,7 @@ from random import random
 import numpy as np
 import psutil
 
-from pikos.api import monitor, baserecorder
+from pikos.api import monitor_attach
 from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
 from pikos.recorders.zeromq_recorder import ZeroMQRecorder
 
@@ -38,8 +38,7 @@ class Leaker(object):
     def _dont_leak(self):
         self._make_array()
 
-    @monitor(FunctionMemoryMonitor(ZeroMQRecorder()))
-    # @monitor(log_functions())
+    @monitor_attach(FunctionMemoryMonitor(recorder=ZeroMQRecorder()))
     def run_leaky(self):
         for i in xrange(self.number):
             num = random()
