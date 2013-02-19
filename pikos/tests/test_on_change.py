@@ -2,12 +2,14 @@ import unittest
 import collections
 
 from pikos.filters.on_change import OnChange
+from pikos.tests.compat import TestCase
+
 
 MockRecord = collections.namedtuple('MockRecord',
                                     ['function', 'filename', 'line'])
 
 
-class TestOnChange(unittest.TestCase):
+class TestOnChange(TestCase):
 
     def test_initialization(self):
 

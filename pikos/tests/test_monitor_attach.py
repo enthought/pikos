@@ -1,6 +1,7 @@
 import unittest
 
 from pikos.monitors.monitor import Monitor
+from pikos.tests.compat import TestCase
 
 
 class MockNativeMonitor(Monitor):
@@ -16,7 +17,7 @@ class MockNativeMonitor(Monitor):
         self._exit_called += 1
 
 
-class TestMonitor(unittest.TestCase):
+class TestMonitor(TestCase):
 
     def test_function_with_context_manager(self):
 
@@ -24,7 +25,7 @@ class TestMonitor(unittest.TestCase):
 
         @mock_logger.attach
         def my_function(value):
-            return "I was called with {}".format(value)
+            return "I was called with {0}".format(value)
 
         result = my_function(5)
         self.assertEqual(mock_logger._enter_called, 1)

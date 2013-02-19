@@ -3,9 +3,10 @@ import unittest
 from pikos.monitors.line_memory_monitor import LineMemoryMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.test_assistant import TestAssistant
+from pikos.tests.compat import TestCase
 
 
-class TestLineMemoryMonitor(unittest.TestCase, TestAssistant):
+class TestLineMemoryMonitor(TestCase, TestAssistant):
 
     def test_issue2(self):
         """ Test for issue #2.

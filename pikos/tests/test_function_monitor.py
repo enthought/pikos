@@ -3,9 +3,10 @@ import unittest
 from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.test_assistant import TestAssistant
+from pikos.tests.compat import TestCase
 
 
-class TestFunctionMonitor(unittest.TestCase, TestAssistant):
+class TestFunctionMonitor(TestCase, TestAssistant):
 
     def test_function(self):
         recorder = ListRecorder()

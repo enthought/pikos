@@ -134,7 +134,7 @@ class LineMemoryMonitor(Monitor):
             if line is None:
                 line = ['<compiled string>']
             record = LineMemoryRecord(self._index, function, lineno,
-                                      usage.rss, usage.vms, line[0],
+                                      usage[0], usage[1], line[0],
                                       filename)
             self._recorder.record(record)
             self._index += 1

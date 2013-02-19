@@ -1,9 +1,10 @@
 import unittest
 
 from pikos._internal.function_set import FunctionSet
+from pikos.tests.compat import TestCase
 
 
-class TestFunctionSet(unittest.TestCase):
+class TestFunctionSet(TestCase):
 
     def setUp(self):
 

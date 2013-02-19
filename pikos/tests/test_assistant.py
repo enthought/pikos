@@ -29,11 +29,11 @@ class TestAssistant(object):
             if all(item == value for item, value in zip(data, values)):
                 count += 1
         if times is None:
-            msg = 'The value set {} could not be found in hte records'.\
+            msg = 'The value set {0} could not be found in the records'.\
                   format(zip(fields, values))
             self.assertGreater(count, 0, msg=msg)
         else:
-            msg = ('The value set {} was found {} and not {} times in the'
+            msg = ('The value set {0} was found {1} and not {2} times in the'
                    'records.'.format(zip(fields, values), count, times))
             self.assertEqual(count, times, msg=msg)
 
@@ -56,6 +56,6 @@ class TestAssistant(object):
             overide the default assertion message.
 
         """
-        msg = 'The value set {} was unexpectedly found in the records'.\
+        msg = 'The value set {0} was unexpectedly found in the records'.\
               format(zip(fields, values))
         self.assertFieldValueExist(records, fields, values, times=0, msg=msg)

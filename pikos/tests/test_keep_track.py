@@ -1,9 +1,10 @@
 import unittest
 
 from pikos._internal.keep_track import KeepTrack
+from pikos.tests.compat import TestCase
 
 
-class TestKeepTrack(unittest.TestCase):
+class TestKeepTrack(TestCase):
 
     def test_lifetime(self):
         my_class = KeepTrack()

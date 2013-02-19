@@ -6,20 +6,21 @@ from collections import namedtuple
 
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.recorders.abstract_recorder import RecorderError
+from pikos.tests.compat import TestCase
 
 
 class MockRecord(namedtuple('MockRecord', ('one', 'two', 'three'))):
 
     @classmethod
     def header(cls):
-        return '{:<5} {:<5} {:<5}{newline}'.format(*cls._fields,
+        return '{0:<5} {1:<5} {2:<5}{newline}'.format(*cls._fields,
                                                    newline=os.linesep)
 
     def line(self):
-        return '{:<5} {:<5} {:<5}{newline}'.format(*self, newline=os.linesep)
+        return '{0:<5} {1:<5} {2:<5}{newline}'.format(*self, newline=os.linesep)
 
 
-class TestTextStreamRecorder(unittest.TestCase):
+class TestTextStreamRecorder(TestCase):
 
     def setUp(self):
         self.temp = StringIO.StringIO()

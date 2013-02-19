@@ -13,9 +13,10 @@ from pikos.monitors.focused_line_monitor import FocusedLineMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.monitors.line_monitor import LineRecord
 from pikos.tests.test_assistant import TestAssistant
+from pikos.tests.compat import TestCase
 
 
-class TestFocusedLineMonitor(unittest.TestCase, TestAssistant):
+class TestFocusedLineMonitor(TestCase, TestAssistant):
 
     def setUp(self):
         self.filename = __file__.replace('.pyc', '.py')
@@ -50,22 +51,22 @@ class TestFocusedLineMonitor(unittest.TestCase, TestAssistant):
         boo()
         self.assertEqual(result, 3)
         records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=27,
+        expected = [LineRecord(index=0, function='gcd', lineNo=28,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=28,
+                    LineRecord(index=1, function='gcd', lineNo=29,
                                line='                x, y = internal(x, y)',
                                filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=27,
+                    LineRecord(index=2, function='gcd', lineNo=28,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=3, function='gcd', lineNo=28,
+                    LineRecord(index=3, function='gcd', lineNo=29,
                                line='                x, y = internal(x, y)',
                                filename=self.filename),
-                    LineRecord(index=4, function='gcd', lineNo=27,
+                    LineRecord(index=4, function='gcd', lineNo=28,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=5, function='gcd', lineNo=29,
+                    LineRecord(index=5, function='gcd', lineNo=30,
                                line='            return y',
                                filename=self.filename)]
         self.assertEqual(records, expected)
@@ -103,28 +104,28 @@ class TestFocusedLineMonitor(unittest.TestCase, TestAssistant):
         boo()
         self.assertEqual(result, 3)
         records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=76,
+        expected = [LineRecord(index=0, function='gcd', lineNo=77,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=77,
+                    LineRecord(index=1, function='gcd', lineNo=78,
                                line='                x, y = internal(x, y)',
                                filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=76,
+                    LineRecord(index=2, function='gcd', lineNo=77,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=3, function='gcd', lineNo=77,
+                    LineRecord(index=3, function='gcd', lineNo=78,
                                line='                x, y = internal(x, y)',
                                filename=self.filename),
-                    LineRecord(index=4, function='gcd', lineNo=76,
+                    LineRecord(index=4, function='gcd', lineNo=77,
                                line='            while x > 0:',
                                filename=self.filename),
-                    LineRecord(index=5, function='gcd', lineNo=78,
+                    LineRecord(index=5, function='gcd', lineNo=79,
                                line='            return y',
                                filename=self.filename),
-                    LineRecord(index=6, function='foo', lineNo=87,
+                    LineRecord(index=6, function='foo', lineNo=88,
                                line='            boo()',
                                filename=self.filename),
-                    LineRecord(index=7, function='foo', lineNo=88,
+                    LineRecord(index=7, function='foo', lineNo=89,
                                line='            boo()',
                                filename=self.filename)]
         self.assertEqual(records, expected)
@@ -157,17 +158,17 @@ class TestFocusedLineMonitor(unittest.TestCase, TestAssistant):
         boo()
         self.assertEqual(result, 3)
         records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=135,
+        expected = [LineRecord(index=0, function='gcd', lineNo=136,
                                line='            foo()',
                                filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=136,
+                    LineRecord(index=1, function='gcd', lineNo=137,
                                line='            return x if y == 0 else '
                                     'gcd(y, (x % y))',
                                filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=135,
+                    LineRecord(index=2, function='gcd', lineNo=136,
                                line='            foo()',
                                filename=self.filename),
-                    LineRecord(index=3, function='gcd',  lineNo=136,
+                    LineRecord(index=3, function='gcd',  lineNo=137,
                                line='            return x if y == 0 else '
                                     'gcd(y, (x % y))',
                                filename=self.filename)]

@@ -1,9 +1,10 @@
 import unittest
 
 from pikos.recorders.list_recorder import ListRecorder
+from pikos.tests.compat import TestCase
 
 
-class TestListRecorder(unittest.TestCase):
+class TestListRecorder(TestCase):
 
     def test_prepare(self):
         fields = ('one', 'two', 'three')

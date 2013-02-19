@@ -3,9 +3,10 @@ import unittest
 
 from pikos.recorders.csv_recorder import CSVRecorder
 from pikos.recorders.abstract_recorder import RecorderError
+from pikos.tests.compat import TestCase
 
 
-class TestCSVRecorder(unittest.TestCase):
+class TestCSVRecorder(TestCase):
 
     def setUp(self):
         self.temp = StringIO.StringIO()

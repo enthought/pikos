@@ -132,7 +132,7 @@ class FunctionMemoryMonitor(Monitor):
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
-        record = FunctionMemoryRecord(self._index, event, function, usage.rss,
-                                      usage.vms, lineno, filename)
+        record = FunctionMemoryRecord(self._index, event, function, usage[0],
+                                      usage[1], lineno, filename)
         self._recorder.record(record)
         self._index += 1

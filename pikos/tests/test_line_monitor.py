@@ -2,9 +2,10 @@ import unittest
 
 from pikos.monitors.line_monitor import LineMonitor
 from pikos.recorders.list_recorder import ListRecorder
+from pikos.tests.compat import TestCase
 
 
-class TestLineMonitor(unittest.TestCase):
+class TestLineMonitor(TestCase):
 
     def test_issue2(self):
         """ Test for issue #2.
@@ -22,7 +23,7 @@ def foo():
         a.append(i+sum(a))
 
 foo()
-        """
+"""
 
         @logger.attach
         def boo():

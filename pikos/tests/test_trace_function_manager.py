@@ -2,6 +2,7 @@ import sys
 import unittest
 
 from pikos._internal.trace_function_manager import TraceFunctionManager
+from pikos.tests.compat import TestCase
 
 
 class MockNativeMonitor():
@@ -19,7 +20,7 @@ class MockNativeMonitor():
         return self.event
 
 
-class TestTraceFunctionsManager(unittest.TestCase):
+class TestTraceFunctionsManager(TestCase):
 
     def setUp(self):
         self.old = sys.gettrace()
@@ -43,11 +44,11 @@ class TestTraceFunctionsManager(unittest.TestCase):
     def test_error_when_set_multiple(self):
         self.monitor._profile.replace(self.bar)
         self.assertIs(sys.gettrace(), self.bar)
-        with self.assertRaises(AssertionError),\
-             self.assertRaises(RuntimeError):
-            self.monitor._profile.replace(self.bar)
-            self.assertIs(sys.gettrace(), self.bar)
-        self.monitor._profile.recover()
+        with self.assertRaises(AssertionError):
+            with self.assertRaises(RuntimeError):
+                self.monitor._profile.replace(self.bar)
+                self.assertIs(sys.gettrace(), self.bar)
+                self.monitor._profile.recover()
 
         self.monitor._profile.replace(self.bar)
         self.assertIs(sys.gettrace(), self.bar)

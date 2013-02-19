@@ -71,5 +71,5 @@ class FocusedFunctionMixin(object):
             event_method(frame, event, arg)
             if not tracker:
                 del self._code_trackers[code]
-        elif any(self._code_trackers.viewvalues()):
+        elif any(self._code_trackers.itervalues()):
             event_method(frame, event, arg)
