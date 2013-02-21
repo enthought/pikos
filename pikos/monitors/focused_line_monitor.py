@@ -44,8 +44,7 @@ class FocusedLineMonitor(FocusedLineMixin, LineMonitor):
     _call_tracker : object
         An instance of the :class:`~pikos._internal.keep_track` utility class
         to keep track of recursive calls to the monitor's :meth:`__enter__`
-         and
-        :meth:`__exit__` methods.
+        and :meth:`__exit__` methods.
 
     _code_trackers : dictionary
         A dictionary of KeepTrack instances associated with the code object
