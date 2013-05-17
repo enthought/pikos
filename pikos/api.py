@@ -16,7 +16,7 @@ def baserecorder(filter_=None):
     import sys
     from pikos.recorders.text_stream_recorder import TextStreamRecorder
     return TextStreamRecorder(sys.stdout, filter_=filter_,
-                               auto_flush=True, formatted=True)
+                              auto_flush=True, formatted=True)
 
 
 def monitor_functions(filter_=None, focus_on=None):
@@ -29,7 +29,7 @@ def monitor_functions(filter_=None, focus_on=None):
         from pikos.monitors.focused_function_monitor import \
             FocusedFunctionMonitor
         monitor = FocusedFunctionMonitor(baserecorder(filter_=filter_),
-                                  functions=focus_on)
+                                         functions=focus_on)
     return MonitorAttach(monitor)
 
 
@@ -43,7 +43,7 @@ def monitor_lines(filter_=None, focus_on=None):
         from pikos.monitors.focused_line_monitor import FocusedLineMonitor
         monitor = FocusedLineMonitor(baserecorder(filter_=filter_),
                                      functions=focus_on)
-        return MonitorAttach(monitor)
+    return MonitorAttach(monitor)
 
 
 def memory_on_functions(filter_=None, focus_on=None):
