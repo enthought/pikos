@@ -80,8 +80,8 @@ class FunctionMonitor(Monitor):
         self._index = 0
         self._call_tracker = KeepTrack()
 
-    def __enter__(self):
-        """ Enter the monitor context.
+    def enable(self):
+        """ Enable the monitor.
 
         The first time the method is called (the context is entered) it will
         set the setprofile hooks and initialize the recorder.
@@ -91,8 +91,8 @@ class FunctionMonitor(Monitor):
             self._recorder.prepare(FunctionRecord)
             self._profiler.replace(self.on_function_event)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """ Exit the monitor context.
+    def disable(self):
+        """ Disable the monitor.
 
         The last time the method is called (the context is exited) it will
         unset the setprofile hooks and finalize the recorder.

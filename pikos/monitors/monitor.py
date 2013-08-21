@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+import abc
+
 from pikos.monitors.monitor_attach import MonitorAttach
 
 
@@ -18,6 +20,35 @@ class Monitor(object):
     own implementation if required.
 
     """
+    __metaclass__ = abc.ABCMeta
+
     def attach(self, function):
         monitor_attach = MonitorAttach(self)
         return monitor_attach(function)
+
+    @abc.abstractmethod
+    def enable(self):
+        """ This method should enable the monitor.
+        """
+
+    @abc.abstractmethod
+    def disable(self):
+        """ This method should disable the monitor.
+
+        """
+
+    def __enter__(self):
+        """ The entry point of the context manager.
+
+        Default implementation is calling :meth:`enable`.
+
+        """
+        self.enable()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """ The exit point of the context manager.
+
+        Default implementation is calling :meth:`disable`.
+
+        """
+        self.disable()
