@@ -10,10 +10,10 @@ class MockNativeMonitor(Monitor):
         self._enter_called = 0
         self._exit_called = 0
 
-    def __enter__(self):
+    def enable(self):
         self._enter_called += 1
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def disable(self):
         self._exit_called += 1
 
 
@@ -60,7 +60,6 @@ class TestMonitor(TestCase):
         self.assertEqual(results, [0, 1, 2, 3, 4])
         self.assertEqual(mock_logger._enter_called, 6)
         self.assertEqual(mock_logger._exit_called, 6)
-
 
 if __name__ == '__main__':
     unittest.main()
