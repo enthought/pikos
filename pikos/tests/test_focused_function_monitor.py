@@ -235,6 +235,72 @@ class TestFocusedFunctionMonitor(TestCase, TestAssistant):
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
+    def test_focus_on_decorated_function(self):
+
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        def internal(x, y):
+            boo()
+            return y % x, x
+
+        def boo():
+            pass
+
+        recorder = ListRecorder()
+        logger = FocusedFunctionMonitor(recorder)
+
+        @logger.attach(include_decorated=True)
+        def container(x, y):
+            result = gcd(x, y)
+            boo()
+            return result
+
+        boo()
+        result = container(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        records = recorder.records
+        expected = [FunctionRecord(index=0, type='call', function='container',
+                                   lineNo=255, filename=self.filename),
+                    FunctionRecord(index=1, type='call', function='gcd',
+                                   lineNo=240, filename=self.filename),
+                    FunctionRecord(index=2, type='call',
+                                   function='internal', lineNo=245,
+                                   filename=self.filename),
+                    FunctionRecord(index=3, type='call',
+                                   function='boo', lineNo=249,
+                                   filename=self.filename),
+                    FunctionRecord(index=4, type='return',
+                                   function='boo', lineNo=250,
+                                   filename=self.filename),
+                    FunctionRecord(index=5, type='return', function='internal',
+                                   lineNo=247, filename=self.filename),
+                    FunctionRecord(index=6, type='call',
+                                   function='internal', lineNo=245,
+                                   filename=self.filename),
+                    FunctionRecord(index=7, type='call',
+                                   function='boo', lineNo=249,
+                                   filename=self.filename),
+                    FunctionRecord(index=8, type='return',
+                                   function='boo', lineNo=250,
+                                   filename=self.filename),
+                    FunctionRecord(index=9, type='return', function='internal',
+                                   lineNo=247, filename=self.filename),
+                    FunctionRecord(index=10, type='return', function='gcd',
+                                   lineNo=243, filename=self.filename),
+                    FunctionRecord(index=11, type='call', function='boo',
+                                   lineNo=249, filename=self.filename),
+                    FunctionRecord(index=12, type='return', function='boo',
+                                   lineNo=250, filename=self.filename),
+                    FunctionRecord(index=13, type='return',
+                                   function='container', lineNo=259,
+                                   filename=self.filename)]
+        self.assertEqual(records, expected)
+        self.assertEqual(logger._code_trackers, {})
+
 
 if __name__ == '__main__':
     unittest.main()
