@@ -8,7 +8,7 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 class NotOnValue(object):
-    """ A record filter that removes the record when a value is present.
+    """ A record filter that removes the record when a value is contained
 
     Attributes
     ----------

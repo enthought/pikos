@@ -7,18 +7,16 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-
-
 class OnValue(object):
-    """ A record filter that checks the value of a record field.
+    """ A record filter that remove the record when a value is not contained.
 
     Attributes
     ----------
     field : str
         The field to check for change.
 
-    previous :
-        Holds the value of the previous field.
+    values :
+        A list of values to use for the filtering.
 
     """
     def __init__(self, field, *args):
