@@ -47,6 +47,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
             return gcd(7, 12)
 
         result = boo()
+
         self.assertEqual(result, 1)
         records = recorder.records
         # check that the records make sense
@@ -56,8 +57,9 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
         self.assertFieldValueExist(records, ('function', 'type'),
                                    ('gcd', 'return'), times=6)
         self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # In recursive calls the wrapper of the function is logged
-        # self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        # FIXME: In recursive case calls the wrapper of the function is
+        #        logged self.assertFieldValueNotExist(records, ('function',),
+        #        ('wrapper',))
 
     def test_generator(self):
         recorder = ListRecorder()
