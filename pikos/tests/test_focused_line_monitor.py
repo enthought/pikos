@@ -174,7 +174,7 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
                                filename=self.filename)]
         self.assertEqual(records, expected)
 
-    def test_focus_on_decorated_method(self):
+    def test_focus_on_decorated_recursive_function(self):
 
         def foo():
             pass
@@ -203,6 +203,52 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
                     LineRecord(index=3, function='gcd',  lineNo=188,
                                line='            return x if y == 0 else '
                                     'gcd(y, (x % y))',
+                               filename=self.filename)]
+        self.assertEqual(records, expected)
+
+    def test_focus_on_decorated_function(self):
+
+        def internal(x, y):
+            return y % x, x
+
+        def boo():
+            pass
+
+        def foo():
+            boo()
+            boo()
+
+        recorder = ListRecorder()
+        logger = FocusedLineMonitor(recorder)
+
+        @logger.attach(include_decorated=True)
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        boo()
+        result = gcd(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        records = recorder.records
+        expected = [LineRecord(index=0, function='gcd', lineNo=226,
+                               line='            while x > 0:',
+                               filename=self.filename),
+                    LineRecord(index=1, function='gcd', lineNo=227,
+                               line='                x, y = internal(x, y)',
+                               filename=self.filename),
+                    LineRecord(index=2, function='gcd', lineNo=226,
+                               line='            while x > 0:',
+                               filename=self.filename),
+                    LineRecord(index=3, function='gcd', lineNo=227,
+                               line='                x, y = internal(x, y)',
+                               filename=self.filename),
+                    LineRecord(index=4, function='gcd', lineNo=226,
+                               line='            while x > 0:',
+                               filename=self.filename),
+                    LineRecord(index=5, function='gcd', lineNo=228,
+                               line='            return y',
                                filename=self.filename)]
         self.assertEqual(records, expected)
 
