@@ -23,6 +23,27 @@ class Monitor(object):
     __metaclass__ = abc.ABCMeta
 
     def attach(self, function):
+        """ Attach (i.e. wrap) the monitor to the function.
+
+        Parameters
+        ----------
+        function : callable
+            The callable to wrap
+
+        Returns
+        -------
+        fn : callable
+            The wrapped function. `fn` has the same signature as `function`.
+            Executing `fn` will run `function` inside the
+            :attr:`_monitor_object` context.
+
+        Raises
+        ------
+        ValueError :
+            Raised if the provided :attr:`_monitor_object` does not support the
+            context manager interface.
+
+        """
         monitor_attach = MonitorAttach(self)
         return monitor_attach(function)
 
