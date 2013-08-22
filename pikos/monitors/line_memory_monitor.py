@@ -93,8 +93,8 @@ class LineMemoryMonitor(Monitor):
         self._call_tracker = KeepTrack()
         self._process = None
 
-    def __enter__(self):
-        """ Enter the monitor context.
+    def enable(self):
+        """ Enable the monitor.
 
         The first time the method is called (the context is entered) it will
         initialize the Process class, set the settrace hook and initialize
@@ -106,8 +106,8 @@ class LineMemoryMonitor(Monitor):
             self._recorder.prepare(LineMemoryRecord)
             self._tracer.replace(self.on_line_event)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """ Exit the monitor context.
+    def disable(self):
+        """ Disable the monitor.
 
         The last time the method is called (the context is exited) it will
         unset the settrace hook, finalize the recorder and set
