@@ -11,8 +11,8 @@ from pikos.recorders.abstract_recorder import AbstractRecorder
 
 
 class ListRecorder(AbstractRecorder):
-    """ The  ListRecorder is simple recorder that records the
-    tuple of values in memory as a list.
+    """ The  ListRecorder is simple recorder that records the tuple of
+    values in memory as a list.
 
     Public
     ------
@@ -43,7 +43,7 @@ class ListRecorder(AbstractRecorder):
         self._filter = (lambda x: True) if filter_ is None else filter_
         self.records = []
 
-    def prepare(self, data):
+    def prepare(self, record):
         """ Prepare the recorder to accept data.
 
         .. note:: nothing to do for the ListRecorder.
@@ -54,18 +54,22 @@ class ListRecorder(AbstractRecorder):
     def finalize(self):
         """ Finalize the recorder.
 
-        .. note:: nothing to do for the ListRecorder.
+        .. note::
+
+            nothing to do for the ListRecorder.
 
         """
         pass
 
     @property
     def ready(self):
-        """ Is the recorder ready to accept data? """
+        """ Is the recorder ready to accept data?
+
+        """
         return True
 
     def record(self, data):
-        """ Rerord the data entry when the filter function returns True.
+        """ Record the data entry when the filter function returns True.
 
         Parameters
         ----------

@@ -32,7 +32,7 @@ class AbstractRecorder(object):
         Parameters
         ----------
         record : NamedTuple
-            An instance of the record class that is going to be used.
+            The record class that is going to be used.
 
         """
 
