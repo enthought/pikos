@@ -21,14 +21,14 @@ class CSVRecorder(AbstractRecorder):
     _filter : callable
         Used to check if the set `record` should be `recorded`. The function
         accepts a tuple of the `record` values and return True is the input
-        sould be recored.
+        should be recorded.
 
     _writer : csv.writer
         The `writer` object is owned by the CSVRecorder and exports the record
         values according to the configured dialect.
 
     _ready : bool
-        Singify that the Recorder is ready to accept data.
+        Signify that the Recorder is ready to accept data.
 
     """
 
@@ -55,7 +55,7 @@ class CSVRecorder(AbstractRecorder):
     def prepare(self, fields):
         """ Write the header in the csv file the first time it is called. """
         if not self._ready:
-            self._writer.writerow(fields)
+            self._writer.writerow(fields._fields)
             self._ready = True
 
     def finalize(self):
