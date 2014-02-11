@@ -63,15 +63,10 @@ class TextFileRecorder(TextStreamRecorder):
         """
         self._filename = filename
         self._filter = (lambda x: True) if filter_ is None else filter_
-        self._stream = None
+        self._stream = open(self._filename, 'wb')
         self._formatted = formatted
         self._auto_flush = auto_flush
         self._ready = False
-
-    def prepare(self, fields):
-        """ Write the header in the csv file the first time it is called. """
-        self._stream = open(self._filename, 'wb')
-        super(TextFileRecorder, self).prepare(fields)
 
     def finalize(self):
         """ Finalize the recorder.
