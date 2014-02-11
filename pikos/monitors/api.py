@@ -2,6 +2,7 @@ from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.monitors.line_monitor import LineMonitor
 from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
 from pikos.monitors.line_memory_monitor import LineMemoryMonitor
+from pikos.monitors.function_time_monitor import FocusedLineMemoryMonitor
 
 from pikos.monitors.focused_function_monitor import FocusedFunctionMonitor
 from pikos.monitors.focused_line_monitor import FocusedLineMonitor

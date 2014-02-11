@@ -26,8 +26,8 @@ FUNCTION_MEMORY_HEADER_TEMPLATE = ('{:<8} | {:<11} | {:<12} | {:<15} | {:<15} '
                                    '| {:>6} | {}{newline}')
 
 
-class FunctionMemoryRecord(namedtuple('FunctionMemoryRecord',
-                                      FUNCTION_MEMORY_RECORD)):
+class FunctionMemoryRecord(
+    namedtuple('FunctionMemoryRecord', FUNCTION_MEMORY_RECORD)):
 
     __slots__ = ()
 
