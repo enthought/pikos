@@ -54,10 +54,12 @@ class TestTraceFunctionsManager(TestCase):
             self.monitor._profile.replace(None)
             self.assertIs(sys.gettrace(), self.bar)
         self.monitor._profile.recover()
+        self.assertIs(sys.gettrace(), self.old)
 
     def test_error_when_unset(self):
         with self.assertRaises(RuntimeError):
             self.monitor._profile.recover()
+        self.assertIs(sys.gettrace(), self.old)
 
     def tearDown(self):
         sys.settrace(self.old)
