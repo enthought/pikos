@@ -5,6 +5,7 @@ python:
 # command to install dependencies
 install:
   - pip install psutil
-  - pip install distribute
+  - pip install unittest2
+  - python setup.py develop
 # command to run tests
-script: python setup.py test
+script: python -m unittest2 discover
