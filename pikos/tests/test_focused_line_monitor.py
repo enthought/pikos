@@ -7,11 +7,11 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+import StringIO
 import unittest
 
 from pikos.monitors.focused_line_monitor import FocusedLineMonitor
-from pikos.recorders.list_recorder import ListRecorder
-from pikos.monitors.line_monitor import LineRecord
+from pikos.recorders.api import TextStreamRecorder
 from pikos.tests.test_assistant import TestAssistant
 from pikos.tests.compat import TestCase
 
@@ -21,6 +21,8 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
     def setUp(self):
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
+        self.stream = StringIO.StringIO()
+        self.recorder = TextStreamRecorder(text_stream=self.stream)
 
     def test_focus_on_function(self):
 
@@ -36,7 +38,7 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         def boo():
             pass
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedLineMonitor(recorder, functions=[gcd])
 
         @logger.attach
@@ -50,25 +52,18 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=28,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=29,
-                               line='                x, y = internal(x, y)',
-                               filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=28,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=3, function='gcd', lineNo=29,
-                               line='                x, y = internal(x, y)',
-                               filename=self.filename),
-                    LineRecord(index=4, function='gcd', lineNo=28,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=5, function='gcd', lineNo=30,
-                               line='            return y',
-                               filename=self.filename)]
+
+        filename = self.filename
+        expected = [
+            "index function lineNo line filename",
+            "-----------------------------------",
+            "0 gcd 30             while x > 0: {0}".format(filename),
+            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 30             while x > 0: {0}".format(filename),
+            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 30             while x > 0: {0}".format(filename),
+            "5 gcd 32             return y {0}".format(filename)]
+        records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
     def test_focus_on_functions(self):
@@ -88,7 +83,7 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             boo()
             boo()
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedLineMonitor(recorder, functions=[gcd, foo])
 
         @logger.attach
@@ -103,31 +98,19 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=77,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=78,
-                               line='                x, y = internal(x, y)',
-                               filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=77,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=3, function='gcd', lineNo=78,
-                               line='                x, y = internal(x, y)',
-                               filename=self.filename),
-                    LineRecord(index=4, function='gcd', lineNo=77,
-                               line='            while x > 0:',
-                               filename=self.filename),
-                    LineRecord(index=5, function='gcd', lineNo=79,
-                               line='            return y',
-                               filename=self.filename),
-                    LineRecord(index=6, function='foo', lineNo=88,
-                               line='            boo()',
-                               filename=self.filename),
-                    LineRecord(index=7, function='foo', lineNo=89,
-                               line='            boo()',
-                               filename=self.filename)]
+        filename = self.filename
+        expected = [
+            "index function lineNo line filename",
+            "-----------------------------------",
+            "0 gcd 72             while x > 0: {0}".format(filename),
+            "1 gcd 73                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 72             while x > 0: {0}".format(filename),
+            "3 gcd 73                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 72             while x > 0: {0}".format(filename),
+            "5 gcd 74             return y {0}".format(filename),
+            "6 foo 83             boo() {0}".format(filename),
+            "7 foo 84             boo() {0}".format(filename)]
+        records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
     def test_focus_on_recursive(self):
@@ -142,7 +125,7 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         def foo():
             pass
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedLineMonitor(recorder, functions=[gcd])
 
         @logger.attach
@@ -157,21 +140,15 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        expected = [LineRecord(index=0, function='gcd', lineNo=136,
-                               line='            foo()',
-                               filename=self.filename),
-                    LineRecord(index=1, function='gcd', lineNo=137,
-                               line='            return x if y == 0 else '
-                                    'gcd(y, (x % y))',
-                               filename=self.filename),
-                    LineRecord(index=2, function='gcd', lineNo=136,
-                               line='            foo()',
-                               filename=self.filename),
-                    LineRecord(index=3, function='gcd',  lineNo=137,
-                               line='            return x if y == 0 else '
-                                    'gcd(y, (x % y))',
-                               filename=self.filename)]
+        filename = self.filename
+        expected = [
+            "index function lineNo line filename",
+            "-----------------------------------",
+            "0 gcd 119             foo() {0}".format(filename),
+            "1 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "2 gcd 119             foo() {0}".format(filename),
+            "3 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+        records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
     def test_focus_on_decorated_recursive_function(self):
