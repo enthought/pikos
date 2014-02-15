@@ -43,18 +43,21 @@ class TestTextStreamRecorder(TestCase):
 
     def test_record(self):
         record = DummyRecord(5, 'pikos', 'apikos')
-        output = ('one two three{newline}-------------{newline}'
-                  '5 pikos apikos{newline}'.format(newline=os.linesep))
+        output = (
+            'one two three{newline}-------------{newline}'
+            '5 pikos apikos{newline}'.format(newline=os.linesep))
         recorder = TextStreamRecorder(self.temp)
         recorder.prepare(DummyRecord)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_filter(self):
-        records = [DummyRecord(5, 'pikos', 'apikos'),
-                 DummyRecord(12, 'emilios', 'milo')]
-        output = ('one two three{newline}-------------{newline}'
-                  '12 emilios milo{newline}'.format(newline=os.linesep))
+        records = [
+            DummyRecord(5, 'pikos', 'apikos'),
+            DummyRecord(12, 'emilios', 'milo')]
+        output = (
+            'one two three{newline}-------------{newline}'
+            '12 emilios milo{newline}'.format(newline=os.linesep))
 
         def not_pikos(values):
             return not 'pikos' in values
@@ -77,8 +80,9 @@ class TestTextStreamRecorder(TestCase):
 
     def test_formater(self):
         record = DummyRecord(5, 'pikos', 'apikos')
-        output = ('one   two   three{newline}-----------------{newline}'
-                  '5     pikos apikos{newline}'.format(newline=os.linesep))
+        output = (
+            'one   two   three{newline}-----------------{newline}'
+            '5     pikos apikos{newline}'.format(newline=os.linesep))
         recorder = TextStreamRecorder(self.temp, formatted=True)
         recorder.prepare(DummyRecord)
         recorder.record(record)
