@@ -2,22 +2,10 @@ import os
 import StringIO
 import unittest
 
-from collections import namedtuple
-
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.recorders.abstract_recorder import RecorderError
 from pikos.tests.compat import TestCase
-
-
-class MockRecord(namedtuple('MockRecord', ('one', 'two', 'three'))):
-
-    @classmethod
-    def header(cls):
-        return '{0:<5} {1:<5} {2:<5}{newline}'.format(*cls._fields,
-                                                   newline=os.linesep)
-
-    def line(self):
-        return '{0:<5} {1:<5} {2:<5}{newline}'.format(*self, newline=os.linesep)
+from pikos.tests.dummy_record import DummyRecord
 
 
 class TestTextStreamRecorder(TestCase):
@@ -33,14 +21,14 @@ class TestTextStreamRecorder(TestCase):
         header = 'one two three{newline}-------------{newline}'.\
                  format(newline=os.linesep)
         recorder = TextStreamRecorder(self.temp)
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
 
         # the first call writes the header
         self.assertMultiLineEqual(self.temp.getvalue(), header)
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
         # all calls after that do nothing
         for x in range(10):
-            recorder.prepare(MockRecord)
+            recorder.prepare(DummyRecord)
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
     def test_finalize(self):
@@ -48,37 +36,40 @@ class TestTextStreamRecorder(TestCase):
                  format(newline=os.linesep)
         recorder = TextStreamRecorder(self.temp)
         # all calls do nothing
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
         for x in range(10):
             recorder.finalize()
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
     def test_record(self):
-        record = MockRecord(5, 'pikos', 'apikos')
-        output = ('one two three{newline}-------------{newline}'
-                  '5 pikos apikos{newline}'.format(newline=os.linesep))
+        record = DummyRecord(5, 'pikos', 'apikos')
+        output = (
+            'one two three{newline}-------------{newline}'
+            '5 pikos apikos{newline}'.format(newline=os.linesep))
         recorder = TextStreamRecorder(self.temp)
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_filter(self):
-        records = [MockRecord(5, 'pikos', 'apikos'),
-                 MockRecord(12, 'emilios', 'milo')]
-        output = ('one two three{newline}-------------{newline}'
-                  '12 emilios milo{newline}'.format(newline=os.linesep))
+        records = [
+            DummyRecord(5, 'pikos', 'apikos'),
+            DummyRecord(12, 'emilios', 'milo')]
+        output = (
+            'one two three{newline}-------------{newline}'
+            '12 emilios milo{newline}'.format(newline=os.linesep))
 
         def not_pikos(values):
             return not 'pikos' in values
 
         recorder = TextStreamRecorder(self.temp, filter_=not_pikos)
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
         for record in records:
             recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_exceptions(self):
-        record = MockRecord(5, 'pikos', 'apikos')
+        record = DummyRecord(5, 'pikos', 'apikos')
         recorder = TextStreamRecorder(self.temp)
 
         with self.assertRaises(RecorderError):
@@ -88,11 +79,12 @@ class TestTextStreamRecorder(TestCase):
             recorder.finalize()
 
     def test_formater(self):
-        record = MockRecord(5, 'pikos', 'apikos')
-        output = ('one   two   three{newline}-----------------{newline}'
-                  '5     pikos apikos{newline}'.format(newline=os.linesep))
+        record = DummyRecord(5, 'pikos', 'apikos')
+        output = (
+            'one   two   three{newline}-----------------{newline}'
+            '5     pikos apikos{newline}'.format(newline=os.linesep))
         recorder = TextStreamRecorder(self.temp, formatted=True)
-        recorder.prepare(MockRecord)
+        recorder.prepare(DummyRecord)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
