@@ -1,9 +1,9 @@
 import StringIO
 import unittest
 
-from pikos.filters.api import OnValue
-from pikos.monitors.api import LineMonitor
-from pikos.recorders.api import TextStreamRecorder
+from pikos.filters.on_value import OnValue
+from pikos.monitors.line_monitor import LineMonitor
+from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
 

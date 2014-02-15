@@ -11,7 +11,7 @@ import StringIO
 import unittest
 
 from pikos.monitors.focused_line_monitor import FocusedLineMonitor
-from pikos.recorders.api import TextStreamRecorder
+from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.test_assistant import TestAssistant
 from pikos.tests.compat import TestCase
 
