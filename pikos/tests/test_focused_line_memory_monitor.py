@@ -13,11 +13,10 @@ import unittest
 from pikos.monitors.focused_line_memory_monitor import (
     FocusedLineMemoryMonitor)
 from pikos.recorders.list_recorder import ListRecorder
-from pikos.tests.test_assistant import TestAssistant
 from pikos.tests.compat import TestCase
 
 
-class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
+class TestFocusedLineMemoryMonitor(TestCase):
 
     def setUp(self):
         self.filename = __file__.replace('.pyc', '.py')
@@ -56,12 +55,12 @@ class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
 
         filename = self.filename
         expected = [
-            "0 gcd 31             while x > 0: {0}".format(filename),
-            "1 gcd 32                 x, y = internal(x, y) {0}".format(filename),
-            "2 gcd 31             while x > 0: {0}".format(filename),
-            "3 gcd 32                 x, y = internal(x, y) {0}".format(filename),
-            "4 gcd 31             while x > 0: {0}".format(filename),
-            "5 gcd 33             return y {0}".format(filename)]
+            "0 gcd 30             while x > 0: {0}".format(filename),
+            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 30             while x > 0: {0}".format(filename),
+            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 30             while x > 0: {0}".format(filename),
+            "5 gcd 32             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -99,14 +98,14 @@ class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 71             while x > 0: {0}".format(filename),
-            "1 gcd 72                 x, y = internal(x, y) {0}".format(filename),
-            "2 gcd 71             while x > 0: {0}".format(filename),
-            "3 gcd 72                 x, y = internal(x, y) {0}".format(filename),
-            "4 gcd 71             while x > 0: {0}".format(filename),
-            "5 gcd 73             return y {0}".format(filename),
-            "6 foo 82             boo() {0}".format(filename),
-            "7 foo 83             boo() {0}".format(filename)]
+            "0 gcd 70             while x > 0: {0}".format(filename),
+            "1 gcd 71                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 70             while x > 0: {0}".format(filename),
+            "3 gcd 71                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 70             while x > 0: {0}".format(filename),
+            "5 gcd 72             return y {0}".format(filename),
+            "6 foo 81             boo() {0}".format(filename),
+            "7 foo 82             boo() {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -139,10 +138,10 @@ class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 116             foo() {0}".format(filename),
-            "1 gcd 117             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "2 gcd 116             foo() {0}".format(filename),
-            "3 gcd 117             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "0 gcd 115             foo() {0}".format(filename),
+            "1 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "2 gcd 115             foo() {0}".format(filename),
+            "3 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -163,10 +162,10 @@ class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 159             foo() {0}".format(filename),
-            "1 gcd 160             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "2 gcd 159             foo() {0}".format(filename),
-            "3 gcd 160             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "0 gcd 158             foo() {0}".format(filename),
+            "1 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "2 gcd 158             foo() {0}".format(filename),
+            "3 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -193,12 +192,12 @@ class TestFocusedLineMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 186             while x > 0: {0}".format(filename),
-            "1 gcd 187                 x, y = internal(x, y) {0}".format(filename),
-            "2 gcd 186             while x > 0: {0}".format(filename),
-            "3 gcd 187                 x, y = internal(x, y) {0}".format(filename),
-            "4 gcd 186             while x > 0: {0}".format(filename),
-            "5 gcd 188             return y {0}".format(filename)]
+            "0 gcd 185             while x > 0: {0}".format(filename),
+            "1 gcd 186                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 185             while x > 0: {0}".format(filename),
+            "3 gcd 186                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 185             while x > 0: {0}".format(filename),
+            "5 gcd 187             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
