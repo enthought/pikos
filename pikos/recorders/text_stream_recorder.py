@@ -69,18 +69,18 @@ class TextStreamRecorder(AbstractRecorder):
         self._auto_flush = auto_flush
         self._ready = False
 
-    def prepare(self, data):
+    def prepare(self, record):
         """ Prepare the recorder to accept data.
 
         Parameters
         ----------
         data : NamedTuple
-            An example data record to prepare the recorder and write the
-            header to the stream
+            An example record to prepare the recorder and write the
+            header to the stream.
 
         """
         if not self._ready:
-            self._writeheader(data)
+            self._writeheader(record)
             self._ready = True
 
     def finalize(self):
@@ -130,7 +130,7 @@ class TextStreamRecorder(AbstractRecorder):
             msg = 'Method called while recorder is not ready to record'
             raise RecorderError(msg)
 
-    def _writeheader(self, data):
+    def _writeheader(self, record):
         """ Write the header to the stream.
 
         The header is created and sent to the stream followed by the separator
@@ -143,9 +143,9 @@ class TextStreamRecorder(AbstractRecorder):
 
         """
         if self._formatted:
-            header = data.header()
+            header = record.header()
         else:
-            header = ' '.join(str(value) for value in data._fields)
+            header = ' '.join(str(value) for value in record._fields)
             header += os.linesep
 
         separator = '-' * (len(header) - len(os.linesep)) + os.linesep

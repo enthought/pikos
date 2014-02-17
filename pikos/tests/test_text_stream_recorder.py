@@ -58,7 +58,6 @@ class TestTextStreamRecorder(TestCase):
         output = (
             'one two three{newline}-------------{newline}'
             '12 emilios milo{newline}'.format(newline=os.linesep))
-
         def not_pikos(values):
             return not 'pikos' in values
 
