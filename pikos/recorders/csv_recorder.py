@@ -52,10 +52,10 @@ class CSVRecorder(AbstractRecorder):
         self._writer = csv.writer(stream, **csv_kwargs)
         self._ready = False
 
-    def prepare(self, fields):
+    def prepare(self, record):
         """ Write the header in the csv file the first time it is called. """
         if not self._ready:
-            self._writer.writerow(fields)
+            self._writer.writerow(record._fields)
             self._ready = True
 
     def finalize(self):

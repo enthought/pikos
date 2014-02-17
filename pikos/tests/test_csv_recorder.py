@@ -4,6 +4,7 @@ import unittest
 from pikos.recorders.csv_recorder import CSVRecorder
 from pikos.recorders.abstract_recorder import RecorderError
 from pikos.tests.compat import TestCase
+from pikos.tests.dummy_record import DummyRecord
 
 
 class TestCSVRecorder(TestCase):
@@ -15,68 +16,67 @@ class TestCSVRecorder(TestCase):
         self.temp.close()
 
     def test_prepare(self):
-        fields = ('one', 'two', 'three')
         header = 'one,two,three\r\n'
         recorder = CSVRecorder(self.temp)
-        recorder.prepare(fields)
+        recorder.prepare(DummyRecord)
 
         # the first call writes the header
         self.assertMultiLineEqual(self.temp.getvalue(), header)
-        recorder.prepare(fields)
+        recorder.prepare(DummyRecord)
         # all calls after that do nothing
         for x in range(10):
-            recorder.prepare(fields)
+            recorder.prepare(DummyRecord)
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
     def test_finalize(self):
-        fields = ('one', 'two', 'three')
         header = 'one,two,three\r\n'
         recorder = CSVRecorder(self.temp)
         # all calls do nothing
-        recorder.prepare(fields)
+        recorder.prepare(DummyRecord)
         for x in range(10):
             recorder.finalize()
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
     def test_record(self):
-        fields = ('one', 'two', 'three')
-        values = (5, 'pikos', 'apikos')
+        record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one,two,three\r\n5,pikos,apikos\r\n'
         recorder = CSVRecorder(self.temp)
-        recorder.prepare(fields)
-        recorder.record(values)
+        recorder.prepare(DummyRecord)
+        recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_filter(self):
-        fields = ('one', 'two', 'three')
-        values = [(5, 'pikos', 'apikos'), (12, 'emilios', 'milo')]
+        records = [
+            DummyRecord(5, 'pikos', 'apikos'),
+            DummyRecord(12, 'emilios', 'milo')]
         output = 'one,two,three\r\n12,emilios,milo\r\n'
 
-        def not_pikos(values):
-            return not 'pikos' in values
+        def not_pikos(records):
+            return all('pikos' != record for record in records)
 
         recorder = CSVRecorder(self.temp, filter_=not_pikos)
-        recorder.prepare(fields)
-        for record in values:
+        recorder.prepare(DummyRecord)
+        for record in records:
             recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_dialect(self):
-        fields = ('one', 'two', 'three')
-        values = [(5, 'pikos', 'apikos'), (12, 'emilios', 'milo')]
+        records = [
+            DummyRecord(5, 'pikos', 'apikos'),
+            DummyRecord(12, 'emilios', 'milo')]
         output = 'one,two,three^5,pikos,apikos^12,emilios,milo^'
         recorder = CSVRecorder(self.temp, lineterminator='^')
-        recorder.prepare(fields)
-        for record in values:
+        recorder.prepare(DummyRecord)
+        for record in records:
             recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 
     def test_exception_when_no_prepare(self):
-        values = [(5, 'pikos', 'apikos')]
+        records = [DummyRecord(5, 'pikos', 'apikos')]
         recorder = CSVRecorder(self.temp)
 
         with self.assertRaises(RecorderError):
-            recorder.record(values)
+            recorder.record(records)
 
         with self.assertRaises(RecorderError):
             recorder.finalize()
