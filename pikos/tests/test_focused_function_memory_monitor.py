@@ -7,18 +7,23 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+import StringIO
 import unittest
 
 from pikos.filters.on_value import OnValue
 from pikos.monitors.focused_function_memory_monitor import (
     FocusedFunctionMemoryMonitor)
 from pikos.recorders.list_recorder import ListRecorder
-from pikos.monitors.function_memory_monitor import FunctionMemoryRecord
 from pikos.tests.test_assistant import TestAssistant
 from pikos.tests.compat import TestCase
 
 
 class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
+
+    def setUp(self):
+        self.filename = __file__.replace('.pyc', '.py')
+        self.maxDiff = None
+        self.recorder = ListRecorder()
 
     def test_focus_on_function(self):
 
@@ -33,7 +38,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         def boo():
             pass
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedFunctionMemoryMonitor(recorder, functions=[gcd])
 
         @logger.attach
@@ -47,19 +52,15 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        # check that the records make sense
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'call'), times=1)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'return'), times=1)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('internal', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('internal', 'return'), times=2)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # The wrapper of the function should not be logged
-        self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "0 call gcd 30 {0}".format(self.filename),
+            "1 call internal 35 {0}".format(self.filename),
+            "2 return internal 36 {0}".format(self.filename),
+            "3 call internal 35 {0}".format(self.filename),
+            "4 return internal 36 {0}".format(self.filename),
+            "5 return gcd 33 {0}".format(self.filename)]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
     def test_focus_on_functions(self):
@@ -80,7 +81,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
             boo()
             boo()
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedFunctionMemoryMonitor(
             recorder, functions=[internal, foo])
 
@@ -96,23 +97,21 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        # check that the records make sense
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('internal', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('internal', 'return'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'call'), times=1)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'return'), times=1)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('boo', 'call'), times=3)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('boo', 'return'), times=3)
-        self.assertFieldValueNotExist(records, ('function',), ('gcd',))
-        # The wrapper of the function should not be logged
-        self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "0 call internal 73 {0}".format(self.filename),
+            "1 return internal 74 {0}".format(self.filename),
+            "2 call internal 73 {0}".format(self.filename),
+            "3 return internal 74 {0}".format(self.filename),
+            "4 call foo 79 {0}".format(self.filename),
+            "5 call boo 76 {0}".format(self.filename),
+            "6 return boo 77 {0}".format(self.filename),
+            "7 call boo 76 {0}".format(self.filename),
+            "8 return boo 77 {0}".format(self.filename),
+            "9 call boo 76 {0}".format(self.filename),
+            "10 return boo 77 {0}".format(self.filename),
+            "11 return foo 82 {0}".format(self.filename)]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
     def test_focus_on_recursive(self):
@@ -127,7 +126,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         def foo():
             pass
 
-        recorder = ListRecorder()
+        recorder = self.recorder
         logger = FocusedFunctionMemoryMonitor(recorder, functions=[gcd])
 
         @logger.attach
@@ -142,19 +141,17 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         result = container(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        # check that the records make sense
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'return'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'return'), times=2)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # The wrapper of the function should not be logged
-        self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "0 call gcd 119 {0}".format(self.filename),
+            "1 call foo 126 {0}".format(self.filename),
+            "2 return foo 127 {0}".format(self.filename),
+            "3 call gcd 119 {0}".format(self.filename),
+            "4 call foo 126 {0}".format(self.filename),
+            "5 return foo 127 {0}".format(self.filename),
+            "6 return gcd 121 {0}".format(self.filename),
+            "7 return gcd 121 {0}".format(self.filename)]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
     def test_focus_on_decorated_recursive(self):
@@ -162,7 +159,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
         def foo():
             pass
 
-        recorder = ListRecorder()
+        recorder = ListRecorder(filter_=OnValue('filename', self.filename))
         logger = FocusedFunctionMemoryMonitor(recorder)
 
         @logger.attach(include_decorated=True)
@@ -172,21 +169,26 @@ class TestFocusedFunctionMemoryMonitor(TestCase, TestAssistant):
 
         result = gcd(12, 3)
         self.assertEqual(result, 3)
-        records = recorder.records
-        # check that the records make sense
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'return'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'call'), times=2)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('foo', 'return'), times=2)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # FIXME: In decorated recursive case calls the wrapper of the function
-        #        is logged self.assertFieldValueNotExist(records,
-        #        ('function',), ('wrapper',))
+        expected = [
+            "0 call gcd 165 {0}".format(self.filename),
+            "1 call foo 159 {0}".format(self.filename),
+            "2 return foo 160 {0}".format(self.filename),
+            "10 call gcd 165 {0}".format(self.filename),
+            "11 call foo 159 {0}".format(self.filename),
+            "12 return foo 160 {0}".format(self.filename),
+            "13 return gcd 168 {0}".format(self.filename),
+            "21 return gcd 168 {0}".format(self.filename)]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
+
+    def get_records(self, recorder):
+        records = []
+        for record in recorder.records:
+            filtered = record[:3] + record[5:]
+            records.append(
+                ' '.join([str(item).rstrip() for item in filtered]))
+        return records
 
 
 if __name__ == '__main__':
