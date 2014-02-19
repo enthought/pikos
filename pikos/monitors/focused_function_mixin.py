@@ -7,11 +7,11 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from pikos._internal.function_set import FunctionSet
+from pikos.monitors.focused_monitor_mixin import FocusedMonitorMixin
 from pikos._internal.keep_track import KeepTrack
 
 
-class FocusedFunctionMixin(object):
+class FocusedFunctionMixin(FocusedMonitorMixin):
     """ Mixing class to support recording python function events in a
     `focused` way.
 
@@ -50,9 +50,7 @@ class FocusedFunctionMixin(object):
             which recording will take place.
 
         """
-        functions = keywords.pop('functions', ())
         super(FocusedFunctionMixin, self).__init__(*arguments, **keywords)
-        self.functions = FunctionSet(functions)
         self._code_trackers = {}
 
     def on_function_event(self, frame, event, arg):
