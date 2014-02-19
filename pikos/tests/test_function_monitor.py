@@ -1,16 +1,27 @@
+import StringIO
 import unittest
 
+from pikos.filters.on_value import OnValue
 from pikos.monitors.function_monitor import FunctionMonitor
-from pikos.recorders.list_recorder import ListRecorder
-from pikos.tests.test_assistant import TestAssistant
+from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
 
-class TestFunctionMonitor(TestCase, TestAssistant):
+class TestFunctionMonitor(TestCase):
+
+    def setUp(self):
+        self.filename = __file__.replace('.pyc', '.py')
+        self.maxDiff = None
+        self.stream = StringIO.StringIO()
+        # we only care about the lines that are in this file and we filter
+        # the others.
+        self.recorder = TextStreamRecorder(
+            text_stream=self.stream,
+            filter_=OnValue('filename', self.filename))
+        self.logger = FunctionMonitor(self.recorder)
 
     def test_function(self):
-        recorder = ListRecorder()
-        logger = FunctionMonitor(recorder)
+        logger = self.logger
 
         @logger.attach
         def gcd(x, y):
@@ -25,19 +36,16 @@ class TestFunctionMonitor(TestCase, TestAssistant):
         result = gcd(12, 3)
         boo()
         self.assertEqual(result, 3)
-        records = recorder.records
-        # check that the records make sense
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'call'), times=1)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'return'), times=1)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # The wrapper of the function should not be logged
-        self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "index type function lineNo filename",
+            "-----------------------------------",
+            "3 call gcd 26 {0}".format(self.filename),
+            "4 return gcd 30 {0}".format(self.filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
 
     def test_recursive(self):
-        recorder = ListRecorder()
-        logger = FunctionMonitor(recorder)
+        logger = self.logger
 
         @logger.attach
         def gcd(x, y):
@@ -48,20 +56,26 @@ class TestFunctionMonitor(TestCase, TestAssistant):
 
         result = boo()
         self.assertEqual(result, 1)
-        records = recorder.records
-        # check that the records make sense
-        # The function should be called 6 times
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'call'), times=6)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('gcd', 'return'), times=6)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # In recursive calls the wrapper of the function is logged
-        # self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "index type function lineNo filename",
+            "-----------------------------------",
+            "3 call gcd 50 {0}".format(self.filename),
+            "11 call gcd 50 {0}".format(self.filename),
+            "19 call gcd 50 {0}".format(self.filename),
+            "27 call gcd 50 {0}".format(self.filename),
+            "35 call gcd 50 {0}".format(self.filename),
+            "43 call gcd 50 {0}".format(self.filename),
+            "44 return gcd 52 {0}".format(self.filename),
+            "52 return gcd 52 {0}".format(self.filename),
+            "60 return gcd 52 {0}".format(self.filename),
+            "68 return gcd 52 {0}".format(self.filename),
+            "76 return gcd 52 {0}".format(self.filename),
+            "84 return gcd 52 {0}".format(self.filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
 
     def test_generator(self):
-        recorder = ListRecorder()
-        logger = FunctionMonitor(recorder)
+        logger = self.logger
         output = (0, 1, 1, 2, 3, 5, 8, 13, 21, 34)
 
         @logger.attach
@@ -78,16 +92,36 @@ class TestFunctionMonitor(TestCase, TestAssistant):
         result = [value for value in fibonacci(10)]
         boo()
         self.assertSequenceEqual(result, output)
-        records = recorder.records
-        # check that the records make sense
-        # The function should be called 10 + 1 times
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('fibonacci', 'call'), times=11)
-        self.assertFieldValueExist(records, ('function', 'type'),
-                                   ('fibonacci', 'return'), times=11)
-        self.assertFieldValueNotExist(records, ('function',), ('boo',))
-        # The wrapper of the generator should not be logged
-        self.assertFieldValueNotExist(records, ('function',), ('wrapper',))
+        expected = [
+            "index type function lineNo filename",
+            "-----------------------------------",
+            "3 call fibonacci 81 {0}".format(self.filename),
+            "4 c_call range 84 {0}".format(self.filename),
+            "5 c_return range 84 {0}".format(self.filename),
+            "6 return fibonacci 85 {0}".format(self.filename),
+            "19 call fibonacci 85 {0}".format(self.filename),
+            "20 return fibonacci 85 {0}".format(self.filename),
+            "34 call fibonacci 85 {0}".format(self.filename),
+            "35 return fibonacci 85 {0}".format(self.filename),
+            "49 call fibonacci 85 {0}".format(self.filename),
+            "50 return fibonacci 85 {0}".format(self.filename),
+            "64 call fibonacci 85 {0}".format(self.filename),
+            "65 return fibonacci 85 {0}".format(self.filename),
+            "79 call fibonacci 85 {0}".format(self.filename),
+            "80 return fibonacci 85 {0}".format(self.filename),
+            "94 call fibonacci 85 {0}".format(self.filename),
+            "95 return fibonacci 85 {0}".format(self.filename),
+            "109 call fibonacci 85 {0}".format(self.filename),
+            "110 return fibonacci 85 {0}".format(self.filename),
+            "124 call fibonacci 85 {0}".format(self.filename),
+            "125 return fibonacci 85 {0}".format(self.filename),
+            "139 call fibonacci 85 {0}".format(self.filename),
+            "140 return fibonacci 85 {0}".format(self.filename),
+            "154 call fibonacci 85 {0}".format(self.filename),
+            "155 return fibonacci 86 {0}".format(self.filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

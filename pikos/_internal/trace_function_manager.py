@@ -30,8 +30,8 @@ class TraceFunctionManager(object):
         """
         if hasattr(self, 'previous'):
             if function != sys.gettrace():
-                raise RuntimeError('Cannot replace profile function more than '
-                                   'once')
+                raise RuntimeError(
+                    'Cannot replace profile function more than once')
             return
         else:
             self.previous = sys.gettrace()
@@ -53,3 +53,4 @@ class TraceFunctionManager(object):
             del self.previous
         else:
             raise RuntimeError('A profile function has not been set')
+

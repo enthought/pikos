@@ -33,7 +33,7 @@ class TestAssistant(object):
                   format(zip(fields, values))
             self.assertGreater(count, 0, msg=msg)
         else:
-            msg = ('The value set {0} was found {1} and not {2} times in the'
+            msg = ('The value set {0} was found {1} and not {2} times in the '
                    'records.'.format(zip(fields, values), count, times))
             self.assertEqual(count, times, msg=msg)
 

@@ -7,8 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-class OnValue(object):
-    """ A record filter that remove the record when a value is not contained.
+class NotOnValue(object):
+    """ A record filter that removes the record when a value is contained
 
     Attributes
     ----------
@@ -38,4 +38,4 @@ class OnValue(object):
         """ Check for the value in the field.
         """
         value = getattr(record, self.field)
-        return value in self.values
+        return value not in self.values
