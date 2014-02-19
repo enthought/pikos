@@ -67,5 +67,6 @@ class CSVFileRecorder(CSVRecorder):
 
         """
         super(CSVFileRecorder, self).finalize()
-        self._file.flush()
-        self._file.close()
+        if not self._file.closed:
+            self._file.flush()
+            self._file.close()
