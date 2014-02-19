@@ -181,6 +181,8 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         self.assertEqual(logger._code_trackers, {})
 
     def get_records(self, recorder):
+        """ Remove the memory related fields.
+        """
         records = []
         for record in recorder.records:
             filtered = record[:3] + record[5:]
