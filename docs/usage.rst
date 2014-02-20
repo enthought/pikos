@@ -61,7 +61,7 @@ Monitors can be used programmatically in a number of ways.
 
     from pikos.api import function_monitor, csv_file
 
-    @function_monitor(recorder=csv_file(), focused)
+    @function_monitor(recorder=csv_file(), focused=True)
     def monitored_function():
         # monitored code
         #
