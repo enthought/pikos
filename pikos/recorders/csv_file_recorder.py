@@ -66,7 +66,7 @@ class CSVFileRecorder(CSVRecorder):
             accept data.
 
         """
-        super(CSVFileRecorder, self).finalize()
         if not self._file.closed:
             self._file.flush()
             self._file.close()
+        super(CSVFileRecorder, self).finalize()
