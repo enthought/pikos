@@ -40,8 +40,8 @@ class TextFileRecorder(TextStreamRecorder):
         The name and path of the file to be used for output.
 
     """
-    def __init__(self, filename, filter_=None, formatted=False,
-                 auto_flush=False):
+    def __init__(
+            self, filename, filter_=None, formatted=False, auto_flush=False):
         """ Class initialization.
 
         Parameters
@@ -63,9 +63,18 @@ class TextFileRecorder(TextStreamRecorder):
 
         """
         self._filename = filename
-        super(TextFileRecorder, self).__init__(
-            text_stream=open(filename, 'wb'),
-            filter_=filter_, formatted=formatted, auto_flush=auto_flush)
+        self._filter = (lambda x: True) if filter_ is None else filter_
+        self._formatted = formatted
+        self._auto_flush = auto_flush
+        self._stream = None
+        self._ready = False
+
+    def prepare(self, record):
+        """ Open the file and write the header.
+        """
+        if not self._ready:
+            self._stream=open(self._filename, 'w')
+            super(TextFileRecorder, self).prepare(record)
 
     def finalize(self):
         """ Finalize the recorder.
@@ -77,7 +86,7 @@ class TextFileRecorder(TextStreamRecorder):
             accept data.
 
         """
+        super(TextFileRecorder, self).finalize()
         if not self._stream.closed:
             self._stream.flush()
             self._stream.close()
-        super(TextFileRecorder, self).finalize()
