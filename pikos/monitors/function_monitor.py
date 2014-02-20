@@ -16,7 +16,7 @@ from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
 
 FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
-FUNCTION_RECORD_TEMPLATE = u'{:<8} {:<11} {:<30} {:<5} {}\n'
+FUNCTION_RECORD_TEMPLATE = u'{:<8} {:<11} {:<30} {:<5} {}'
 
 
 class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):

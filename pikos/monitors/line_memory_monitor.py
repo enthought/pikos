@@ -22,9 +22,9 @@ from pikos.monitors.monitor import Monitor
 LINE_MEMORY_RECORD = (
     'index', 'function', 'lineNo', 'RSS', 'VMS', 'line', 'filename')
 LINE_MEMORY_RECORD_TEMPLATE = (
-    u'{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}\n')
+    u'{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}')
 LINE_MEMORY_HEADER_TEMPLATE = (
-    u'{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}\n')
+    u'{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}')
 
 
 class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):

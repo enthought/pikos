@@ -17,7 +17,7 @@ from pikos.monitors.monitor import Monitor
 
 
 LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
-LINE_RECORD_TEMPLATE = u'{:<12} {:<50} {:<7} {} -- {}\n'
+LINE_RECORD_TEMPLATE = u'{:<12} {:<50} {:<7} {} -- {}'
 
 
 class LineRecord(namedtuple('LineRecord', LINE_RECORD)):

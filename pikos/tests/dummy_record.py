@@ -7,7 +7,7 @@ class DummyRecord(namedtuple('DummyRecord', ('one', 'two', 'three'))):
     """
     @classmethod
     def header(cls):
-        return u'{0:<5} {1:<5} {2:<5}\n'.format(*cls._fields)
+        return u'{0:<5} {1:<5} {2:<5}'.format(*cls._fields)
 
     def line(self):
-        return u'{0:<5} {1:<5} {2:<5}\n'.format(*self)
+        return u'{0:<5} {1:<5} {2:<5}'.format(*self)
