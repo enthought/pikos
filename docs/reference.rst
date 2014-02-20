@@ -2,12 +2,11 @@ Library Reference
 =================
 
 Pikos is designed in layers.  At the top layer we find the
-:class:`~pikos.monitor.Monitor` a decorator that acts as an the entry
-point for the `monitors`_ provided to wrap methods to
-be monitored. The next layer is the various monitors that are
-responsible to collect information (e.g. memory) during the execution
-of the decorated function. The retrieved information is recorded
-through the `recorders`_ and controlled with the `filters`_.
+:class:`~pikos.monitor.Monitor` a decorator that acts as the entry
+point for the `monitors`_ provided by pikos. The next layer is the various
+monitors that are responsible to collect information (e.g. memory) during
+the execution of the decorated function. The retrieved information is
+recorded through the `recorders`_ and controlled with the `filters`_.
 
 Monitor Decorator
 -----------------
@@ -34,14 +33,14 @@ Pikos currently provides the following monitors:
 
 .. autosummary::
 
-    pikos.monitors.function_monitor.FunctionMonitor
-    pikos.monitors.line_monitor.LineMonitor
-    pikos.monitors.function_memory_monitor.FunctionMemoryMonitor
-    pikos.monitors.line_memory_monitor.LineMemoryMonitor
-    pikos.monitors.focused_function_monitor.FocusedFunctionMonitor
-    pikos.monitors.focused_line_monitor.FocusedLineMonitor
-    pikos.monitors.focused_function_memory_monitor.FocusedFunctionMemoryMonitor
-    pikos.monitors.focused_line_memory_monitor.FocusedLineMemoryMonitor
+    ~pikos.monitors.function_monitor.FunctionMonitor
+    ~pikos.monitors.line_monitor.LineMonitor
+    ~pikos.monitors.function_memory_monitor.FunctionMemoryMonitor
+    ~pikos.monitors.line_memory_monitor.LineMemoryMonitor
+    ~pikos.monitors.focused_function_monitor.FocusedFunctionMonitor
+    ~pikos.monitors.focused_line_monitor.FocusedLineMonitor
+    ~pikos.monitors.focused_function_memory_monitor.FocusedFunctionMemoryMonitor
+    ~pikos.monitors.focused_line_memory_monitor.FocusedLineMemoryMonitor
 
 External Monitors
 *****************
@@ -70,10 +69,12 @@ Pikos currently provides the following recorders:
 
 .. autosummary::
 
-    pikos.recorders.text_stream_recorder.TextStreamRecorder
-    pikos.recorders.csv_recorder.CSVRecorder
-    pikos.recorders.list_recorder.ListRecorder
-    pikos.recorders.zeromq_recorder.ZeroMQRecorder
+    ~pikos.recorders.text_stream_recorder.TextStreamRecorder
+    ~pikos.recorders.text_stream_recorder.TextFileRecorder
+    ~pikos.recorders.csv_recorder.CSVRecorder
+    ~pikos.recorders.csv_recorder.CSVFileRecorder
+    ~pikos.recorders.list_recorder.ListRecorder
+    ~pikos.recorders.zeromq_recorder.ZeroMQRecorder
 
 .. note:: The standard Recorders are record type agnostic so it is
  possible to use the same recorder for multiple monitors. However,
@@ -92,8 +93,8 @@ Pikos currently provides the following predefined filters:
 
 .. autosummary::
 
-    pikos.filters.on_value.OnValue
-    pikos.filters.on_change.OnChange
+    ~pikos.filters.on_value.OnValue
+    ~pikos.filters.on_change.OnChange
 
 Records
 -------
@@ -112,10 +113,10 @@ The monitor records available are:
 
 .. autosummary::
 
-    pikos.monitors.function_monitor.FunctionRecord
-    pikos.monitors.line_monitor.LineRecord
-    pikos.monitors.function_memory_monitor.FunctionMemoryRecord
-    pikos.monitors.line_memory_monitor.LineMemoryRecord
+    ~pikos.monitors.function_monitor.FunctionRecord
+    ~pikos.monitors.line_monitor.LineRecord
+    ~pikos.monitors.function_memory_monitor.FunctionMemoryRecord
+    ~pikos.monitors.line_memory_monitor.LineMemoryRecord
 
 
 ----------------------------------
