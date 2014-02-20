@@ -51,7 +51,6 @@ class TestTextFileRecorder(TestCase):
     def test_record(self):
         record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one two three\n-------------\n5 pikos apikos\n'
-        print output
         recorder = TextFileRecorder(filename=self.filename)
         with self.finalizer(recorder):
             recorder.prepare(DummyRecord)
