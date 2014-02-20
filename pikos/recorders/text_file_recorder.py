@@ -62,11 +62,9 @@ class TextFileRecorder(TextStreamRecorder):
 
         """
         self._filename = filename
-        self._filter = (lambda x: True) if filter_ is None else filter_
-        self._stream = open(self._filename, 'wb')
-        self._formatted = formatted
-        self._auto_flush = auto_flush
-        self._ready = False
+        super(TextFileRecorder, self).__init__(
+            text_stream=open(filename, 'wb'),
+            filter_=filter_, formatted=formatted, auto_flush=auto_flush)
 
     def finalize(self):
         """ Finalize the recorder.
@@ -78,6 +76,7 @@ class TextFileRecorder(TextStreamRecorder):
             accept data.
 
         """
+        if not self._stream.closed:
+            self._stream.flush()
+            self._stream.close()
         super(TextFileRecorder, self).finalize()
-        self._stream.flush()
-        self._stream.close()
