@@ -2,13 +2,14 @@
 
 .. include:: ../README.rst
 
+.. include:: usage.rst
+
 Contents
---------
+========
 
 .. toctree::
    :maxdepth: 2
 
-   usage
    reference
    live
 
