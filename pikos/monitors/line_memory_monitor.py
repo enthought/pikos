@@ -22,9 +22,9 @@ from pikos.monitors.monitor import Monitor
 LINE_MEMORY_RECORD = (
         'index', 'function', 'lineNo', 'RSS', 'VMS', 'line', 'filename')
 LINE_MEMORY_RECORD_TEMPLATE = (
-        '{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}{newline}')
+        u'{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}\n')
 LINE_MEMORY_HEADER_TEMPLATE = (
-        '{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}{newline}')
+        u'{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}\n')
 
 
 class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
@@ -34,12 +34,11 @@ class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
     @classmethod
     def header(cls):
         """ Return a formatted header line """
-        return LINE_MEMORY_HEADER_TEMPLATE.format(*cls._fields,
-                                               newline=os.linesep)
+        return LINE_MEMORY_HEADER_TEMPLATE.format(*cls._fields)
 
     def line(self):
         """ Return a formatted header line """
-        return LINE_MEMORY_RECORD_TEMPLATE.format(*self, newline=os.linesep)
+        return LINE_MEMORY_RECORD_TEMPLATE.format(*self)
 
 
 class LineMemoryMonitor(Monitor):

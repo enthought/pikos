@@ -148,7 +148,7 @@ class TextStreamRecorder(AbstractRecorder):
             header = u' '.join(str(value) for value in record._fields)
             header += u'\n'
 
-        separator = u'-' * (len(header) - len(os.linesep)) + u'\n'
+        separator = u'-' * (len(header) - 1) + u'\n'
         self._stream.write(header)
         self._stream.write(separator)
         if self._auto_flush:
@@ -171,5 +171,5 @@ class TextStreamRecorder(AbstractRecorder):
         if self._formatted:
             line = data.line()
         else:
-            line = ' '.join(str(value) for value in data) + os.linesep
+            line = ' '.join(str(value) for value in data) + '\n'
         return line

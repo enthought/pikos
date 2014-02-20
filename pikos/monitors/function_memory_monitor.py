@@ -20,10 +20,10 @@ from pikos.monitors.monitor import Monitor
 
 FUNCTION_MEMORY_RECORD = ('index', 'type', 'function', 'RSS', 'VMS', 'lineNo',
                           'filename')
-FUNCTION_MEMORY_RECORD_TEMPLATE = ('{:>8} | {:<11} | {:<12} | {:>15} | {:>15} '
-                                   '| {:>6} | {}{newline}')
-FUNCTION_MEMORY_HEADER_TEMPLATE = ('{:<8} | {:<11} | {:<12} | {:<15} | {:<15} '
-                                   '| {:>6} | {}{newline}')
+FUNCTION_MEMORY_RECORD_TEMPLATE = (
+    u'{:>8} | {:<11} | {:<12} | {:>15} | {:>15} | {:>6} | {}\n')
+FUNCTION_MEMORY_HEADER_TEMPLATE = (
+    u'{:<8} | {:<11} | {:<12} | {:<15} | {:<15} | {:>6} | {}\n')
 
 
 class FunctionMemoryRecord(
@@ -34,13 +34,11 @@ class FunctionMemoryRecord(
     @classmethod
     def header(cls):
         """ Return a formatted header line. """
-        return FUNCTION_MEMORY_HEADER_TEMPLATE.format(*cls._fields,
-                                               newline=os.linesep)
+        return FUNCTION_MEMORY_HEADER_TEMPLATE.format(*cls._fields)
 
     def line(self):
         """ Return a formatted header line """
-        return FUNCTION_MEMORY_RECORD_TEMPLATE.format(*self,
-                                                      newline=os.linesep)
+        return FUNCTION_MEMORY_RECORD_TEMPLATE.format(*self)
 
 
 class FunctionMemoryMonitor(Monitor):

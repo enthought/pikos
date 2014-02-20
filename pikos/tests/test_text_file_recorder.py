@@ -76,7 +76,7 @@ class TestTextFileRecorder(TestCase):
 
     def test_formatter(self):
         record = DummyRecord(5, 'pikos', 'apikos')
-        output = 'one   two   three\n----------------\n5     pikos apikos\n'
+        output = 'one   two   three\n-----------------\n5     pikos apikos\n'
         recorder = TextFileRecorder(
             filename=self.filename, formatted=True)
         with self.finalizer(recorder):

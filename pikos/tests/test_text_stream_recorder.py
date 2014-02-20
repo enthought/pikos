@@ -74,7 +74,7 @@ class TestTextStreamRecorder(TestCase):
 
     def test_formatter(self):
         record = DummyRecord(5, 'pikos', 'apikos')
-        output = 'one   two   three\n----------------\n5     pikos apikos\n'
+        output = 'one   two   three\n-----------------\n5     pikos apikos\n'
         recorder = TextStreamRecorder(self.temp, formatted=True)
         recorder.prepare(DummyRecord)
         recorder.record(record)

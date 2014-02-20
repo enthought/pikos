@@ -18,7 +18,7 @@ from pikos.monitors.monitor import Monitor
 
 
 LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
-LINE_RECORD_TEMPLATE = '{:<12} {:<50} {:<7} {} -- {}{newline}'
+LINE_RECORD_TEMPLATE = u'{:<12} {:<50} {:<7} {} -- {}\n'
 
 
 class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
@@ -28,12 +28,11 @@ class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
     @classmethod
     def header(cls):
         """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*cls._fields,
-                                               newline=os.linesep)
+        return LINE_RECORD_TEMPLATE.format(*cls._fields)
 
     def line(self):
         """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*self, newline=os.linesep)
+        return LINE_RECORD_TEMPLATE.format(*self)
 
 
 class LineMonitor(Monitor):

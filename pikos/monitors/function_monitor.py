@@ -17,7 +17,7 @@ from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
 
 FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
-FUNCTION_RECORD_TEMPLATE = '{:<8} {:<11} {:<30} {:<5} {}{newline}'
+FUNCTION_RECORD_TEMPLATE = u'{:<8} {:<11} {:<30} {:<5} {}\n'
 
 
 class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
@@ -27,12 +27,11 @@ class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
     @classmethod
     def header(cls):
         """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*cls._fields,
-                                               newline=os.linesep)
+        return FUNCTION_RECORD_TEMPLATE.format(*cls._fields)
 
     def line(self):
         """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*self, newline=os.linesep)
+        return FUNCTION_RECORD_TEMPLATE.format(*self)
 
 
 class FunctionMonitor(Monitor):
