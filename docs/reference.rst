@@ -2,7 +2,7 @@ Library Reference
 =================
 
 Pikos is designed in layers.  At the top layer we find the
-:class:`~pikos.monitor.Monitor` a decorator that acts as the entry
+:class:`~pikos.monitors.monitor.Monitor` a decorator that acts as the entry
 point for the `monitors`_ provided by pikos. The next layer is the various
 monitors that are responsible to collect information (e.g. memory) during
 the execution of the decorated function. The retrieved information is
@@ -11,11 +11,11 @@ recorded through the `recorders`_ and controlled with the `filters`_.
 Monitor Decorator
 -----------------
 
-.. autoclass:: pikos.monitor.Monitor
+.. autoclass:: pikos.monitors.monitor.Monitor
 
-    .. automethod:: pikos.monitor.Monitor.__init__
+    .. automethod:: pikos.monitors.monitor.Monitor.__init__
 
-    .. automethod:: pikos.monitor.Monitor.__call__
+    .. automethod:: pikos.monitors.monitor.Monitor.__call__
 
 
 Monitors
@@ -49,9 +49,9 @@ Pikos can act as entry point for external libraries and profilers.
 
 .. autosummary::
 
-   pikos.external.python_cprofiler.PythonCProfiler
-   pikos.external.line_profiler.LineProfiler
-   pikos.external.yappi_profiler.YappiProfiler
+   ~pikos.external.python_cprofiler.PythonCProfiler
+   ~pikos.external.line_profiler.LineProfiler
+   ~pikos.external.yappi_profiler.YappiProfiler
 
 .. note:: These profilers are experimental and not yet integrated fully
   with the pikos framework. Please check individual documentation for
