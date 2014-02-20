@@ -70,9 +70,9 @@ Pikos currently provides the following recorders:
 .. autosummary::
 
     ~pikos.recorders.text_stream_recorder.TextStreamRecorder
-    ~pikos.recorders.text_stream_recorder.TextFileRecorder
+    ~pikos.recorders.text_file_recorder.TextFileRecorder
     ~pikos.recorders.csv_recorder.CSVRecorder
-    ~pikos.recorders.csv_recorder.CSVFileRecorder
+    ~pikos.recorders.csv_file_recorder.CSVFileRecorder
     ~pikos.recorders.list_recorder.ListRecorder
     ~pikos.recorders.zeromq_recorder.ZeroMQRecorder
 
