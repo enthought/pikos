@@ -9,6 +9,7 @@
 #------------------------------------------------------------------------------
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 
+
 class TextFileRecorder(TextStreamRecorder):
     """ The TextStreamRecorder that creates the file for the records.
 

@@ -18,8 +18,8 @@ from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
 
-FUNCTION_MEMORY_RECORD = ('index', 'type', 'function', 'RSS', 'VMS', 'lineNo',
-                          'filename')
+FUNCTION_MEMORY_RECORD = (
+    'index', 'type', 'function', 'RSS', 'VMS', 'lineNo', 'filename')
 FUNCTION_MEMORY_RECORD_TEMPLATE = (
     u'{:>8} | {:<11} | {:<12} | {:>15} | {:>15} | {:>6} | {}\n')
 FUNCTION_MEMORY_HEADER_TEMPLATE = (

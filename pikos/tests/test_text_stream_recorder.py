@@ -1,4 +1,3 @@
-import os
 import StringIO
 import unittest
 

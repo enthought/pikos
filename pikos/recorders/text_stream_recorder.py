@@ -7,8 +7,6 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-import os
-
 from pikos.recorders.abstract_recorder import AbstractRecorder, RecorderError
 
 
