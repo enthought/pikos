@@ -47,7 +47,7 @@ def textfile(filename=None, filter_=None):
         filename, filter_=filter_, auto_flush=True, formatted=True)
 
 
-def csvfile(filename, filter_=None):
+def csvfile(filename=None, filter_=None):
     """ Factory function that returns a basic recorder that outputs to file.
 
     Parameters
