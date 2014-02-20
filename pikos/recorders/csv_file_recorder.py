@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+import csv
+
 from pikos.recorders.csv_recorder import CSVRecorder
 
 
@@ -52,9 +54,21 @@ class CSVFileRecorder(CSVRecorder):
 
         """
         self._filename = filename
-        self._file = open(self._filename, 'wb')
-        super(CSVFileRecorder, self).__init__(
-            self._file, filter_=filter_, **csv_kwargs)
+        self._filter = (lambda x: True) if filter_ is None else filter_
+        self._csv_kwargs = csv_kwargs
+        self._handle = None
+        self._writer = None
+        self._ready = False
+
+
+    def prepare(self, record):
+        """ Open the csv file and write the header in the csv file.
+
+        """
+        if not self._ready:
+            self._handle = open(self._filename, 'wb')
+            self._writer = csv.writer(self._handle, **self._csv_kwargs)
+            super(CSVFileRecorder, self).prepare(record)
 
     def finalize(self):
         """ Finalize the recorder.
@@ -66,7 +80,7 @@ class CSVFileRecorder(CSVRecorder):
             accept data.
 
         """
-        if not self._file.closed:
-            self._file.flush()
-            self._file.close()
         super(CSVFileRecorder, self).finalize()
+        if not self._handle.closed:
+            self._handle.flush()
+            self._handle.close()
