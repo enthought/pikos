@@ -27,7 +27,7 @@ real_time_lsprof = Feature(
 )
 
 
-VERSION = '0.1.0dev1'
+VERSION = '0.1.0'
 
 
 def write_version_py(filename=None):
