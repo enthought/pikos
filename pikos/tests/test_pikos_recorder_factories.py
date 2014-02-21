@@ -2,16 +2,15 @@ import os
 import shutil
 import tempfile
 import sys
-import unittest
 
 from pikos.recorders.api import (
     TextStreamRecorder, TextFileRecorder, CSVFileRecorder)
-
+from pikos.tests import compat
 
 def my_filter(record):
     return False
 
-class TestPikosRecorderFactories(unittest.TestCase):
+class TestPikosRecorderFactories(compat.TestCase):
 
     def setUp(self):
         self.directory = tempfile.mkdtemp()
@@ -67,4 +66,5 @@ class TestPikosRecorderFactories(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import unittest
     unittest.main()
