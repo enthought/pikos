@@ -73,7 +73,7 @@ class TextFileRecorder(TextStreamRecorder):
         """ Open the file and write the header.
         """
         if not self._ready:
-            self._stream=open(self._filename, 'w')
+            self._stream = open(self._filename, 'w')
             super(TextFileRecorder, self).prepare(record)
 
     def finalize(self):

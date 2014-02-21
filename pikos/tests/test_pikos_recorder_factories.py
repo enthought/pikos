@@ -7,8 +7,10 @@ from pikos.recorders.api import (
     TextStreamRecorder, TextFileRecorder, CSVFileRecorder)
 from pikos.tests import compat
 
+
 def my_filter(record):
     return False
+
 
 class TestPikosRecorderFactories(compat.TestCase):
 

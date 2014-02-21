@@ -44,7 +44,7 @@ if __name__ == '__main__':
         '--small',
         action="store_true",
         help='Use a smaller size for the data matrix '
-            '(default -- use large size).')
+             '(default -- use large size).')
     parser.add_argument(
         '--fixed',
         action="store_true",

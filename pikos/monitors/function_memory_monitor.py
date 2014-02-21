@@ -27,7 +27,7 @@ FUNCTION_MEMORY_HEADER_TEMPLATE = (
 
 
 class FunctionMemoryRecord(
-    namedtuple('FunctionMemoryRecord', FUNCTION_MEMORY_RECORD)):
+        namedtuple('FunctionMemoryRecord', FUNCTION_MEMORY_RECORD)):
 
     __slots__ = ()
 

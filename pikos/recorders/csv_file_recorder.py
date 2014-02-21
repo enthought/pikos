@@ -60,7 +60,6 @@ class CSVFileRecorder(CSVRecorder):
         self._writer = None
         self._ready = False
 
-
     def prepare(self, record):
         """ Open the csv file and write the header in the csv file.
 
