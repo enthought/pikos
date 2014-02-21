@@ -1,9 +1,11 @@
 .. pikos documentation master file
 
-.. include:: ../README.txt
+.. include:: ../README.rst
+
+.. include:: usage.rst
 
 Contents
---------
+========
 
 .. toctree::
    :maxdepth: 2

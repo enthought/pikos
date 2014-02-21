@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: monitors/focused_function_mixin.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+__all__ = [
+    'FunctionMonitor',
+    'FunctionMemoryMonitor',
+    'LineMemoryMonitor',
+    'LineMonitor',
+    'FocusedFunctionMemoryMonitor',
+    'FocusedLineMonitor',
+    'FocusedLineMemoryMonitor',
+    'FocusedFunctionMonitor',
+    'MonitorAttach',
+    'Monitor'
+]
 from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.monitors.line_monitor import LineMonitor
 from pikos.monitors.function_memory_monitor import FunctionMemoryMonitor
@@ -17,3 +29,5 @@ from pikos.monitors.focused_function_memory_monitor import \
     FocusedFunctionMemoryMonitor
 from pikos.monitors.focused_line_memory_monitor import \
     FocusedLineMemoryMonitor
+from pikos.monitors.monitor_attach import MonitorAttach
+from pikos.monitors.monitor import Monitor

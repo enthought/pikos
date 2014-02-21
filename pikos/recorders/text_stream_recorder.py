@@ -7,8 +7,6 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-import os
-
 from pikos.recorders.abstract_recorder import AbstractRecorder, RecorderError
 
 
@@ -145,10 +143,10 @@ class TextStreamRecorder(AbstractRecorder):
         if self._formatted:
             header = record.header()
         else:
-            header = ' '.join(str(value) for value in record._fields)
-            header += os.linesep
+            header = u' '.join(str(value) for value in record._fields)
+        header += u'\n'
 
-        separator = '-' * (len(header) - len(os.linesep)) + os.linesep
+        separator = u'-' * (len(header) - 1) + u'\n'
         self._stream.write(header)
         self._stream.write(separator)
         if self._auto_flush:
@@ -169,7 +167,7 @@ class TextStreamRecorder(AbstractRecorder):
 
         """
         if self._formatted:
-            line = data.line()
+            line = data.line() + '\n'
         else:
-            line = ' '.join(str(value) for value in data) + os.linesep
+            line = ' '.join(str(value) for value in data) + '\n'
         return line

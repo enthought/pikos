@@ -10,88 +10,157 @@
 from pikos.monitors.monitor_attach import MonitorAttach
 
 
-def baserecorder(filter_=None):
-    """ Factory function that returns a basic recorder.
+def screen(filter_=None):
+    """ Factory function that returns a basic recorder that outputs to screen
+
+    Parameters
+    ----------
+    filter_ : callable
+        A callable function that accepts a data tuple and returns True
+        if the input sould be recorded. Default is None.
+
     """
     import sys
     from pikos.recorders.text_stream_recorder import TextStreamRecorder
-    return TextStreamRecorder(sys.stdout, filter_=filter_,
-                              auto_flush=True, formatted=True)
+    return TextStreamRecorder(
+        sys.stdout, filter_=filter_, auto_flush=True, formatted=True)
 
 
-def monitor_functions(filter_=None, focus_on=None):
-    """ Factory function that returns a basic function monitor.
+def textfile(filename=None, filter_=None):
+    """ Factory function that returns a basic recorder that outputs to file.
+
+    Parameters
+    ----------
+    filename: string
+        The name and path of the file where to store the records. Default
+        name is "monitor_records.txt".
+
+    filter_ : callable
+        A callable function that accepts a data tuple and returns True
+        if the input sould be recorded. Default is None.
+
     """
+    if filename is None:
+        filename = 'monitor_records.log'
+    from pikos.recorders.text_file_recorder import TextFileRecorder
+    return TextFileRecorder(
+        filename, filter_=filter_, auto_flush=True, formatted=True)
+
+
+def csvfile(filename=None, filter_=None):
+    """ Factory function that returns a basic recorder that outputs to file.
+
+    Parameters
+    ----------
+    filename : string
+        The name and path of the file where to store the records. Default
+        name is "monitor_records.txt".
+
+    filter_ : callable
+        A callable function that accepts a data tuple and returns True
+        if the input sould be recorded. Default is None.
+
+    """
+    if filename is None:
+        filename = 'monitor_records.csv'
+    from pikos.recorders.csv_file_recorder import CSVFileRecorder
+    return CSVFileRecorder(
+        filename, filter_=filter_)
+
+
+def monitor_functions(recorder=None, focus_on=None):
+    """ Factory function that returns a basic function monitor.
+
+    Parameters
+    ----------
+    recorder : AbstractRecorder
+        The recorder to use and store the records. Default is outout to screen.
+
+    focus_on : list
+        The list of function where to focus monitoring.
+
+    """
+    if recorder is None:
+        recorder = screen()
     if focus_on is None:
         from pikos.monitors.function_monitor import FunctionMonitor
-        monitor = FunctionMonitor(baserecorder(filter_=filter_))
+        monitor = FunctionMonitor(recorder)
     else:
-        from pikos.monitors.focused_function_monitor import \
-            FocusedFunctionMonitor
-        monitor = FocusedFunctionMonitor(baserecorder(filter_=filter_),
-                                         functions=focus_on)
+        from pikos.monitors.focused_function_monitor import (
+            FocusedFunctionMonitor)
+        monitor = FocusedFunctionMonitor(recorder, functions=focus_on)
     return MonitorAttach(monitor)
 
 
-def monitor_lines(filter_=None, focus_on=None):
+def monitor_lines(recorder=None, focus_on=None):
     """ Factory function that returns a basic line monitor.
+
+    Parameters
+    ----------
+    recorder : AbstractRecorder
+        The recorder to use and store the records. Default is outout to screen.
+
+    focus_on : list
+        The list of function where to focus monitoring.
+
     """
+    if recorder is None:
+        recorder = screen()
     if focus_on is None:
         from pikos.monitors.line_monitor import LineMonitor
-        monitor = LineMonitor(baserecorder(filter_=filter_))
+        monitor = LineMonitor(recorder)
     else:
         from pikos.monitors.focused_line_monitor import FocusedLineMonitor
-        monitor = FocusedLineMonitor(baserecorder(filter_=filter_),
-                                     functions=focus_on)
+        monitor = FocusedLineMonitor(recorder, functions=focus_on)
     return MonitorAttach(monitor)
 
 
-def memory_on_functions(filter_=None, focus_on=None):
+def memory_on_functions(recorder=None, focus_on=None):
     """ Factory function that returns a basic function memory monitor.
+
+    Parameters
+    ----------
+    recorder : AbstractRecorder
+        The recorder to use and store the records. Default is outout to screen.
+
+    focus_on : list
+        The list of function where to focus monitoring.
+
     """
+    if recorder is None:
+        recorder = screen()
     if focus_on is None:
-        from pikos.monitors.function_memory_monitor import \
-            FunctionMemoryMonitor
-        monitor = FunctionMemoryMonitor(baserecorder(filter_=filter_))
+        from pikos.monitors.function_memory_monitor import (
+            FunctionMemoryMonitor)
+        monitor = FunctionMemoryMonitor(recorder)
     else:
-        from pikos.monitors.focused_function_memory_monitor import\
-            FocusedFunctionMemoryMonitor
-        monitor = FocusedFunctionMemoryMonitor(baserecorder(filter_=filter_),
-                                               functions=focus_on)
+        from pikos.monitors.focused_function_memory_monitor import (
+            FocusedFunctionMemoryMonitor)
+        monitor = FocusedFunctionMemoryMonitor(recorder, functions=focus_on)
+
     return MonitorAttach(monitor)
 
 
-def memory_on_lines(filter_=None, focus_on=None):
+def memory_on_lines(recorder=None, focus_on=None):
     """ Factory function that returns a basic line memory monitor.
+
+    Parameters
+    ----------
+    recorder : AbstractRecorder
+        The recorder class to use and store the records. Default is outout to
+        screen.
+
+    focus_on : list
+        The list of function where to focus monitoring.
+
     """
+    if recorder is None:
+        recorder = screen()
     if focus_on is None:
         from pikos.monitors.line_memory_monitor import LineMemoryMonitor
-        monitor = LineMemoryMonitor(baserecorder(filter_=filter_))
+        monitor = LineMemoryMonitor(recorder)
     else:
-        from pikos.monitors.focused_line_memory_monitor import \
-            FocusedLineMemoryMonitor
-        monitor = FocusedLineMemoryMonitor(baserecorder(filter_=filter_),
-                                           functions=focus_on)
+        from pikos.monitors.focused_line_memory_monitor import (
+            FocusedLineMemoryMonitor)
+        monitor = FocusedLineMemoryMonitor(recorder, functions=focus_on)
     return MonitorAttach(monitor)
-
-
-def yappi_profile(buildins=None):
-    """ Factory function that returns a yappi monitor.
-    """
-    from pikos.external.yappi_profiler import YappiProfiler
-    return MonitorAttach(YappiProfiler(buildins))
-
-
-def line_profile(*args, **kwrds):
-    """ Factory function that returns a line profiler.
-
-    Please refer to
-    `<http://packages.python.org/line_profiler/ for more information>_`
-    for initialization options.
-    """
-    from pikos.external.line_profiler import LineProfiler
-    return MonitorAttach(LineProfiler(*args, **kwrds))
-
-
-#: Easy to find placeholder for the Monitor decorator class.
-monitor_attach = MonitorAttach

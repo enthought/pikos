@@ -7,8 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-import inspect
 import functools
+import inspect
 
 from pikos._internal.util import is_context_manager
 
@@ -50,7 +50,7 @@ class MonitorAttach(object):
 
     .. tip::
 
-        Easy to use decorators are provided in :mod:`pikos.api`.
+        Alternative easy to use decorators are provided in :mod:`pikos.api`.
 
     """
     def __init__(self, obj):
@@ -59,9 +59,9 @@ class MonitorAttach(object):
         Parameters
         ----------
         obj : object
-            A contect manager to monitor, inspect or profile the decorated
+            A context manager to monitor instance, inspect or profile the
+            decorated
             function while it is executed.
-
         """
         self._monitor_object = obj
 

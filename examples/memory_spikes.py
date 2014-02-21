@@ -13,9 +13,11 @@ created even when there is no apparent memory error.
     matplotlib.
 
 """
+import argparse
 
 import numpy as np
 from pikos.api import memory_on_functions
+
 
 @memory_on_functions()
 def legacy(size):
@@ -37,22 +39,24 @@ def fixed(size):
 
 
 if __name__ == '__main__':
-    import sys
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--small',
+        action="store_true",
+        help='Use a smaller size for the data matrix '
+             '(default -- use large size).')
+    parser.add_argument(
+        '--fixed',
+        action="store_true",
+        help='Run the corrected code (default -- run the faulty code).')
+    args = parser.parse_args()
 
-    if '--help' in sys.argv[1:]:
-        print \
-"""
---small : Use a smaller size for the data matrix (default -- use large size).
---fixed : Run the corrected code (default -- run the faulty code).
-"""
-        exit()
-
-    if '--small' in sys.argv[1:]:
+    if args.small:
         size = (1000, 5000)
     else:
         size = (1000, 20000)
 
-    if '--fixed' in sys.argv[1:]:
+    if args.fixed:
         fixed(size)
     else:
         legacy(size)

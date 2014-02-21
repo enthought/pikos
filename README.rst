@@ -20,7 +20,8 @@ Key aims of Pikos are:
 Repository
 ----------
 
-.. todo:: Add repository info
+Pikos is hosted on github: https://github.com/enthought/pikos
+
 
 Installation
 ------------
