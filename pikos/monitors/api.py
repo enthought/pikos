@@ -17,3 +17,5 @@ from pikos.monitors.focused_function_memory_monitor import \
     FocusedFunctionMemoryMonitor
 from pikos.monitors.focused_line_memory_monitor import \
     FocusedLineMemoryMonitor
+from pikos.monitors.monitor_attach import MonitorAttach
+from pikos.monitors.monitor import Monitor
