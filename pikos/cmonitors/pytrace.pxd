@@ -12,7 +12,6 @@ from cpython.pystate cimport (
     PyTrace_RETURN, PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_C_RETURN,
     PyThreadState)
 
-
 cdef extern from "frameobject.h":
 
     ctypedef struct PyFrameObject:

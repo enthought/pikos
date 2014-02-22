@@ -8,24 +8,37 @@ behaviour of the code and spot possible memory issues before they become
 severe. Because narrow peaks will always appear when temporary data are
 created even when there is no apparent memory error.
 
-.. note:: Narrow peeks are the best place to look for correcting possible
+.. note::
+
+    Narrow peeks are the best place to look for correcting possible
     memory issues in the usage of libraries such as numpy, scipy and
     matplotlib.
 
 """
 import argparse
+import threading
 
 import numpy as np
-from pikos.api import memory_on_functions
+
+from pikos.api import screen, memory_on_functions, monitor_functions
+from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
 
 
-@memory_on_functions()
+monitor = CFunctionMonitor(recorder=screen())
+
+@monitor.attach
+#@monitor_functions(recorder=screen())
 def legacy(size):
     b = np.mat(np.random.random(size).T)
     # very bad example that makes copies of numpy arrays when converting them
     # to matrix
+    final = None
+    def multiply(a, b):
+        final = a * b
     a = np.matrix(np.random.random(size))
-    final = a * b
+    t  = threading.Thread(target=multiply, args=(a, b))
+    t.start()
+    t.join()
     return final.I
 
 

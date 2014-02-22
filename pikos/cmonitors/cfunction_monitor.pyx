@@ -17,7 +17,7 @@ from .pytrace cimport PyEval_SetProfile, PyFrameObject
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.function_monitor import FunctionRecord
 
-TRACETOSTR = {
+trace_str = {
     PyTrace_CALL:        'call',
     PyTrace_EXCEPTION:   'exception',
     PyTrace_LINE:        'line',
@@ -80,7 +80,7 @@ cdef class CFunctionMonitor(CMonitor):
         else:
             function = arg.__name__
 
-        event_str = TRACETOSTR(event)
+        event_str = trace_str(event)
 
         record = FunctionRecord(
             self._index, event_str, function, frame.f_lineno,
