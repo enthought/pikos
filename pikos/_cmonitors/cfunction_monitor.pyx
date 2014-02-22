@@ -7,20 +7,31 @@
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #----------------------------------------------------------------------------
+from cpython.pystate cimport (
+    PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_RETURN,  Py_tracefunc,
+    PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_LINE, PyTrace_C_RETURN)
+
+from .cmonitor cimport CMonitor
+from .pytrace cimport PyEval_SetProfile, PyFrameObject
+
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.function_monitor import FunctionRecord
 
-from cpython.pystate cimport (
-    PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_RETURN,  Py_tracefunc,
-    PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_C_RETURN, PyFrameObject)
-
-from .cmonitor cimport CMonitor
-from pytrace cimport PyEval_SetProfile
-
+TRACETOSTR = {
+    PyTrace_CALL:        'call',
+    PyTrace_EXCEPTION:   'exception',
+    PyTrace_LINE:        'line',
+    PyTrace_RETURN:      'return',
+    PyTrace_C_CALL:      'c_call',
+    PyTrace_C_EXCEPTION: 'c_exception',
+    PyTrace_C_RETURN:    'c_return',
+}.get
 
 cdef class CFunctionMonitor(CMonitor):
 
     cdef int _index
+    cdef object _recorder
+    cdef object _call_tracker
 
     def __cinit__(self, recorder):
         self._index = 0
@@ -38,7 +49,7 @@ cdef class CFunctionMonitor(CMonitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(FunctionRecord)
-            PyEval_SetProfile(<Py_tracefunc>on_function_event, self)
+            PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
 
     def disable(self):
         """ Disable the monitor.
@@ -51,30 +62,31 @@ cdef class CFunctionMonitor(CMonitor):
             PyEval_SetProfile(NULL, None)
             self._recorder.finalize()
 
+    cdef int on_function_event(
+            self, PyFrameObject *_frame, int event, object arg) except -1:
+        """ Record the current function event.
 
-cdef int on_function_event(
-        object self, PyFrameObject *_frame, int event, object arg) except -1:
-    """ Record the current function event.
+        Called on function events, it will retrieve the necessary information
+        from the `frame`, create a :class:`FunctionRecord` and send it to the
+        recorder.
 
-    Called on function events, it will retrieve the necessary information
-    from the `frame`, create a :class:`FunctionRecord` and send it to the
-    recorder.
+        """
+        cdef:
+            object frame = <object>_frame
+            object record
 
-    """
-    cdef:
-        object frame = <object>_frame
-        object record
+        if event < PyTrace_C_CALL:
+            function = frame.f_code.co_name
+        else:
+            function = arg.__name__
 
-    if event in (PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_C_RETURN):
-        function = arg.__name__
+        event_str = TRACETOSTR(event)
 
-    record = FunctionRecord(
-        self._index, event,
-        frame.f_code.co_name,
-        frame.f_lineno,
-        frame.f_code.co_filename)
+        record = FunctionRecord(
+            self._index, event_str, function, frame.f_lineno,
+            frame.f_code.co_filename)
 
-    self._recorder.record(record)
+        self._recorder.record(record)
 
-    self._index += 1
-    return 0
+        self._index += 1
+        return 0
