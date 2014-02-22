@@ -12,7 +12,7 @@ class TestFunctionMonitor(TestCase):
         try:
             from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
         except ImportError:
-            TestCase.skipTest('CFunctionMonitor is not available')
+            self.skipTest('CFunctionMonitor is not available')
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.stream = StringIO.StringIO()
