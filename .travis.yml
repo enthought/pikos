@@ -3,12 +3,11 @@ python:
   - "2.6"
   - "2.7"
 env:
-  - CYTHON = true
-  - CYTHON = false
+  - CYTHON=0
+  - CYTHON=1
 install:
   - pip install psutil
   - pip install unittest2
-  - if [[ $CYTHON == true ]]; then pip install cython; fi
+  - if [[ $CYTHON == 1 ]]; then pip install cython; fi
   - python setup.py develop
-# command to run tests
 script: unit2 discover
