@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+#----------------------------------------------------------------------------
+#  Package: Pikos toolkit
+#  File: cmonitors/pytrace.pxd
+#  License: LICENSE.TXT
+#
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
+#----------------------------------------------------------------------------
 from cpython.pystate cimport (
     Py_tracefunc, PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_LINE,
     PyTrace_RETURN, PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_C_RETURN,
