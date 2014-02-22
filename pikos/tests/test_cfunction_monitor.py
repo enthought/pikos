@@ -2,7 +2,7 @@ import StringIO
 import unittest
 
 from pikos.filters.on_value import OnValue
-from pikos._cmonitors.cfunction_monitor import CFunctionMonitor
+from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
