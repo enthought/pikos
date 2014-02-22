@@ -40,12 +40,12 @@ cython_monitors = Feature(
     standard=HAS_CYTHON,
     ext_modules=[
         Extension(
-            'pikos._cmonitors.cmonitor',
-            sources=['pikos/_cmonitors/cmonitor.pyx']),
+            'pikos.cmonitors.cmonitor',
+            sources=['pikos/cmonitors/cmonitor.pyx']),
         Extension(
-            'pikos._cmonitors.cfunction_monitor',
+            'pikos.cmonitors.cfunction_monitor',
             sources=[
-                'pikos/_cmonitors/cfunction_monitor.pyx'])])
+                'pikos/cmonitors/cfunction_monitor.pyx'])])
 features['cython-monitors'] = cython_monitors
 
 
