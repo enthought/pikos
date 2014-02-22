@@ -12,10 +12,12 @@ from setuptools import setup, find_packages, Extension, Feature
 try:
     from Cython.Distutils import build_ext
 except ImportError:
-    HAS_CYTHON = False
     from setuptools.command import build_ext
+    HAS_CYTHON = False
+    cmdclass = {}
 else:
     HAS_CYTHON = True
+    cmdclass = {'build_ext': build_ext}
 
 with open('README.rst', 'r') as readme:
     README_TEXT = readme.read()
@@ -92,5 +94,5 @@ setup(
     test_suite='pikos.tests',
     entry_points=dict(
         console_scripts=['pikos-run = pikos.runner:main']),
-    cmdclass={'build_ext': build_ext},
+    cmdclass=cmdclass,
     features=features)
