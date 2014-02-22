@@ -13,6 +13,7 @@ try:
     from Cython.Distutils import build_ext
 except ImportError:
     HAS_CYTHON = False
+    from setuptools.command import build_ext
 else:
     HAS_CYTHON = True
 

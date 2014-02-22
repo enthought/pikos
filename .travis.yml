@@ -2,10 +2,13 @@ language: python
 python:
   - "2.6"
   - "2.7"
-# command to install dependencies
+env:
+  - CYTHON = true
+  - CYTHON = false
 install:
   - pip install psutil
   - pip install unittest2
+  - if [[ $CYTHON == true ]] pip install cython
   - python setup.py develop
 # command to run tests
 script: unit2 discover
