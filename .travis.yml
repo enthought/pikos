@@ -8,7 +8,7 @@ env:
 install:
   - pip install psutil
   - pip install unittest2
-  - if [[ $CYTHON == true ]] pip install cython
+  - if [[ $CYTHON == true ]]; then pip install cython; fi
   - python setup.py develop
 # command to run tests
 script: unit2 discover
