@@ -2,7 +2,6 @@ import StringIO
 import unittest
 
 from pikos.filters.on_value import OnValue
-from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
@@ -10,6 +9,10 @@ from pikos.tests.compat import TestCase
 class TestFunctionMonitor(TestCase):
 
     def setUp(self):
+        try:
+            from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
+        except ImportError:
+            TestCase.skipTest('CFunctionMonitor is not available')
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.stream = StringIO.StringIO()
