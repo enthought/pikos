@@ -5,8 +5,7 @@ from pikos.filters.on_value import OnValue
 from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
-
-class TestFunctionMonitor(TestCase):
+class TestCFunctionMonitor(TestCase):
 
     def setUp(self):
         try:
