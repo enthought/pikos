@@ -10,11 +10,9 @@
 """ Estimate the overhead cost of using a monitor.
 
 The benchmark runs the pystones benchmark under each monitor and calculates
-the overhead
+the overhead.
 
 """
-
-
 
 from test import pystone
 
@@ -56,10 +54,3 @@ def main(monitors, loops=1000):
 
 if __name__ == '__main__':
     main(monitors)
-
-
-
-
-
-
-
