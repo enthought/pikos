@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: benchmark/function_monitor.py
+#  File: benchmark/monitors.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+""" Estimate the overhead cost of using a monitor.
+
+The benchmark runs the pystones benchmark under each monitor and calculates
+the overhead
+
+"""
+
+
+
 from test import pystone
 
 from pikos.monitors.api import *
@@ -21,8 +30,7 @@ monitors = {
 }
 
 
-def main(monitors, loops=500):
-
+def main(monitors, loops=1000):
     header = (
         "Overhead time | Relative overhead | "
         "{:^10} |  Per record  | {:^{length}}".format(
