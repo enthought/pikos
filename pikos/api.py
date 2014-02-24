@@ -83,8 +83,11 @@ def monitor_functions(recorder=None, focus_on=None):
     if recorder is None:
         recorder = screen()
     if focus_on is None:
-        from pikos.monitors.function_monitor import FunctionMonitor
-        monitor = FunctionMonitor(recorder)
+        try:
+            from pikos.cmonitors.api import CFunctionMonitor as Monitor
+        except ImportError:
+            from pikos.monitors.api import FunctionMonitor as Monitor
+        monitor = Monitor(recorder)
     else:
         from pikos.monitors.focused_function_monitor import (
             FocusedFunctionMonitor)

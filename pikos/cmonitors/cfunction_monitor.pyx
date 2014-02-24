@@ -29,8 +29,8 @@ trace_str = {
 
 cdef class CFunctionMonitor(CMonitor):
 
+    cdef public object _recorder
     cdef int _index
-    cdef object _recorder
     cdef object _call_tracker
 
     def __cinit__(self, recorder):
