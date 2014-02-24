@@ -17,15 +17,6 @@ from .pytrace cimport PyEval_SetProfile, PyFrameObject
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.function_monitor import FunctionRecord
 
-trace_str = {
-    PyTrace_CALL:        'call',
-    PyTrace_EXCEPTION:   'exception',
-    PyTrace_LINE:        'line',
-    PyTrace_RETURN:      'return',
-    PyTrace_C_CALL:      'c_call',
-    PyTrace_C_EXCEPTION: 'c_exception',
-    PyTrace_C_RETURN:    'c_return',
-}.get
 
 cdef class CFunctionMonitor(CMonitor):
 
@@ -80,7 +71,22 @@ cdef class CFunctionMonitor(CMonitor):
         else:
             function = arg.__name__
 
-        event_str = trace_str(event)
+        if event == PyTrace_CALL:
+            event_str = 'call'
+        elif event == PyTrace_EXCEPTION:
+            event_str = 'exception'
+        elif event == PyTrace_LINE:
+            event_str = 'line'
+        elif event == PyTrace_RETURN:
+            event_str = 'return'
+        elif event == PyTrace_C_CALL:
+            event_str = 'c_call'
+        elif event == PyTrace_C_EXCEPTION:
+            event_str = 'c_exception'
+        elif event == PyTrace_C_RETURN:
+            event_str = 'c_return'
+        else:
+            raise RuntimeError('Unknown profile event %s' % event)
 
         record = FunctionRecord(
             self._index, event_str, function, frame.f_lineno,
