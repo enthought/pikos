@@ -19,6 +19,7 @@ the overhead
 from test import pystone
 
 from pikos.monitors.api import *
+from pikos.cmonitors.api import *
 from pikos.benchmark.record_counter import RecordCounter
 
 monitors = {
@@ -27,6 +28,7 @@ monitors = {
     'LineMonitor': LineMonitor,
     'FunctionMemoryMonitor': FunctionMemoryMonitor,
     'LineMemoryMonitor': LineMemoryMonitor,
+    'CFunctionMonitor': CFunctionMonitor,
 }
 
 
