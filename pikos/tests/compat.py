@@ -55,19 +55,18 @@ if sys.version_info[:2] == (2, 6):
         assertRaises = failUnlessRaises
 
         def run(self, result=None):
-            if result is None:
-                error_count = 0
-            else:
-                error_count = len(result.errors)
             BaseTestCase.run(self, result)
             if result is not None:
                 errors = result.errors
                 skip_error = (
                     'in skipTest\n    raise SkipException(msg)'
                     '\nSkipException:')
-                result.errors = [
-                    error for error in errors
-                    if skip_error not in error[1]]
+                result.errors = []
+                for error in errors:
+                    if skip_error in error[1]:
+                        print 'Skipped'
+                    else:
+                        result.errors.append(error)
             return result
 
         def skipTest(self, msg):
