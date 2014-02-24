@@ -9,6 +9,7 @@
 #------------------------------------------------------------------------------
 from pikos.recorders.abstract_recorder import AbstractRecorder
 
+
 class RecordCounter(AbstractRecorder):
 
     def __init__(self):
