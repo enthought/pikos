@@ -73,18 +73,16 @@ cdef class FunctionMonitor(Monitor):
 
         if event == PyTrace_CALL:
             event_str = 'call'
-        elif event == PyTrace_EXCEPTION:
-            event_str = 'exception'
-        elif event == PyTrace_LINE:
-            event_str = 'line'
         elif event == PyTrace_RETURN:
             event_str = 'return'
         elif event == PyTrace_C_CALL:
             event_str = 'c_call'
-        elif event == PyTrace_C_EXCEPTION:
-            event_str = 'c_exception'
         elif event == PyTrace_C_RETURN:
             event_str = 'c_return'
+        elif event == PyTrace_EXCEPTION:
+            event_str = 'exception'
+        elif event == PyTrace_C_EXCEPTION:
+            event_str = 'c_exception'
         else:
             raise RuntimeError('Unknown profile event %s' % event)
 
