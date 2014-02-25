@@ -7,5 +7,5 @@
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #----------------------------------------------------------------------------
-cdef class CMonitor:
+cdef class Monitor:
     pass

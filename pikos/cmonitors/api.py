@@ -1,6 +1,6 @@
 __all__ = [
-    'CMonitor',
-    'CFunctionMonitor'
+    'Monitor',
+    'FunctionMonitor'
 ]
-from pikos.cmonitors.cmonitor import CMonitor
-from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
+from pikos.cmonitors.monitor import Monitor
+from pikos.cmonitors.function_monitor import FunctionMonitor

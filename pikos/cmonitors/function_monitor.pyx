@@ -11,14 +11,14 @@ from cpython.pystate cimport (
     PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_RETURN,  Py_tracefunc,
     PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_LINE, PyTrace_C_RETURN)
 
-from .cmonitor cimport CMonitor
+from .monitor cimport Monitor
 from .pytrace cimport PyEval_SetProfile, PyFrameObject
 
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.function_monitor import FunctionRecord
 
 
-cdef class CFunctionMonitor(CMonitor):
+cdef class FunctionMonitor(Monitor):
 
     cdef public object _recorder
     cdef int _index

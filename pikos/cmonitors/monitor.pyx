@@ -8,10 +8,10 @@
 #  All rights reserved.
 #----------------------------------------------------------------------------
 from pikos.monitors.monitor_attach import MonitorAttach
-from pikos.monitors.monitor import Monitor
+from pikos.monitors.monitor import Monitor as PyMonitor
 
 
-cdef class CMonitor:
+cdef class Monitor:
 
     def enable(self):
         pass
@@ -30,4 +30,4 @@ cdef class CMonitor:
         self.disable()
 
 
-Monitor.register(CMonitor)
+PyMonitor.register(Monitor)

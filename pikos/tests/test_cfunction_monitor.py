@@ -6,12 +6,14 @@ from pikos.recorders.text_stream_recorder import TextStreamRecorder
 from pikos.tests.compat import TestCase
 
 class TestCFunctionMonitor(TestCase):
+    """ Test for the cython implementation of the FunctionMonitor
+    """
 
     def setUp(self):
         try:
-            from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
+            from pikos.cmonitors.function_monitor import FunctionMonitor
         except ImportError:
-            self.skipTest('CFunctionMonitor is not available')
+            self.skipTest('Cython FunctionMonitor is not available')
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.stream = StringIO.StringIO()
@@ -20,7 +22,7 @@ class TestCFunctionMonitor(TestCase):
         self.recorder = TextStreamRecorder(
             text_stream=self.stream,
             filter_=OnValue('filename', self.filename))
-        self.logger = CFunctionMonitor(self.recorder)
+        self.logger = FunctionMonitor(self.recorder)
 
     def test_function(self):
         logger = self.logger
