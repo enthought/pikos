@@ -16,7 +16,6 @@ created even when there is no apparent memory error.
 
 """
 import argparse
-import threading
 
 import numpy as np
 
