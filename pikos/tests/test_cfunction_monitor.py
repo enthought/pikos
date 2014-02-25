@@ -43,8 +43,8 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call gcd 28 {0}".format(self.filename),
-            "1 return gcd 32 {0}".format(self.filename)]
+            "0 call gcd 30 {0}".format(self.filename),
+            "1 return gcd 34 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -63,18 +63,18 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call gcd 52 {0}".format(self.filename),
-            "4 call gcd 52 {0}".format(self.filename),
-            "8 call gcd 52 {0}".format(self.filename),
-            "12 call gcd 52 {0}".format(self.filename),
-            "16 call gcd 52 {0}".format(self.filename),
-            "20 call gcd 52 {0}".format(self.filename),
-            "21 return gcd 54 {0}".format(self.filename),
-            "25 return gcd 54 {0}".format(self.filename),
-            "29 return gcd 54 {0}".format(self.filename),
-            "33 return gcd 54 {0}".format(self.filename),
-            "37 return gcd 54 {0}".format(self.filename),
-            "41 return gcd 54 {0}".format(self.filename)]
+            "0 call gcd 54 {0}".format(self.filename),
+            "4 call gcd 54 {0}".format(self.filename),
+            "8 call gcd 54 {0}".format(self.filename),
+            "12 call gcd 54 {0}".format(self.filename),
+            "16 call gcd 54 {0}".format(self.filename),
+            "20 call gcd 54 {0}".format(self.filename),
+            "21 return gcd 56 {0}".format(self.filename),
+            "25 return gcd 56 {0}".format(self.filename),
+            "29 return gcd 56 {0}".format(self.filename),
+            "33 return gcd 56 {0}".format(self.filename),
+            "37 return gcd 56 {0}".format(self.filename),
+            "41 return gcd 56 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -99,30 +99,30 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call fibonacci 83 {0}".format(self.filename),
-            "1 c_call range 86 {0}".format(self.filename),
-            "2 c_return range 86 {0}".format(self.filename),
-            "3 return fibonacci 87 {0}".format(self.filename),
-            "7 call fibonacci 87 {0}".format(self.filename),
-            "8 return fibonacci 87 {0}".format(self.filename),
-            "13 call fibonacci 87 {0}".format(self.filename),
-            "14 return fibonacci 87 {0}".format(self.filename),
-            "19 call fibonacci 87 {0}".format(self.filename),
-            "20 return fibonacci 87 {0}".format(self.filename),
-            "25 call fibonacci 87 {0}".format(self.filename),
-            "26 return fibonacci 87 {0}".format(self.filename),
-            "31 call fibonacci 87 {0}".format(self.filename),
-            "32 return fibonacci 87 {0}".format(self.filename),
-            "37 call fibonacci 87 {0}".format(self.filename),
-            "38 return fibonacci 87 {0}".format(self.filename),
-            "43 call fibonacci 87 {0}".format(self.filename),
-            "44 return fibonacci 87 {0}".format(self.filename),
-            "49 call fibonacci 87 {0}".format(self.filename),
-            "50 return fibonacci 87 {0}".format(self.filename),
-            "55 call fibonacci 87 {0}".format(self.filename),
-            "56 return fibonacci 87 {0}".format(self.filename),
-            "61 call fibonacci 87 {0}".format(self.filename),
-            "62 return fibonacci 88 {0}".format(self.filename)]
+            "0 call fibonacci 85 {0}".format(self.filename),
+            "1 c_call range 88 {0}".format(self.filename),
+            "2 c_return range 88 {0}".format(self.filename),
+            "3 return fibonacci 89 {0}".format(self.filename),
+            "7 call fibonacci 89 {0}".format(self.filename),
+            "8 return fibonacci 89 {0}".format(self.filename),
+            "13 call fibonacci 89 {0}".format(self.filename),
+            "14 return fibonacci 89 {0}".format(self.filename),
+            "19 call fibonacci 89 {0}".format(self.filename),
+            "20 return fibonacci 89 {0}".format(self.filename),
+            "25 call fibonacci 89 {0}".format(self.filename),
+            "26 return fibonacci 89 {0}".format(self.filename),
+            "31 call fibonacci 89 {0}".format(self.filename),
+            "32 return fibonacci 89 {0}".format(self.filename),
+            "37 call fibonacci 89 {0}".format(self.filename),
+            "38 return fibonacci 89 {0}".format(self.filename),
+            "43 call fibonacci 89 {0}".format(self.filename),
+            "44 return fibonacci 89 {0}".format(self.filename),
+            "49 call fibonacci 89 {0}".format(self.filename),
+            "50 return fibonacci 89 {0}".format(self.filename),
+            "55 call fibonacci 89 {0}".format(self.filename),
+            "56 return fibonacci 89 {0}".format(self.filename),
+            "61 call fibonacci 89 {0}".format(self.filename),
+            "62 return fibonacci 90 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 

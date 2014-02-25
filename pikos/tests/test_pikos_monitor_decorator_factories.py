@@ -1,5 +1,5 @@
 try:
-    from pikos.cmonitors.api import CFunctionMonitor as FunctionMonitor
+    from pikos.cmonitors.api import FunctionMonitor as FunctionMonitor
 except ImportError:
     from pikos.monitors.api import  FunctionMonitor
 
