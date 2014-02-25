@@ -1,5 +1,10 @@
+try:
+    from pikos.cmonitors.api import FunctionMonitor as FunctionMonitor
+except ImportError:
+    from pikos.monitors.api import  FunctionMonitor
+
 from pikos.monitors.api import (
-    FunctionMonitor, MonitorAttach, LineMonitor, FunctionMemoryMonitor,
+    MonitorAttach, LineMonitor, FunctionMemoryMonitor,
     LineMemoryMonitor, FocusedFunctionMonitor, FocusedLineMemoryMonitor,
     FocusedLineMonitor, FocusedFunctionMemoryMonitor)
 from pikos.recorders.api import ListRecorder, TextStreamRecorder

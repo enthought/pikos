@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+import warnings
+
 from pikos.monitors.monitor_attach import MonitorAttach
 
 
@@ -83,7 +85,13 @@ def monitor_functions(recorder=None, focus_on=None):
     if recorder is None:
         recorder = screen()
     if focus_on is None:
-        from pikos.monitors.function_monitor import FunctionMonitor
+        try:
+            from pikos.cmonitors.api import FunctionMonitor
+        except ImportError:
+            from pikos.monitors.api import FunctionMonitor
+            warnings.warn(
+                'Cython monitors are not available '
+                'falling back to pure python')
         monitor = FunctionMonitor(recorder)
     else:
         from pikos.monitors.focused_function_monitor import (
