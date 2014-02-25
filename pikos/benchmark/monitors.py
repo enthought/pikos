@@ -16,18 +16,26 @@ the overhead.
 
 from test import pystone
 
-from pikos.monitors.api import *
-from pikos.cmonitors.api import *
 from pikos.benchmark.record_counter import RecordCounter
 
-monitors = {
-    # Pure python monitors
+
+def pymonitors():
+    """ Pure python monitors """
+    from pikos.monitors.api import (
+        FunctionMonitor, LineMonitor,
+        FunctionMemoryMonitor, LineMemoryMonitor)
+    return {
     'FunctionMonitor': FunctionMonitor,
     'LineMonitor': LineMonitor,
     'FunctionMemoryMonitor': FunctionMemoryMonitor,
-    'LineMemoryMonitor': LineMemoryMonitor,
-    'CFunctionMonitor': CFunctionMonitor,
-}
+    'LineMemoryMonitor': LineMemoryMonitor}
+
+
+def cmonitors():
+    """ Cython monitors """
+    from pikos.monitors.api import FunctionMonitor
+    return {
+    'CFunctionMonitor': FunctionMonitor}
 
 
 def main(monitors, loops=1000):
@@ -55,4 +63,6 @@ def main(monitors, loops=1000):
 
 
 if __name__ == '__main__':
+    monitors = pymonitors()
+    monitors.update(cmonitors())
     main(monitors)
