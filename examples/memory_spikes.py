@@ -20,25 +20,16 @@ import threading
 
 import numpy as np
 
-from pikos.api import screen, memory_on_functions, monitor_functions
-from pikos.cmonitors.cfunction_monitor import CFunctionMonitor
+from pikos.api import memory_on_functions
 
 
-monitor = CFunctionMonitor(recorder=screen())
-
-@monitor.attach
-#@monitor_functions(recorder=screen())
+@memory_on_functions()
 def legacy(size):
     b = np.mat(np.random.random(size).T)
     # very bad example that makes copies of numpy arrays when converting them
     # to matrix
-    final = None
-    def multiply(a, b):
-        final = a * b
     a = np.matrix(np.random.random(size))
-    t  = threading.Thread(target=multiply, args=(a, b))
-    t.start()
-    t.join()
+    final = a * b
     return final.I
 
 
