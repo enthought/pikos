@@ -9,12 +9,22 @@
 import os
 from setuptools import setup, find_packages, Extension, Feature
 
+try:
+    from Cython.Distutils import build_ext
+except ImportError:
+    from setuptools.command import build_ext
+    HAS_CYTHON = False
+    cmdclass = {}
+else:
+    HAS_CYTHON = True
+    cmdclass = {'build_ext': build_ext}
+
 with open('README.rst', 'r') as readme:
     README_TEXT = readme.read()
 
 
 real_time_lsprof = Feature(
-    'optional real time lsrof using zmq',
+    description='optional real time lsrof using zmq',
     standard=False,
     ext_modules=[
         Extension(
@@ -26,14 +36,29 @@ real_time_lsprof = Feature(
     ]
 )
 
+features = {'real-time-lsprof': real_time_lsprof}
+
+cython_monitors = Feature(
+    description='optional compile additional cython monitors',
+    standard=HAS_CYTHON,
+    ext_modules=[
+        Extension(
+            'pikos.cmonitors.monitor',
+            sources=['pikos/cmonitors/monitor.pyx']),
+        Extension(
+            'pikos.cmonitors.function_monitor',
+            sources=[
+                'pikos/cmonitors/function_monitor.pyx'])])
+features['cython-monitors'] = cython_monitors
+
 
 VERSION = '0.2.0dev'
 
 
 def write_version_py(filename=None):
     if filename is None:
-        filename = os.path.join(os.path.dirname(__file__),
-                                'pikos', 'version.py')
+        filename = os.path.join(
+            os.path.dirname(__file__), 'pikos', 'version.py')
     ver = """\
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
@@ -69,4 +94,5 @@ setup(
     test_suite='pikos.tests',
     entry_points=dict(
         console_scripts=['pikos-run = pikos.runner:main']),
-    features={'real-time-lsprof': real_time_lsprof})
+    cmdclass=cmdclass,
+    features=features)

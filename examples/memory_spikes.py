@@ -8,7 +8,9 @@ behaviour of the code and spot possible memory issues before they become
 severe. Because narrow peaks will always appear when temporary data are
 created even when there is no apparent memory error.
 
-.. note:: Narrow peeks are the best place to look for correcting possible
+.. note::
+
+    Narrow peeks are the best place to look for correcting possible
     memory issues in the usage of libraries such as numpy, scipy and
     matplotlib.
 
@@ -16,6 +18,7 @@ created even when there is no apparent memory error.
 import argparse
 
 import numpy as np
+
 from pikos.api import memory_on_functions
 
 

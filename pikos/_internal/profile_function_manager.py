@@ -30,8 +30,8 @@ class ProfileFunctionManager(object):
         """
         if hasattr(self, 'previous'):
             if function != sys.getprofile():
-                raise RuntimeError('Cannot replace profile function more than '
-                                   'once')
+                raise RuntimeError(
+                    'Cannot replace profile function more than once')
             return
         else:
             self.previous = sys.getprofile()
