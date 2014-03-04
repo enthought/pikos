@@ -108,11 +108,14 @@ class FunctionMonitor(Monitor):
         recorder.
 
         """
-        filename, lineno, function, _, _ = \
-            inspect.getframeinfo(frame, context=0)
-        if event.startswith('c_'):
-            function = arg.__name__
-        record = FunctionRecord(self._index, event,
-                                function, lineno, filename)
+        if 'c_' == event[:2]:
+            record = FunctionRecord(
+                self._index, event, arg.__name__,
+                frame.f_lineno, frame.f_code.co_filename)
+        else:
+            code = frame.f_code
+            record = FunctionRecord(
+                self._index, event, code.co_name,
+                frame.f_lineno, code.co_filename)
         self._recorder.record(record)
         self._index += 1

@@ -33,7 +33,7 @@ def pymonitors():
 
 def cmonitors():
     """ Cython monitors """
-    from pikos.monitors.api import FunctionMonitor
+    from pikos.cmonitors.api import FunctionMonitor
     return {
     'CFunctionMonitor': FunctionMonitor}
 
