@@ -78,7 +78,9 @@ class TextStreamRecorder(AbstractRecorder):
 
         """
         if not self._ready:
-            self._writeheader(record)
+            print 'I was called'
+            if hasattr(record, '_fields'):
+                self._writeheader(record)
             self._ready = True
 
     def finalize(self):
@@ -140,8 +142,8 @@ class TextStreamRecorder(AbstractRecorder):
             The class of the data entry record.
 
         """
-        if self._formatted:
-            header = record.header()
+        if self._formatted and hasattr(record, 'header'):
+            header = record.header.format(*record._fields)
         else:
             header = u' '.join(str(value) for value in record._fields)
         header += u'\n'
@@ -166,8 +168,8 @@ class TextStreamRecorder(AbstractRecorder):
             The string representation of the data entry.
 
         """
-        if self._formatted:
-            line = data.line() + '\n'
+        if self._formatted and hasattr(data, 'line'):
+            line = data.line.format(*data) + '\n'
         else:
             line = ' '.join(str(value) for value in data) + '\n'
         return line
