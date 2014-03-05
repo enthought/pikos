@@ -73,13 +73,25 @@ class TestTextFileRecorder(TestCase):
                 recorder.record(record)
         self.assertRecordedLines(output)
 
-    def test_formatter(self):
+    def test_formatter_with_namedtuple(self):
         record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one   two   three\n-----------------\n5     pikos apikos\n'
         recorder = TextFileRecorder(
             filename=self.filename, formatted=True)
         with self.finalizer(recorder):
             recorder.prepare(DummyRecord)
+            recorder.record(record)
+        self.assertRecordedLines(output)
+
+    def test_formatter_with_tuple(self):
+        record = (5, 'pikos', 'apikos')
+
+        # there is no header in this case
+        output = '5 pikos apikos\n'
+        recorder = TextFileRecorder(
+            filename=self.filename, formatted=True)
+        with self.finalizer(recorder):
+            recorder.prepare(tuple)
             recorder.record(record)
         self.assertRecordedLines(output)
 

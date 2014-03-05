@@ -78,7 +78,6 @@ class TextStreamRecorder(AbstractRecorder):
 
         """
         if not self._ready:
-            print 'I was called'
             if hasattr(record, '_fields'):
                 self._writeheader(record)
             self._ready = True
