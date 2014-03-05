@@ -18,6 +18,10 @@ class OnValue(object):
     values :
         A list of values to use for the filtering.
 
+    Notes
+    -----
+    This filter only works with nametuple like records.
+
     """
     def __init__(self, field, *args):
         """ Initialize the filter class.
