@@ -17,28 +17,7 @@ import psutil
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-
-LINE_MEMORY_RECORD = (
-    'index', 'function', 'lineNo', 'RSS', 'VMS', 'line', 'filename')
-LINE_MEMORY_RECORD_TEMPLATE = (
-    u'{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}')
-LINE_MEMORY_HEADER_TEMPLATE = (
-    u'{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}')
-
-
-class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return LINE_MEMORY_HEADER_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return LINE_MEMORY_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import LineMemoryRecord
 
 
 class LineMemoryMonitor(Monitor):

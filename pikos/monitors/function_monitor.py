@@ -14,23 +14,7 @@ from collections import namedtuple
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
-FUNCTION_RECORD_TEMPLATE = u'{:<8} {:<11} {:<30} {:<5} {}'
-
-
-class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import FunctionRecord
 
 
 class FunctionMonitor(Monitor):
@@ -77,6 +61,7 @@ class FunctionMonitor(Monitor):
         self._profiler = ProfileFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
+
 
     def enable(self):
         """ Enable the monitor.

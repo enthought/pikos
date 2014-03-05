@@ -14,24 +14,7 @@ from collections import namedtuple
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-
-LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
-LINE_RECORD_TEMPLATE = u'{:<12} {:<50} {:<7} {} -- {}'
-
-
-class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import LineRecord
 
 
 class LineMonitor(Monitor):
