@@ -12,7 +12,7 @@ class TestCFunctionMonitor(TestCase):
 
     def setUp(self):
         try:
-            from pikos.cmonitors.function_monitor import FunctionMonitor
+            from pikos.cymonitors.function_monitor import FunctionMonitor
         except ImportError:
             self.skipTest('Cython FunctionMonitor is not available')
         self.filename = __file__.replace('.pyc', '.py')

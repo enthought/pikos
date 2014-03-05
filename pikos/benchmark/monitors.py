@@ -31,7 +31,7 @@ def pymonitors():
     'LineMemoryMonitor': LineMemoryMonitor}
 
 
-def cmonitors():
+def cymonitors():
     """ Cython monitors """
     from pikos.monitors.api import FunctionMonitor
     return {
@@ -64,5 +64,5 @@ def main(monitors, loops=1000):
 
 if __name__ == '__main__':
     monitors = pymonitors()
-    monitors.update(cmonitors())
+    monitors.update(cymonitors())
     main(monitors)
