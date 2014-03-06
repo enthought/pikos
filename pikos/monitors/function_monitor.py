@@ -44,9 +44,13 @@ class FunctionMonitor(Monitor):
         to keep track of recursive calls to the monitor's :meth:`__enter__` and
         :meth:`__exit__` methods.
 
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.FunctionMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -56,11 +60,19 @@ class FunctionMonitor(Monitor):
             that implements the same interface to handle the values to be
             logged.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.FunctionMonitor.
+
         """
         self._recorder = recorder
         self._profiler = ProfileFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
+        if record_type is None:
+            self._record_type = FunctionRecord
+        else:
+            self._record_type = record_type
 
 
     def enable(self):
@@ -71,7 +83,7 @@ class FunctionMonitor(Monitor):
 
         """
         if self._call_tracker('ping'):
-            self._recorder.prepare(FunctionRecord)
+            self._recorder.prepare(self._record_type)
             self._profiler.replace(self.on_function_event)
 
     def disable(self):
@@ -97,7 +109,7 @@ class FunctionMonitor(Monitor):
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
-        record = FunctionRecord(self._index, event,
-                                function, lineno, filename)
+        record = self._record_type(
+            self._index, event, function, lineno, filename)
         self._recorder.record(record)
         self._index += 1

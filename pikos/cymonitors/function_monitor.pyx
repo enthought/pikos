@@ -23,13 +23,15 @@ cdef class FunctionMonitor(Monitor):
     cdef public object _recorder
     cdef int _index
     cdef object _call_tracker
+    cdef object record_type
 
-    def __cinit__(self, recorder):
-        self._index = 0
-
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         self._recorder = recorder
         self._call_tracker = KeepTrack()
+        if record_type is None:
+            self.record_type = FunctionRecord
+        else:
+            self.record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -39,7 +41,7 @@ cdef class FunctionMonitor(Monitor):
 
         """
         if self._call_tracker('ping'):
-            self._recorder.prepare(FunctionRecord)
+            self._recorder.prepare(self.record_type)
             PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
 
     def disable(self):
@@ -86,7 +88,7 @@ cdef class FunctionMonitor(Monitor):
         else:
             raise RuntimeError('Unknown profile event %s' % event)
 
-        record = FunctionRecord(
+        record = self.record_type(
             self._index, event_str, function, frame.f_lineno,
             frame.f_code.co_filename)
 

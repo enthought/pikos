@@ -44,9 +44,13 @@ class LineMonitor(Monitor):
         to keep track of recursive calls to the monitor's :meth:`__enter__` and
         :meth:`__exit__` methods.
 
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.LineMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -56,11 +60,20 @@ class LineMonitor(Monitor):
             that implements the same interface to handle the values to be
             recorded.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.LineMonitor`
+
         """
         self._recorder = recorder
         self._tracer = TraceFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
+        if record_type is None:
+            self._record_type = LineRecord
+        else:
+            self._record_type = record_type
+
 
     def enable(self):
         """ Enable the monitor.
@@ -70,7 +83,7 @@ class LineMonitor(Monitor):
 
         """
         if self._call_tracker('ping'):
-            self._recorder.prepare(LineRecord)
+            self._recorder.prepare(self._record_type)
             self._tracer.replace(self.on_line_event)
 
     def disable(self):
@@ -97,8 +110,8 @@ class LineMonitor(Monitor):
                 inspect.getframeinfo(frame, context=1)
             if line is None:
                 line = ['<compiled string>']
-            record = LineRecord(self._index, function, lineno,
-                                line[0].rstrip(), filename)
+            record = self._record_type(
+                self._index, function, lineno, line[0].rstrip(), filename)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event

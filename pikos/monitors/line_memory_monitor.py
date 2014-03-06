@@ -52,9 +52,13 @@ class LineMemoryMonitor(Monitor):
        An instanse of :class:`psutil.Process` for the current process, used to
        get memory information in a platform independent way.
 
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.LineMemoryMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -64,12 +68,20 @@ class LineMemoryMonitor(Monitor):
             class that implements the same interface to handle the values
             to be recorded.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.LineMemoryMonitor`
+
         """
         self._recorder = recorder
         self._tracer = TraceFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
         self._process = None
+        if record_type is None:
+            self._record_type = LineMemoryRecord
+        else:
+            self._record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -81,7 +93,7 @@ class LineMemoryMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
-            self._recorder.prepare(LineMemoryRecord)
+            self._recorder.prepare(self._record_type)
             self._tracer.replace(self.on_line_event)
 
     def disable(self):
@@ -111,9 +123,9 @@ class LineMemoryMonitor(Monitor):
                 inspect.getframeinfo(frame, context=1)
             if line is None:
                 line = ['<compiled string>']
-            record = LineMemoryRecord(self._index, function, lineno,
-                                      usage[0], usage[1], line[0],
-                                      filename)
+            record = self._record_type(
+                self._index, function, lineno, usage[0], usage[1], line[0],
+                filename)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
