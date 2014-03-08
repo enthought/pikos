@@ -25,20 +25,22 @@ def pymonitors():
         FunctionMonitor, LineMonitor,
         FunctionMemoryMonitor, LineMemoryMonitor)
     return {
-    'FunctionMonitor': FunctionMonitor,
-    'LineMonitor': LineMonitor,
-    'FunctionMemoryMonitor': FunctionMemoryMonitor,
-    'LineMemoryMonitor': LineMemoryMonitor}
+        'FunctionMonitor':
+            lambda recorder, record_type: FunctionMonitor(
+                recorder, None if record_type is None else tuple),
+        'LineMonitor': LineMonitor,
+        'FunctionMemoryMonitor': FunctionMemoryMonitor,
+        'LineMemoryMonitor': LineMemoryMonitor}
 
 
 def cymonitors():
     """ Cython monitors """
-    from pikos.cmonitors.api import FunctionMonitor
+    from pikos.cymonitors.api import FunctionMonitor
     return {
-    'CFunctionMonitor': FunctionMonitor}
+        'CFunctionMonitor': FunctionMonitor}
 
 
-def main(monitors, loops=1000):
+def run(monitors, loops, record_type=None):
     header = (
         "Overhead time | Relative overhead | "
         "{:^10} |  Per record  | {:^{length}}".format(
@@ -51,7 +53,7 @@ def main(monitors, loops=1000):
     expected_time, _ = pystone.pystones(loops)
     for name, monitor in monitors.iteritems():
         recorder = RecordCounter()
-        with monitor(recorder=recorder):
+        with monitor(recorder=recorder, record_type=record_type):
             time, _ = pystone.pystones(loops)
         time_per_record = (time - expected_time) / recorder.records
         print line.format(
@@ -61,6 +63,12 @@ def main(monitors, loops=1000):
             time_per_record=time_per_record,
             records='{:10d}'.format(recorder.records))
 
+def main(monitors, loops=1000):
+        print 'With default record types'
+        run(monitors, loops)
+        print
+        print 'Using tuples as records'
+        run(monitors, loops, record_type=lambda *x: x)
 
 if __name__ == '__main__':
     monitors = pymonitors()
