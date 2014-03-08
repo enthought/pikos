@@ -44,6 +44,9 @@ class FunctionMonitor(Monitor):
         to keep track of recursive calls to the monitor's :meth:`__enter__` and
         :meth:`__exit__` methods.
 
+    _record: function object
+        The cached reference to the record function.
+
     _record_type: class object
         A class object to be used for records. Default is
         :class:`~pikos.monitors.records.FunctionMonitor`
@@ -66,6 +69,7 @@ class FunctionMonitor(Monitor):
 
         """
         self._recorder = recorder
+        self._record = recorder.record
         self._profiler = ProfileFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
@@ -105,7 +109,7 @@ class FunctionMonitor(Monitor):
         recorder.
 
         """
-        if 'c_' == event[:2]:
+        if '_' == event[1]:
             record = self._record_type(
                 self._index, event, arg.__name__,
                 frame.f_lineno, frame.f_code.co_filename)
@@ -114,6 +118,9 @@ class FunctionMonitor(Monitor):
             record = self._record_type(
                 self._index, event, code.co_name,
                 frame.f_lineno, code.co_filename)
+        self._record(record)
+        self._index += 1
+
 
         self._recorder.record(record)
         self._index += 1
