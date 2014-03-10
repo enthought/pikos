@@ -97,7 +97,11 @@ class FunctionMemoryMonitor(Monitor):
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
             self._recorder.prepare(self._record_type)
-            self._profiler.replace(self.on_function_event)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._profiler.replace(self.on_function_event_using_tuple)
+            else:
+                self._profiler.replace(self.on_function_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -126,6 +130,20 @@ class FunctionMemoryMonitor(Monitor):
         if event.startswith('c_'):
             function = arg.__name__
         record = self._record_type(
+            self._index, event, function, usage[0], usage[1], lineno, filename)
+        self._recorder.record(record)
+        self._index += 1
+
+    def on_function_event_using_tuple(self, frame, event, arg):
+        """ Record the process memory usage using a tuple as record.
+
+        """
+        usage = self._process.get_memory_info()
+        filename, lineno, function, _, _ = \
+            inspect.getframeinfo(frame, context=0)
+        if event.startswith('c_'):
+            function = arg.__name__
+        record = (
             self._index, event, function, usage[0], usage[1], lineno, filename)
         self._recorder.record(record)
         self._index += 1

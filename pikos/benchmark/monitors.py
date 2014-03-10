@@ -68,7 +68,8 @@ def main(monitors, loops=1000):
         run(monitors, loops)
         print
         print 'Using tuples as records'
-        run(monitors, loops, record_type=lambda *x: x)
+        run(monitors, loops, record_type=tuple)
+
 
 if __name__ == '__main__':
     monitors = pymonitors()

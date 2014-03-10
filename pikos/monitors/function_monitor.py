@@ -77,9 +77,6 @@ class FunctionMonitor(Monitor):
             self._record_type = FunctionRecord
         else:
             self._record_type = record_type
-            if record_type is tuple:
-                # optimized function for tuples.
-                self.on_function_event = self._on_function_event_tuple
 
     def enable(self):
         """ Enable the monitor.
@@ -90,7 +87,11 @@ class FunctionMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(self._record_type)
-            self._profiler.replace(self.on_function_event)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._profiler.replace(self.on_function_event_using_tuple)
+            else:
+                self._profiler.replace(self.on_function_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -123,12 +124,8 @@ class FunctionMonitor(Monitor):
         self._record(record)
         self._index += 1
 
-    def _on_function_event_tuple(self, frame, event, arg):
-        """ Record the current function event using a tuple.
-
-        Called on function events, it will retrieve the necessary information
-        from the `frame`, create a :class:`FunctionRecord` and send it to the
-        recorder.
+    def on_function_event_using_tuple(self, frame, event, arg):
+        """ Record the current function event optmized using a tuple for record.
 
         """
         if '_' == event[1]:

@@ -74,7 +74,6 @@ class LineMonitor(Monitor):
         else:
             self._record_type = record_type
 
-
     def enable(self):
         """ Enable the monitor.
 
@@ -84,7 +83,11 @@ class LineMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(self._record_type)
-            self._tracer.replace(self.on_line_event)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._tracer.replace(self.on_line_event_using_tuple)
+            else:
+                self._tracer.replace(self.on_line_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -115,3 +118,18 @@ class LineMonitor(Monitor):
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
+
+    def on_line_event_using_tuple(self, frame, why, arg):
+        """ Record the current line trace event using a tuple record.
+
+        """
+        if why == 'line':
+            filename, lineno, function, line, _ = \
+                inspect.getframeinfo(frame, context=1)
+            if line is None:
+                line = ['<compiled string>']
+            record = (
+                self._index, function, lineno, line[0].rstrip(), filename)
+            self._recorder.record(record)
+            self._index += 1
+        return self.on_line_event_using_tuple
