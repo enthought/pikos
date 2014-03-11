@@ -245,6 +245,50 @@ class TestFocusedFunctionMonitor(TestCase):
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
+    def test_focus_on_function(self):
+
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        def internal(x, y):
+            boo()
+            return y % x, x
+
+        def boo():
+            pass
+
+        recorder = self.recorder
+        logger = FocusedFunctionMonitor(
+            recorder, record_type=tuple, functions=[gcd])
+
+        @logger.attach
+        def container(x, y):
+            boo()
+            result = gcd(x, y)
+            boo()
+            return result
+
+        boo()
+        result = container(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "0 call gcd 250 {0}".format(self.filename),
+            "1 call internal 255 {0}".format(self.filename),
+            "2 call boo 259 {0}".format(self.filename),
+            "3 return boo 260 {0}".format(self.filename),
+            "4 return internal 257 {0}".format(self.filename),
+            "5 call internal 255 {0}".format(self.filename),
+            "6 call boo 259 {0}".format(self.filename),
+            "7 return boo 260 {0}".format(self.filename),
+            "8 return internal 257 {0}".format(self.filename),
+            "9 return gcd 253 {0}".format(self.filename),]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+        self.assertEqual(logger._code_trackers, {})
+
 
 if __name__ == '__main__':
     unittest.main()

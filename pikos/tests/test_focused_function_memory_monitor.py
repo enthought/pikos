@@ -180,6 +180,45 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
+    def test_focus_on_function(self):
+
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        def internal(x, y):
+            return y % x, x
+
+        def boo():
+            pass
+
+        recorder = self.recorder
+        logger = FocusedFunctionMemoryMonitor(
+            recorder, record_type=tuple, functions=[gcd])
+
+        @logger.attach
+        def container(x, y):
+            boo()
+            result = gcd(x, y)
+            boo()
+            return result
+
+        boo()
+        result = container(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "0 call gcd 185 {0}".format(self.filename),
+            "1 call internal 190 {0}".format(self.filename),
+            "2 return internal 191 {0}".format(self.filename),
+            "3 call internal 190 {0}".format(self.filename),
+            "4 return internal 191 {0}".format(self.filename),
+            "5 return gcd 188 {0}".format(self.filename)]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
+        self.assertEqual(logger._code_trackers, {})
+
     def get_records(self, recorder):
         """ Remove the memory related fields.
         """

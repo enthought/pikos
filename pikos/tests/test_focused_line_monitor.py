@@ -211,6 +211,47 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "5 gcd 195             return y {0}".format(filename)]
         self.assertEqual(records, expected)
 
+    def test_focus_on_function_with_tuple(self):
+
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        def internal(x, y):
+            boo()
+            return y % x, x
+
+        def boo():
+            pass
+
+        recorder = self.recorder
+        logger = FocusedLineMonitor(
+            recorder, record_type=tuple, functions=[gcd])
+
+        @logger.attach
+        def container(x, y):
+            boo()
+            result = gcd(x, y)
+            boo()
+            return result
+
+        boo()
+        result = container(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+
+        filename = self.filename
+        expected = [
+            "0 gcd 217             while x > 0: {0}".format(filename),
+            "1 gcd 218                 x, y = internal(x, y) {0}".format(filename),
+            "2 gcd 217             while x > 0: {0}".format(filename),
+            "3 gcd 218                 x, y = internal(x, y) {0}".format(filename),
+            "4 gcd 217             while x > 0: {0}".format(filename),
+            "5 gcd 219             return y {0}".format(filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -140,6 +140,37 @@ class TestLineMonitor(TestCase):
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
+    def test_function_using_tuples(self):
+        filename = self.filename
+        # tuple records are not compatible with the default OnValue filters.
+        recorder = TextStreamRecorder(
+            text_stream=self.stream,
+            filter_=lambda x: x[-1] == filename)
+        logger = LineMonitor(recorder, record_type=tuple)
+
+        @logger.attach
+        def gcd(x, y):
+            while x > 0:
+                x, y = y % x, x
+            return y
+
+        def boo():
+            pass
+
+        boo()
+        result = gcd(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "0 gcd 153             while x > 0: {0}".format(filename),
+            "1 gcd 154                 x, y = y % x, x {0}".format(filename),
+            "2 gcd 153             while x > 0: {0}".format(filename),
+            "3 gcd 154                 x, y = y % x, x {0}".format(filename),
+            "4 gcd 153             while x > 0: {0}".format(filename),
+            "5 gcd 155             return y {0}".format(filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+
     def test_issue2(self):
         """ Test for issue #2.
 
