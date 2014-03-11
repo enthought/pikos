@@ -39,3 +39,14 @@ class FocusedLineMixin(FocusedMonitorMixin):
             event_method(frame, why, arg)
         return self.on_line_event
 
+    def on_line_event_using_tuple(self, frame, why, arg):
+        """ Record the current function event only when we are inside one
+        of the provided functions.
+
+        """
+        code = frame.f_code
+        if code in self.functions:
+            event_method = super(
+                FocusedLineMixin, self).on_line_event_using_tuple
+            event_method(frame, why, arg)
+        return self.on_line_event_using_tuple
