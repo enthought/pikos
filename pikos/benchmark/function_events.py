@@ -25,6 +25,7 @@ from pikos.benchmark.record_counter import RecordCounter
 
 cevent = '_'
 
+
 class FunctionContainer(object):
     """ The event function container.
     """
@@ -45,8 +46,7 @@ class FunctionContainer(object):
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
-        record = FunctionRecord(self._index, event,
-                                 function, lineno, filename)
+        record = FunctionRecord(self._index, event, function, lineno, filename)
         self._recorder.record(record)
         self._index += 1
 
@@ -60,8 +60,7 @@ class FunctionContainer(object):
             function = arg.__name__
         else:
             function = code.co_name
-        record = FunctionRecord(self._index, event,
-                                function, lineno, filename)
+        record = FunctionRecord(self._index, event, function, lineno, filename)
         self._recorder.record(record)
         self._index += 1
 

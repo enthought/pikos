@@ -7,6 +7,8 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+
+
 class OnValue(object):
     """ A record filter that remove the record when a value is not contained.
 

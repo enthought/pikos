@@ -8,8 +8,6 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from __future__ import absolute_import
-import inspect
-from collections import namedtuple
 
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
@@ -125,7 +123,7 @@ class FunctionMonitor(Monitor):
         self._index += 1
 
     def on_function_event_using_tuple(self, frame, event, arg):
-        """ Record the current function event optmized using a tuple for record.
+        """ Record the current function event using a tuple for record.
 
         """
         if '_' == event[1]:

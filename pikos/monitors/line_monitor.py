@@ -9,7 +9,6 @@
 #------------------------------------------------------------------------------
 from __future__ import absolute_import
 import inspect
-from collections import namedtuple
 
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack

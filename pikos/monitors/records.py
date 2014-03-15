@@ -34,7 +34,6 @@ class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
 
     __slots__ = ()
 
-
     header = FUNCTION_RECORD_TEMPLATE
     line = FUNCTION_RECORD_TEMPLATE
 
@@ -62,5 +61,3 @@ class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
 
     header = LINE_MEMORY_HEADER_TEMPLATE
     line = LINE_MEMORY_RECORD_TEMPLATE
-
-

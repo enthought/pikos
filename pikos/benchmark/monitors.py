@@ -25,9 +25,8 @@ def pymonitors():
         FunctionMonitor, LineMonitor,
         FunctionMemoryMonitor, LineMemoryMonitor)
     return {
-        'FunctionMonitor':
-            lambda recorder, record_type: FunctionMonitor(
-                recorder, None if record_type is None else tuple),
+        'FunctionMonitor':lambda recorder, record_type: FunctionMonitor(
+            recorder, None if record_type is None else tuple),
         'LineMonitor': LineMonitor,
         'FunctionMemoryMonitor': FunctionMemoryMonitor,
         'LineMemoryMonitor': LineMemoryMonitor}
@@ -62,6 +61,7 @@ def run(monitors, loops, record_type=None):
             relative='{:.2%}'.format((time - expected_time) / expected_time),
             time_per_record=time_per_record,
             records='{:10d}'.format(recorder.records))
+
 
 def main(monitors, loops=1000):
         print 'With default record types'

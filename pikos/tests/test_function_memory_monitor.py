@@ -65,7 +65,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
             "60 return gcd 47 {0}".format(self.filename),
             "68 return gcd 47 {0}".format(self.filename),
             "76 return gcd 47 {0}".format(self.filename),
-            "84 return gcd 47 {0}".format(self.filename),]
+            "84 return gcd 47 {0}".format(self.filename)]
         self.assertEqual(records, expected)
 
     def test_generator(self):

@@ -7,8 +7,6 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-import inspect
-
 from pikos.monitors.focused_monitor_mixin import FocusedMonitorMixin
 
 

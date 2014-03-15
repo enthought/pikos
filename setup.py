@@ -7,7 +7,6 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 import os
-import sys
 import platform
 
 from setuptools import setup, find_packages, Extension, Feature
@@ -19,7 +18,6 @@ except ImportError:
     BUILD_CYTHON_MONITORS = False
     cmdclass = {}
 else:
-    import platform
     BUILD_CYTHON_MONITORS = platform.python_implementation() == 'CPython'
     cmdclass = {'build_ext': build_ext}
 

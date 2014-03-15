@@ -56,9 +56,9 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 30             while x > 0: {0}".format(filename),
-            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 30             while x > 0: {0}".format(filename),
-            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 30             while x > 0: {0}".format(filename),
             "5 gcd 32             return y {0}".format(filename)]
         records = self.get_records(recorder)
@@ -99,9 +99,9 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 70             while x > 0: {0}".format(filename),
-            "1 gcd 71                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 71                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 70             while x > 0: {0}".format(filename),
-            "3 gcd 71                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 71                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 70             while x > 0: {0}".format(filename),
             "5 gcd 72             return y {0}".format(filename),
             "6 foo 81             boo() {0}".format(filename),
@@ -139,9 +139,9 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 115             foo() {0}".format(filename),
-            "1 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "1 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
             "2 gcd 115             foo() {0}".format(filename),
-            "3 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "3 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -163,9 +163,9 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 158             foo() {0}".format(filename),
-            "1 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "1 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
             "2 gcd 158             foo() {0}".format(filename),
-            "3 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "3 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -193,15 +193,15 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 185             while x > 0: {0}".format(filename),
-            "1 gcd 186                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 186                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 185             while x > 0: {0}".format(filename),
-            "3 gcd 186                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 186                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 185             while x > 0: {0}".format(filename),
             "5 gcd 187             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
-    def test_focus_on_function(self):
+    def test_focus_on_function_using_tuples(self):
 
         def gcd(x, y):
             while x > 0:
@@ -234,9 +234,9 @@ class TestFocusedLineMemoryMonitor(TestCase):
         filename = self.filename
         expected = [
             "0 gcd 207             while x > 0: {0}".format(filename),
-            "1 gcd 208                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 208                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 207             while x > 0: {0}".format(filename),
-            "3 gcd 208                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 208                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 207             while x > 0: {0}".format(filename),
             "5 gcd 209             return y {0}".format(filename)]
         records = self.get_records(recorder)

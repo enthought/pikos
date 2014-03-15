@@ -180,7 +180,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
-    def test_focus_on_function(self):
+    def test_focus_on_function_using_tuples(self):
 
         def gcd(x, y):
             while x > 0:

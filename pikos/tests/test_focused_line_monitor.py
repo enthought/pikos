@@ -58,9 +58,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 gcd 30             while x > 0: {0}".format(filename),
-            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 30             while x > 0: {0}".format(filename),
-            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 30             while x > 0: {0}".format(filename),
             "5 gcd 32             return y {0}".format(filename)]
         records = ''.join(self.stream.buflist).splitlines()
@@ -103,9 +103,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 gcd 72             while x > 0: {0}".format(filename),
-            "1 gcd 73                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 73                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 72             while x > 0: {0}".format(filename),
-            "3 gcd 73                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 73                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 72             while x > 0: {0}".format(filename),
             "5 gcd 74             return y {0}".format(filename),
             "6 foo 83             boo() {0}".format(filename),
@@ -145,9 +145,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 gcd 119             foo() {0}".format(filename),
-            "1 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "1 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
             "2 gcd 119             foo() {0}".format(filename),
-            "3 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "3 gcd 120             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -172,9 +172,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 gcd 164             foo() {0}".format(filename),
-            "1 gcd 165             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
+            "1 gcd 165             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
             "2 gcd 164             foo() {0}".format(filename),
-            "3 gcd 165             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "3 gcd 165             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         self.assertEqual(records, expected)
 
     def test_focus_on_decorated_function(self):
@@ -204,9 +204,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 gcd 193             while x > 0: {0}".format(filename),
-            "1 gcd 194                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 194                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 193             while x > 0: {0}".format(filename),
-            "3 gcd 194                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 194                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 193             while x > 0: {0}".format(filename),
             "5 gcd 195             return y {0}".format(filename)]
         self.assertEqual(records, expected)
@@ -244,9 +244,9 @@ class TestFocusedLineMonitor(TestCase, TestAssistant):
         filename = self.filename
         expected = [
             "0 gcd 217             while x > 0: {0}".format(filename),
-            "1 gcd 218                 x, y = internal(x, y) {0}".format(filename),
+            "1 gcd 218                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "2 gcd 217             while x > 0: {0}".format(filename),
-            "3 gcd 218                 x, y = internal(x, y) {0}".format(filename),
+            "3 gcd 218                 x, y = internal(x, y) {0}".format(filename),  # noqa
             "4 gcd 217             while x > 0: {0}".format(filename),
             "5 gcd 219             return y {0}".format(filename)]
         records = ''.join(self.stream.buflist).splitlines()

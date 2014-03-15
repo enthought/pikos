@@ -67,7 +67,7 @@ class TestFocusedFunctionMonitor(TestCase):
             "6 call boo 41 {0}".format(self.filename),
             "7 return boo 42 {0}".format(self.filename),
             "8 return internal 39 {0}".format(self.filename),
-            "9 return gcd 35 {0}".format(self.filename),]
+            "9 return gcd 35 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -161,7 +161,7 @@ class TestFocusedFunctionMonitor(TestCase):
             "4 call foo 136 {0}".format(self.filename),
             "5 return foo 137 {0}".format(self.filename),
             "6 return gcd 131 {0}".format(self.filename),
-            "7 return gcd 131 {0}".format(self.filename),]
+            "7 return gcd 131 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -209,7 +209,7 @@ class TestFocusedFunctionMonitor(TestCase):
             "10 return gcd 174 {0}".format(self.filename),
             "11 call boo 180 {0}".format(self.filename),
             "12 return boo 181 {0}".format(self.filename),
-            "13 return container 190 {0}".format(self.filename),]
+            "13 return container 190 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -245,7 +245,7 @@ class TestFocusedFunctionMonitor(TestCase):
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
 
-    def test_focus_on_function(self):
+    def test_focus_on_function_using_tuples(self):
 
         def gcd(x, y):
             while x > 0:
@@ -284,7 +284,7 @@ class TestFocusedFunctionMonitor(TestCase):
             "6 call boo 259 {0}".format(self.filename),
             "7 return boo 260 {0}".format(self.filename),
             "8 return internal 257 {0}".format(self.filename),
-            "9 return gcd 253 {0}".format(self.filename),]
+            "9 return gcd 253 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
