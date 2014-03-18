@@ -162,7 +162,7 @@ class FunctionVirtualBytesMemoryMonitor(Monitor):
         self._index += 1
 
 
-def virtual_bytes_on_functions(recorder=None, focus_on=None):
+def virtual_bytes_on_functions(recorder=None):
     """ Factory function that returns a virtual bytes function memory monitor.
 
     Parameters
@@ -172,6 +172,5 @@ def virtual_bytes_on_functions(recorder=None, focus_on=None):
     """
     if recorder is None:
         recorder = screen()
-    if focus_on is None:
-        monitor = FunctionVirtualBytesMemoryMonitor(recorder)
+    monitor = FunctionVirtualBytesMemoryMonitor(recorder)
     return MonitorAttach(monitor)
