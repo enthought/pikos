@@ -19,10 +19,14 @@ import argparse
 
 import numpy as np
 
-from pikos.api import memory_on_functions
+from pikos.monitors.function_virtual_bytes_monitor import FunctionVirtualBytesMemoryMonitor
+from pikos.api import csvfile, screen, textfile
 
+#monitor = FunctionVirtualBytesMemoryMonitor(recorder=csvfile())
+#monitor = FunctionVirtualBytesMemoryMonitor(recorder=textfile())
+monitor = FunctionVirtualBytesMemoryMonitor(recorder=screen())
 
-@memory_on_functions()
+@monitor.attach
 def legacy(size):
     b = np.mat(np.random.random(size).T)
     # very bad example that makes copies of numpy arrays when converting them
@@ -32,7 +36,6 @@ def legacy(size):
     return final.I
 
 
-@memory_on_functions()
 def fixed(size):
     # more appropriate way using a numpy.mat
     b = np.mat(np.random.random(size).T)
@@ -42,6 +45,7 @@ def fixed(size):
 
 
 if __name__ == '__main__':
+    import time
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--small',
