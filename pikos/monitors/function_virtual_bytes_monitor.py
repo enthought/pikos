@@ -1,14 +1,13 @@
 #-*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/function_memory_monitor.py
+#  File: monitors/virtual_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
-#  Copyright (c) 2012, Enthought, Inc.
+#  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from __future__ import absolute_import
-import os
 from collections import namedtuple
 
 from win32api import GlobalMemoryStatusEx
@@ -16,6 +15,7 @@ from win32api import GlobalMemoryStatusEx
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
+from pikos.monitors.monitor_attach import MonitorAttach
 
 
 FUNCTION_VIRTUAL_BYTES_MEMORY_RECORD = (
@@ -160,3 +160,18 @@ class FunctionVirtualBytesMemoryMonitor(Monitor):
                 virtual_bytes, frame.f_lineno, code.co_filename)
         self._record(record)
         self._index += 1
+
+
+def virtual_bytes_on_functions(recorder=None, focus_on=None):
+    """ Factory function that returns a virtual bytes function memory monitor.
+
+    Parameters
+    ----------
+    recorder : AbstractRecorder
+        The recorder to use and store the records. Default is outpout to screen.
+    """
+    if recorder is None:
+        recorder = screen()
+    if focus_on is None:
+        monitor = FunctionVirtualBytesMemoryMonitor(recorder)
+    return MonitorAttach(monitor)

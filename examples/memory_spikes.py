@@ -19,14 +19,11 @@ import argparse
 
 import numpy as np
 
-from pikos.monitors.function_virtual_bytes_monitor import FunctionVirtualBytesMemoryMonitor
+from pikos.monitors.function_virtual_bytes_monitor import virtual_bytes_on_functions
 from pikos.api import csvfile, screen, textfile
 
-#monitor = FunctionVirtualBytesMemoryMonitor(recorder=csvfile())
-#monitor = FunctionVirtualBytesMemoryMonitor(recorder=textfile())
-monitor = FunctionVirtualBytesMemoryMonitor(recorder=screen())
 
-@monitor.attach
+@virtual_bytes_on_functions(recorder=screen())
 def legacy(size):
     b = np.mat(np.random.random(size).T)
     # very bad example that makes copies of numpy arrays when converting them
