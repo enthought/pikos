@@ -14,7 +14,7 @@ from win32api import GlobalMemoryStatusEx
 
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
-from pikos.monitors.monitor import Monitor
+from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.monitors.monitor_attach import MonitorAttach
 
 
@@ -35,7 +35,7 @@ class FunctionVirtualBytesMemoryRecord(
     line = FUNCTION_VIRTUAL_BYTES_MEMORY_TEMPLATE
 
 
-class FunctionVirtualBytesMemoryMonitor(Monitor):
+class FunctionVirtualBytesMemoryMonitor(FunctionMonitor):
     """ Record process memory on python function events.
 
     The class hooks on the setprofile function to receive function events and
@@ -64,11 +64,7 @@ class FunctionVirtualBytesMemoryMonitor(Monitor):
 
     _record_type : object
         A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
-
-    _record_type: class object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
+        :class:`FunctionVirtualBytesMemoryRecord`
 
     """
 
@@ -84,46 +80,13 @@ class FunctionVirtualBytesMemoryMonitor(Monitor):
 
         record_type: class object
             A class object to be used for records. Default is
-            :class:`~pikos.monitors.records.FunctionMemoryMonitor`
+            :class:`FunctionVirtualBytesMemoryRecord`
 
         """
-        self._recorder = recorder
-        self._record = recorder.record
-        self._profiler = ProfileFunctionManager()
-        self._index = 0
-        self._call_tracker = KeepTrack()
         if record_type is None:
-            self._record_type = FunctionVirtualBytesMemoryRecord
-        else:
-            self._record_type = record_type
-
-    def enable(self):
-        """ Enable the monitor.
-
-        The first time the method is called (the context is entered) it will
-        initialize the Process class, set the setprofile hooks and initialize
-        the recorder.
-
-        """
-        if self._call_tracker('ping'):
-            self._recorder.prepare(self._record_type)
-            if self._record_type is tuple:
-                # optimized function for tuples.
-                self._profiler.replace(self.on_function_event_using_tuple)
-            else:
-                self._profiler.replace(self.on_function_event)
-
-    def disable(self):
-        """ Disable the monitor.
-
-        The last time the method is called (the context is exited) it will
-        unset the setprofile hooks and finalize the recorder and set
-        :attr:`_process` to None.
-
-        """
-        if self._call_tracker('pong'):
-            self._profiler.recover()
-            self._recorder.finalize()
+            record_type = FunctionVirtualBytesMemoryRecord
+        super(FunctionVirtualBytesMemoryMonitor, self).__init__(
+            recorder=recorder, record_type=record_type)
 
     def on_function_event(self, frame, event, arg):
         """ Record the virtual bytes memory usage on function event.
