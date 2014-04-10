@@ -10,7 +10,7 @@
 
 
 class OnValue(object):
-    """ A record filter that remove the record when a value is not contained.
+    """ A record filter that returns True if record has a specific value.
 
     Attributes
     ----------
