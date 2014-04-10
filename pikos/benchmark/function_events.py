@@ -28,16 +28,17 @@ cevent = '_'
 
 class FunctionContainer(object):
     """ The event function container.
+    
+    Each method implements a stage in the function event (i.e. set_profile)
+    compatible function. 
+    The current 
+    
     """
     def __init__(self):
         self._index = 0
         self._recorder = RecordCounter()
         self.namedtuple_record = FunctionRecord
         self.tuple_record = lambda *x: x
-        self.current = FunctionMonitor(
-            self._recorder, record_type=tuple).on_function_event
-        self.step_eight = SlotsMonitor(self._recorder).step_eight
-        self.step_nine = SlotsMonitor(self._recorder).step_nine
 
     def original_method(self, frame, event, arg):
         """ The original method for the function event monitor.
@@ -95,8 +96,7 @@ class FunctionContainer(object):
         self._index += 1
 
     def step_four(self, frame, event, arg):
-        """ Forth step -- do not create `code` variable when it is going to be
-        used once.
+        """ Forth step -- do not create `code` variable on some events.
 
         """
         if 'c_' == event[:2]:
@@ -147,7 +147,7 @@ class FunctionContainer(object):
         self._index += 1
 
     def step_seven(self, frame, event, arg):
-        """ Seventh step -- use a tuple instead of a lambda
+        """ Seventh step -- use a tuple instead of a lambda.
         """
         if 'c_' == event[:2]:
             record = (
@@ -161,8 +161,21 @@ class FunctionContainer(object):
         self._recorder.record(record)
         self._index += 1
 
+class CurrentFunctionContainer(object):
+    """ Class holding the currently used function event method in pikos.
+    
+    """
+    
+    def __init__(self, recorder):
+        self.current = FunctionMonitor(
+            recorder, record_type=tuple).on_function_event
 
-class SlotsMonitor(object):
+
+class SlotsFunctionContainer(object):
+    """ A function container using slots for the class attributes.
+
+    """
+    __slots__ = ('index', '_recorder', 'record')
 
     def __init__(self, recorder):
         self.index = 0
@@ -200,70 +213,97 @@ class SlotsMonitor(object):
         self.index += 1
 
 
-def function_runner(method):
+method_map = [
+    ['step_one', 'step_two', 'step_three', 'step_four', 
+     'step_five', 'step_six', 'step_seven'] : FunctionContainer,
+    ['step_eight', 'step_nine']: SlotsFunctionContainer,
+    ['current'] : CurrentFunctionContainer]
+
+
+
+def function_runner(method_name, number=10000):
+    """ Simulate calling the event function with the different event types.
+    
+    Parameters
+    ----------
+    method_name : string
+        The name of the method to use.
+    
+    numbers : int
+        The number of events to create for each event type.
+        
+    """
+    for method_names, cls in method_map:
+        if method_name in method_names:
+            break
+    else:
+        raise ValueError('could not find method {0}'.format(method_name))
+
+    monitor = cls()
+    method = getattr(monitor, method_name)
+    
     frame = inspect.currentframe()
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'call', method)
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'return', method)
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'exception', method)
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'c_call', method)
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'c_return', method)
-    for i in range(10000):
+    for i in range(events):
         method(frame, 'c_exception', method)
 
 
 def main():
     profiler = cProfile.Profile()
-    monitor = FunctionContainer()
 
     profiler.enable()
-    function_runner(monitor.original_method)
-    function_runner(monitor.step_one)
-    function_runner(monitor.step_two)
-    function_runner(monitor.step_three)
-    function_runner(monitor.step_four)
-    function_runner(monitor.step_five)
-    function_runner(monitor.step_six)
-    function_runner(monitor.step_seven)
-    function_runner(monitor.step_eight)
-    function_runner(monitor.step_nine)
-    function_runner(monitor.current)
+    function_runner('original_method')
+    function_runner('step_one)
+    function_runner('step_two)
+    function_runner('step_three)
+    function_runner('step_four)
+    function_runner('step_five)
+    function_runner('step_six)
+    function_runner('step_seven)
+    function_runner('step_eight)
+    function_runner('step_nine)
+    function_runner('current')
     profiler.disable()
 
     profiler.dump_stats('function_event.stats')
     line_profiler = LineProfiler(monitor.step_nine)
     line_profiler.enable()
-    function_runner(monitor.step_nine)
+    function_runner('step_nine')
     line_profiler.disable()
     line_profiler.dump_stats('function_event.line_stats')
     line_profiler.print_stats()
 
     print 'Original', timeit.timeit(
-        lambda: function_runner(monitor.original_method), number=7)
+        lambda: function_runner('original_method'), number=7)
     print 'One', timeit.timeit(
-        lambda: function_runner(monitor.step_one), number=7)
+        lambda: function_runner('step_one'), number=7)
     print 'Two', timeit.timeit(
-        lambda: function_runner(monitor.step_two), number=7)
+        lambda: function_runner('step_two'), number=7)
     print 'Three', timeit.timeit(
-        lambda: function_runner(monitor.step_three), number=7)
+        lambda: function_runner('step_three'), number=7)
     print 'Four', timeit.timeit(
-        lambda: function_runner(monitor.step_four), number=7)
+        lambda: function_runner('step_four'), number=7)
     print 'Five', timeit.timeit(
-        lambda: function_runner(monitor.step_five), number=7)
+        lambda: function_runner('step_five'), number=7)
     print 'Six', timeit.timeit(
-        lambda: function_runner(monitor.step_six), number=7)
+        lambda: function_runner('step_six'), number=7)
     print 'Seven', timeit.timeit(
-        lambda: function_runner(monitor.step_seven), number=7)
+        lambda: function_runner('step_seven'), number=7)
     print 'Eight', timeit.timeit(
-        lambda: function_runner(monitor.step_eight), number=7)
+        lambda: function_runner('step_eight'), number=7)
     print 'Nine', timeit.timeit(
-        lambda: function_runner(monitor.step_nine), number=7)
+        lambda: function_runner('step_nine'), number=7)
     print 'Current', timeit.timeit(
-        lambda: function_runner(monitor.current), number=7)
+        lambda: function_runner('current'), number=7)
 
 
 if __name__ == '__main__':
