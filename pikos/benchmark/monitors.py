@@ -40,6 +40,20 @@ def cymonitors():
 
 
 def run(monitors, loops, record_type=None):
+    """ Time the monitors overhead using pystones.
+    
+    Parameter
+    ---------
+    monitors : list
+        The list of monitors to time.
+        
+    loops : int
+        The number of loops to run pystones.
+        
+    record_type : object
+        The type of record to use.
+        
+    """
     header = (
         "Overhead time | Relative overhead | "
         "{:^10} |  Per record  | {:^{length}}".format(
