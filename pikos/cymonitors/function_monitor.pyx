@@ -19,6 +19,14 @@ from pikos.monitors.function_monitor import FunctionRecord
 
 
 cdef class FunctionMonitor(Monitor):
+    """ A Cython based monitor for function events.
+    
+    Private
+    -------
+    _recorder : Recorder
+        reference to the recorder instance used by this monitor.
+    
+    """
 
     cdef public object _recorder
     cdef int _index
@@ -26,6 +34,17 @@ cdef class FunctionMonitor(Monitor):
     cdef object record_type
 
     def __init__(self, recorder, record_type=None):
+        """ Constructor
+        
+        Parameters
+        ----------
+        recorder : Recorder 
+            The recorder inctance to use.
+            
+        record_type :
+            The record type to use. Default is to use a FunctionRecord.
+        
+        """
         self._recorder = recorder
         self._call_tracker = KeepTrack()
         if record_type is None:
