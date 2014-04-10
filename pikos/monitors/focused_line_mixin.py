@@ -27,8 +27,7 @@ class FocusedLineMixin(FocusedMonitorMixin):
     """
 
     def on_line_event(self, frame, why, arg):
-        """ Record the current function event only when we are inside one
-        of the provided functions.
+        """ Record the line event if we are inside the functions.
 
         """
         code = frame.f_code
@@ -38,8 +37,11 @@ class FocusedLineMixin(FocusedMonitorMixin):
         return self.on_line_event
 
     def on_line_event_using_tuple(self, frame, why, arg):
-        """ Record the current function event only when we are inside one
-        of the provided functions.
+        """ Record the line event if we are inside the functions.
+
+        .. note::
+        
+          Method is optimized for tuple records.
 
         """
         code = frame.f_code
