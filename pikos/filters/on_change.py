@@ -26,7 +26,7 @@ class OnChange(object):
     Notes
     -----
     - Filters and recorders can be shared between monitors. The filter however
-      is not aware of ownership so use with care when shareing the same
+      is not aware of ownership so use with care when sharing the same
       instance.
     - This filter only works with nametuple like records.
 
