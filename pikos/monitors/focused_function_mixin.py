@@ -54,8 +54,7 @@ class FocusedFunctionMixin(FocusedMonitorMixin):
         self._code_trackers = {}
 
     def on_function_event(self, frame, event, arg):
-        """ Record the current function event only when we are inside one
-        of the provided functions.
+        """ Record the function event if we are inside one of the functions.
 
         """
         code = frame.f_code
@@ -73,8 +72,11 @@ class FocusedFunctionMixin(FocusedMonitorMixin):
             event_method(frame, event, arg)
 
     def on_function_event_using_tuple(self, frame, event, arg):
-        """ Record the current function event only when we are inside one
-        of the provided functions.
+        """ Record the function event if we are inside one of the functions.
+
+        .. note::
+        
+          Method optimized for tuples as records.
 
         """
         code = frame.f_code
