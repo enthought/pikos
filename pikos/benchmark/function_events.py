@@ -28,11 +28,11 @@ cevent = '_'
 
 class FunctionContainer(object):
     """ The event function container.
-    
+
     Each method implements a stage in the function event (i.e. set_profile)
-    compatible function. 
-    The current 
-    
+    compatible function.
+    The current
+
     """
     def __init__(self):
         self._index = 0
@@ -163,12 +163,12 @@ class FunctionContainer(object):
 
 class CurrentFunctionContainer(object):
     """ Class holding the currently used function event method in pikos.
-    
+
     """
-    
-    def __init__(self, recorder):
-        self.current = FunctionMonitor(
-            recorder, record_type=tuple).on_function_event
+
+    def __init__(self):
+        monitor = FunctionMonitor(recorder=RecordCounter(), record_type=tuple)
+        self.current = monitor.on_function_event_using_tuple
 
 
 class SlotsFunctionContainer(object):
@@ -177,10 +177,10 @@ class SlotsFunctionContainer(object):
     """
     __slots__ = ('index', '_recorder', 'record')
 
-    def __init__(self, recorder):
+    def __init__(self):
         self.index = 0
-        self._recorder = recorder
-        self.record = recorder.record
+        self._recorder = RecordCounter()
+        self.record = self._recorder.record
 
     def step_eight(self, frame, event, arg):
         """ Eigthth step -- single char check for c events.
@@ -214,24 +214,24 @@ class SlotsFunctionContainer(object):
 
 
 method_map = [
-    ['step_one', 'step_two', 'step_three', 'step_four', 
-     'step_five', 'step_six', 'step_seven'] : FunctionContainer,
-    ['step_eight', 'step_nine']: SlotsFunctionContainer,
-    ['current'] : CurrentFunctionContainer]
+    (['original_method', 'step_one', 'step_two', 'step_three', 'step_four',
+     'step_five', 'step_six', 'step_seven'], FunctionContainer),
+    (['step_eight', 'step_nine'], SlotsFunctionContainer),
+    (['current'], CurrentFunctionContainer)]
 
 
 
 def function_runner(method_name, number=10000):
     """ Simulate calling the event function with the different event types.
-    
+
     Parameters
     ----------
     method_name : string
         The name of the method to use.
-    
-    numbers : int
+
+    number : int
         The number of events to create for each event type.
-        
+
     """
     for method_names, cls in method_map:
         if method_name in method_names:
@@ -241,19 +241,19 @@ def function_runner(method_name, number=10000):
 
     monitor = cls()
     method = getattr(monitor, method_name)
-    
+
     frame = inspect.currentframe()
-    for i in range(events):
+    for i in range(number):
         method(frame, 'call', method)
-    for i in range(events):
+    for i in range(number):
         method(frame, 'return', method)
-    for i in range(events):
+    for i in range(number):
         method(frame, 'exception', method)
-    for i in range(events):
+    for i in range(number):
         method(frame, 'c_call', method)
-    for i in range(events):
+    for i in range(number):
         method(frame, 'c_return', method)
-    for i in range(events):
+    for i in range(number):
         method(frame, 'c_exception', method)
 
 
@@ -262,20 +262,20 @@ def main():
 
     profiler.enable()
     function_runner('original_method')
-    function_runner('step_one)
-    function_runner('step_two)
-    function_runner('step_three)
-    function_runner('step_four)
-    function_runner('step_five)
-    function_runner('step_six)
-    function_runner('step_seven)
-    function_runner('step_eight)
-    function_runner('step_nine)
+    function_runner('step_one')
+    function_runner('step_two')
+    function_runner('step_three')
+    function_runner('step_four')
+    function_runner('step_five')
+    function_runner('step_six')
+    function_runner('step_seven')
+    function_runner('step_eight')
+    function_runner('step_nine')
     function_runner('current')
     profiler.disable()
 
     profiler.dump_stats('function_event.stats')
-    line_profiler = LineProfiler(monitor.step_nine)
+    line_profiler = LineProfiler(SlotsFunctionContainer.step_nine)
     line_profiler.enable()
     function_runner('step_nine')
     line_profiler.disable()
