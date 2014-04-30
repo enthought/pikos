@@ -1,8 +1,6 @@
 build: false
 environment:
-  matrix:
-    - PYTHON: "C:/Python27"
-    - PYTHON: "C:/Python34"
+  - PYTHON: "C:/Python27"
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + $Env:path
 install:
