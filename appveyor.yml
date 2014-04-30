@@ -4,7 +4,7 @@ environment:
     - PYTHON: "C:/Python27"
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + $Env:path
-  - ps: ls C:\Program Files\Microsoft SDKs\Windows
+  - ps: ls "C:\Program Files\Microsoft SDKs\Windows"
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
