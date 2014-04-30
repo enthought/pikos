@@ -1,6 +1,6 @@
 build: false
 environment:
-  global:
+  matrix:
     - PYTHON: "C:/Python27"
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + $Env:path
