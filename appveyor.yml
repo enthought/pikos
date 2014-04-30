@@ -7,5 +7,7 @@ init:
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
+  - ps: pip install psutils
 test_script:
   - ps: python setup.py test
+notification: false
