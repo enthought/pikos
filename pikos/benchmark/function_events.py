@@ -161,6 +161,7 @@ class FunctionContainer(object):
         self._recorder.record(record)
         self._index += 1
 
+
 class CurrentFunctionContainer(object):
     """ Class holding the currently used function event method in pikos.
 
@@ -218,7 +219,6 @@ method_map = [
      'step_five', 'step_six', 'step_seven'], FunctionContainer),
     (['step_eight', 'step_nine'], SlotsFunctionContainer),
     (['current'], CurrentFunctionContainer)]
-
 
 
 def function_runner(method_name, number=10000):

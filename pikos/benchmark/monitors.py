@@ -25,7 +25,7 @@ def pymonitors():
         FunctionMonitor, LineMonitor,
         FunctionMemoryMonitor, LineMemoryMonitor)
     return {
-        'FunctionMonitor':lambda recorder, record_type: FunctionMonitor(
+        'FunctionMonitor': lambda recorder, record_type: FunctionMonitor(
             recorder, None if record_type is None else tuple),
         'LineMonitor': LineMonitor,
         'FunctionMemoryMonitor': FunctionMemoryMonitor,
@@ -41,18 +41,18 @@ def cymonitors():
 
 def run(monitors, loops, record_type=None):
     """ Time the monitors overhead using pystones.
-    
+
     Parameter
     ---------
     monitors : list
         The list of monitors to time.
-        
+
     loops : int
         The number of loops to run pystones.
-        
+
     record_type : object
         The type of record to use.
-        
+
     """
     header = (
         "Overhead time | Relative overhead | "

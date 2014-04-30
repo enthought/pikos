@@ -40,7 +40,7 @@ class FocusedLineMixin(FocusedMonitorMixin):
         """ Record the line event if we are inside the functions.
 
         .. note::
-        
+
           Method is optimized for tuple records.
 
         """

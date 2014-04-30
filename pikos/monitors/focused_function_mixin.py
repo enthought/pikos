@@ -75,7 +75,7 @@ class FocusedFunctionMixin(FocusedMonitorMixin):
         """ Record the function event if we are inside one of the functions.
 
         .. note::
-        
+
           Method optimized for tuples as records.
 
         """
