@@ -10,8 +10,6 @@
 import StringIO
 import unittest
 
-from pikos.monitors.focused_line_memory_monitor import (
-    FocusedLineMemoryMonitor)
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.compat import TestCase
 
@@ -19,6 +17,10 @@ from pikos.tests.compat import TestCase
 class TestFocusedLineMemoryMonitor(TestCase):
 
     def setUp(self):
+        self.check_for_psutils()
+        from pikos.monitors.focused_line_memory_monitor import (
+            FocusedLineMemoryMonitor)
+        self.monitor_type = FocusedLineMemoryMonitor
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.stream = StringIO.StringIO()
@@ -39,7 +41,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(recorder, functions=[gcd])
+        logger = self.monitor_type(recorder, functions=[gcd])
 
         @logger.attach
         def container(x, y):
@@ -55,12 +57,12 @@ class TestFocusedLineMemoryMonitor(TestCase):
 
         filename = self.filename
         expected = [
-            "0 gcd 30             while x > 0: {0}".format(filename),
-            "1 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "2 gcd 30             while x > 0: {0}".format(filename),
-            "3 gcd 31                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "4 gcd 30             while x > 0: {0}".format(filename),
-            "5 gcd 32             return y {0}".format(filename)]
+            "0 gcd 32             while x > 0: {0}".format(filename),
+            "1 gcd 33                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "2 gcd 32             while x > 0: {0}".format(filename),
+            "3 gcd 33                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "4 gcd 32             while x > 0: {0}".format(filename),
+            "5 gcd 34             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -82,7 +84,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             boo()
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(recorder, functions=[gcd, foo])
+        logger = self.monitor_type(recorder, functions=[gcd, foo])
 
         @logger.attach
         def container(x, y):
@@ -98,14 +100,14 @@ class TestFocusedLineMemoryMonitor(TestCase):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 70             while x > 0: {0}".format(filename),
-            "1 gcd 71                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "2 gcd 70             while x > 0: {0}".format(filename),
-            "3 gcd 71                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "4 gcd 70             while x > 0: {0}".format(filename),
-            "5 gcd 72             return y {0}".format(filename),
-            "6 foo 81             boo() {0}".format(filename),
-            "7 foo 82             boo() {0}".format(filename)]
+            "0 gcd 72             while x > 0: {0}".format(filename),
+            "1 gcd 73                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "2 gcd 72             while x > 0: {0}".format(filename),
+            "3 gcd 73                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "4 gcd 72             while x > 0: {0}".format(filename),
+            "5 gcd 74             return y {0}".format(filename),
+            "6 foo 83             boo() {0}".format(filename),
+            "7 foo 84             boo() {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -122,7 +124,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(recorder, functions=[gcd])
+        logger = self.monitor_type(recorder, functions=[gcd])
 
         @logger.attach
         def container(x, y):
@@ -138,10 +140,10 @@ class TestFocusedLineMemoryMonitor(TestCase):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 115             foo() {0}".format(filename),
-            "1 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "2 gcd 115             foo() {0}".format(filename),
-            "3 gcd 116             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
+            "0 gcd 117             foo() {0}".format(filename),
+            "1 gcd 118             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "2 gcd 117             foo() {0}".format(filename),
+            "3 gcd 118             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -151,7 +153,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(recorder)
+        logger = self.monitor_type(recorder)
 
         @logger.attach(include_decorated=True)
         def gcd(x, y):
@@ -162,10 +164,10 @@ class TestFocusedLineMemoryMonitor(TestCase):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 158             foo() {0}".format(filename),
-            "1 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "2 gcd 158             foo() {0}".format(filename),
-            "3 gcd 159             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
+            "0 gcd 160             foo() {0}".format(filename),
+            "1 gcd 161             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "2 gcd 160             foo() {0}".format(filename),
+            "3 gcd 161             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -178,7 +180,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(recorder)
+        logger = self.monitor_type(recorder)
 
         @logger.attach(include_decorated=True)
         def gcd(x, y):
@@ -192,12 +194,12 @@ class TestFocusedLineMemoryMonitor(TestCase):
         self.assertEqual(result, 3)
         filename = self.filename
         expected = [
-            "0 gcd 185             while x > 0: {0}".format(filename),
-            "1 gcd 186                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "2 gcd 185             while x > 0: {0}".format(filename),
-            "3 gcd 186                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "4 gcd 185             while x > 0: {0}".format(filename),
-            "5 gcd 187             return y {0}".format(filename)]
+            "0 gcd 187             while x > 0: {0}".format(filename),
+            "1 gcd 188                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "2 gcd 187             while x > 0: {0}".format(filename),
+            "3 gcd 188                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "4 gcd 187             while x > 0: {0}".format(filename),
+            "5 gcd 189             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -216,7 +218,7 @@ class TestFocusedLineMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedLineMemoryMonitor(
+        logger = self.monitor_type(
             recorder, record_type=tuple, functions=[gcd])
 
         @logger.attach
@@ -233,12 +235,12 @@ class TestFocusedLineMemoryMonitor(TestCase):
 
         filename = self.filename
         expected = [
-            "0 gcd 207             while x > 0: {0}".format(filename),
-            "1 gcd 208                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "2 gcd 207             while x > 0: {0}".format(filename),
-            "3 gcd 208                 x, y = internal(x, y) {0}".format(filename),  # noqa
-            "4 gcd 207             while x > 0: {0}".format(filename),
-            "5 gcd 209             return y {0}".format(filename)]
+            "0 gcd 209             while x > 0: {0}".format(filename),
+            "1 gcd 210                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "2 gcd 209             while x > 0: {0}".format(filename),
+            "3 gcd 210                 x, y = internal(x, y) {0}".format(filename),  # noqa
+            "4 gcd 209             while x > 0: {0}".format(filename),
+            "5 gcd 211             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -251,6 +253,12 @@ class TestFocusedLineMemoryMonitor(TestCase):
             records.append(
                 ' '.join([str(item).rstrip() for item in filtered]))
         return records
+
+    def check_for_psutils(self):
+        try:
+            import psutil
+        except ImportError:
+            self.skipTest('Could not import psutils, skipping test.')
 
 
 if __name__ == '__main__':
