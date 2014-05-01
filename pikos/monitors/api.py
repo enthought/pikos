@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/focused_function_mixin.py
+#  File: monitors/api.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
