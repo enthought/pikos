@@ -3,7 +3,7 @@ Pikos
 
 Pikos is a profiling and investigation tool suite for python
 applications. The name is inspired by Pikos Apikos the main character
-in a mid 80s Greek puppet TV series. Pikos was an investigative journalist 
+in a mid 80s Greek puppet TV series. Pikos was an investigative journalist
 assigned to find out about a missing person case in the remote and strange
 land of "Froutopia", a country populated by large fruits that can talk.
 
@@ -16,6 +16,12 @@ Key aims of Pikos are:
     - Be multi-platform.
     - Provide real-time access to profile data and allow live analysis
       while the application is running.
+
+.. image:: https://travis-ci.org/enthought/pikos.svg?branch=master
+    :target: https://travis-ci.org/enthought/pikos
+
+.. image:: https://ci.appveyor.com/api/projects/status/wqvek4l2k0arj2od
+    :target: https://ci.appveyor.com/project/itziakos/pikos
 
 Repository
 ----------
@@ -36,7 +42,7 @@ To build with the real-time fork of cProfile please provide the
     python setup.py --with-real-time-lsprof install
 
 You will need a build of libzmq to compile and link against. If the needed files
-are not available at system default locations, they will need to be manually 
+are not available at system default locations, they will need to be manually
 provided to the ``build_ext`` command::
 
     python setup.py --with-real-time-lsprof build_ext -I <include directory for zmq> -L <libary directory for zmq>
