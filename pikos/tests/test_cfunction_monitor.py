@@ -11,7 +11,6 @@ class TestCFunctionMonitor(TestCase):
     """
 
     def setUp(self):
-        from pikos.cymonitors.function_monitor import FunctionMonitor
         try:
             from pikos.cymonitors.function_monitor import FunctionMonitor
         except ImportError:
