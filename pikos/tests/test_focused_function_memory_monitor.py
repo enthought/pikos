@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/test_focused_function_monitor.py
+#  File: monitors/test_focused_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
@@ -10,8 +10,6 @@
 import unittest
 
 from pikos.filters.on_value import OnValue
-from pikos.monitors.focused_function_memory_monitor import (
-    FocusedFunctionMemoryMonitor)
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.compat import TestCase
 
@@ -19,6 +17,10 @@ from pikos.tests.compat import TestCase
 class TestFocusedFunctionMemoryMonitor(TestCase):
 
     def setUp(self):
+        self.check_for_psutils()
+        from pikos.monitors.focused_function_memory_monitor import (
+            FocusedFunctionMemoryMonitor)
+        self.monitor_type = FocusedFunctionMemoryMonitor
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.recorder = ListRecorder()
@@ -37,7 +39,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedFunctionMemoryMonitor(recorder, functions=[gcd])
+        logger = self.monitor_type(recorder, functions=[gcd])
 
         @logger.attach
         def container(x, y):
@@ -51,12 +53,12 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "0 call gcd 28 {0}".format(self.filename),
-            "1 call internal 33 {0}".format(self.filename),
-            "2 return internal 34 {0}".format(self.filename),
-            "3 call internal 33 {0}".format(self.filename),
-            "4 return internal 34 {0}".format(self.filename),
-            "5 return gcd 31 {0}".format(self.filename)]
+            "0 call gcd 30 {0}".format(self.filename),
+            "1 call internal 35 {0}".format(self.filename),
+            "2 return internal 36 {0}".format(self.filename),
+            "3 call internal 35 {0}".format(self.filename),
+            "4 return internal 36 {0}".format(self.filename),
+            "5 return gcd 33 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -80,7 +82,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             boo()
 
         recorder = self.recorder
-        logger = FocusedFunctionMemoryMonitor(
+        logger = self.monitor_type(
             recorder, functions=[internal, foo])
 
         @logger.attach
@@ -96,18 +98,18 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "0 call internal 71 {0}".format(self.filename),
-            "1 return internal 72 {0}".format(self.filename),
-            "2 call internal 71 {0}".format(self.filename),
-            "3 return internal 72 {0}".format(self.filename),
-            "4 call foo 77 {0}".format(self.filename),
-            "5 call boo 74 {0}".format(self.filename),
-            "6 return boo 75 {0}".format(self.filename),
-            "7 call boo 74 {0}".format(self.filename),
-            "8 return boo 75 {0}".format(self.filename),
-            "9 call boo 74 {0}".format(self.filename),
-            "10 return boo 75 {0}".format(self.filename),
-            "11 return foo 80 {0}".format(self.filename)]
+            "0 call internal 73 {0}".format(self.filename),
+            "1 return internal 74 {0}".format(self.filename),
+            "2 call internal 73 {0}".format(self.filename),
+            "3 return internal 74 {0}".format(self.filename),
+            "4 call foo 79 {0}".format(self.filename),
+            "5 call boo 76 {0}".format(self.filename),
+            "6 return boo 77 {0}".format(self.filename),
+            "7 call boo 76 {0}".format(self.filename),
+            "8 return boo 77 {0}".format(self.filename),
+            "9 call boo 76 {0}".format(self.filename),
+            "10 return boo 77 {0}".format(self.filename),
+            "11 return foo 82 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -125,7 +127,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedFunctionMemoryMonitor(recorder, functions=[gcd])
+        logger = self.monitor_type(recorder, functions=[gcd])
 
         @logger.attach
         def container(x, y):
@@ -140,14 +142,14 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "0 call gcd 117 {0}".format(self.filename),
-            "1 call foo 124 {0}".format(self.filename),
-            "2 return foo 125 {0}".format(self.filename),
-            "3 call gcd 117 {0}".format(self.filename),
-            "4 call foo 124 {0}".format(self.filename),
-            "5 return foo 125 {0}".format(self.filename),
-            "6 return gcd 119 {0}".format(self.filename),
-            "7 return gcd 119 {0}".format(self.filename)]
+            "0 call gcd 119 {0}".format(self.filename),
+            "1 call foo 126 {0}".format(self.filename),
+            "2 return foo 127 {0}".format(self.filename),
+            "3 call gcd 119 {0}".format(self.filename),
+            "4 call foo 126 {0}".format(self.filename),
+            "5 return foo 127 {0}".format(self.filename),
+            "6 return gcd 121 {0}".format(self.filename),
+            "7 return gcd 121 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -158,7 +160,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             pass
 
         recorder = ListRecorder(filter_=OnValue('filename', self.filename))
-        logger = FocusedFunctionMemoryMonitor(recorder)
+        logger = self.monitor_type(recorder)
 
         @logger.attach(include_decorated=True)
         def gcd(x, y):
@@ -168,14 +170,14 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         result = gcd(12, 3)
         self.assertEqual(result, 3)
         expected = [
-            "0 call gcd 163 {0}".format(self.filename),
-            "1 call foo 157 {0}".format(self.filename),
-            "2 return foo 158 {0}".format(self.filename),
-            "10 call gcd 163 {0}".format(self.filename),
-            "11 call foo 157 {0}".format(self.filename),
-            "12 return foo 158 {0}".format(self.filename),
-            "13 return gcd 166 {0}".format(self.filename),
-            "21 return gcd 166 {0}".format(self.filename)]
+            "0 call gcd 165 {0}".format(self.filename),
+            "1 call foo 159 {0}".format(self.filename),
+            "2 return foo 160 {0}".format(self.filename),
+            "10 call gcd 165 {0}".format(self.filename),
+            "11 call foo 159 {0}".format(self.filename),
+            "12 return foo 160 {0}".format(self.filename),
+            "13 return gcd 168 {0}".format(self.filename),
+            "21 return gcd 168 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -194,7 +196,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             pass
 
         recorder = self.recorder
-        logger = FocusedFunctionMemoryMonitor(
+        logger = self.monitor_type(
             recorder, record_type=tuple, functions=[gcd])
 
         @logger.attach
@@ -209,12 +211,12 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "0 call gcd 185 {0}".format(self.filename),
-            "1 call internal 190 {0}".format(self.filename),
-            "2 return internal 191 {0}".format(self.filename),
-            "3 call internal 190 {0}".format(self.filename),
-            "4 return internal 191 {0}".format(self.filename),
-            "5 return gcd 188 {0}".format(self.filename)]
+            "0 call gcd 187 {0}".format(self.filename),
+            "1 call internal 192 {0}".format(self.filename),
+            "2 return internal 193 {0}".format(self.filename),
+            "3 call internal 192 {0}".format(self.filename),
+            "4 return internal 193 {0}".format(self.filename),
+            "5 return gcd 190 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
         self.assertEqual(logger._code_trackers, {})
@@ -228,6 +230,12 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             records.append(
                 ' '.join([str(item).rstrip() for item in filtered]))
         return records
+
+    def check_for_psutils(self):
+        try:
+            import psutil
+        except ImportError:
+            self.skipTest('Could not import psutils, skipping test.')
 
 
 if __name__ == '__main__':

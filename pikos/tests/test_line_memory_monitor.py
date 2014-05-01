@@ -1,6 +1,14 @@
+# -*- coding: utf-8 -*-
+#------------------------------------------------------------------------------
+#  Package: Pikos toolkit
+#  File: tests/test_line_memory_monitor.py
+#  License: LICENSE.TXT
+#
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
 import unittest
 
-from pikos.monitors.line_memory_monitor import LineMemoryMonitor
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.filters.on_value import OnValue
 from pikos.tests.test_assistant import TestAssistant
@@ -10,11 +18,14 @@ from pikos.tests.compat import TestCase
 class TestLineMemoryMonitor(TestCase, TestAssistant):
 
     def setUp(self):
+        self.check_for_psutils()
+        from pikos.monitors.line_memory_monitor import LineMemoryMonitor
+        self.monitor_type = LineMemoryMonitor
         self.filename = __file__.replace('.pyc', '.py')
         self.maxDiff = None
         self.recorder = ListRecorder(
             filter_=OnValue('filename', self.filename))
-        self.logger = LineMemoryMonitor(self.recorder)
+        self.logger = self.monitor_type(self.recorder)
 
     def test_function(self):
         logger = self.logger
@@ -37,12 +48,12 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
 
         # note the index depends on this file layout
         expected = [
-            "0 gcd 24             while x > 0: {0}".format(filename),
-            "1 gcd 25                 x, y = y % x, x {0}".format(filename),
-            "2 gcd 24             while x > 0: {0}".format(filename),
-            "3 gcd 25                 x, y = y % x, x {0}".format(filename),
-            "4 gcd 24             while x > 0: {0}".format(filename),
-            "5 gcd 26             return y {0}".format(filename)]
+            "0 gcd 35             while x > 0: {0}".format(filename),
+            "1 gcd 36                 x, y = y % x, x {0}".format(filename),
+            "2 gcd 35             while x > 0: {0}".format(filename),
+            "3 gcd 36                 x, y = y % x, x {0}".format(filename),
+            "4 gcd 35             while x > 0: {0}".format(filename),
+            "5 gcd 37             return y {0}".format(filename)]
         records = self.get_records(self.recorder)
         self.assertEqual(records, expected)
 
@@ -62,12 +73,12 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
         filename = self.filename
 
         expected = [
-            "0 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "8 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "16 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "24 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "32 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
-            "40 gcd 54             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
+            "0 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "8 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "16 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "24 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "32 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "40 gcd 65             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
         records = self.get_records(self.recorder)
         self.assertEqual(records, expected)
 
@@ -92,38 +103,38 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
         filename = self.filename
 
         expected = [
-            "0 fibonacci 80             x, y = 0, 1 {0}".format(filename),
-            "1 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "2 fibonacci 82                 yield x {0}".format(filename),
-            "11 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "12 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "13 fibonacci 82                 yield x {0}".format(filename),
-            "22 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "23 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "24 fibonacci 82                 yield x {0}".format(filename),
-            "33 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "34 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "35 fibonacci 82                 yield x {0}".format(filename),
-            "44 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "45 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "46 fibonacci 82                 yield x {0}".format(filename),
-            "55 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "56 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "57 fibonacci 82                 yield x {0}".format(filename),
-            "66 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "67 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "68 fibonacci 82                 yield x {0}".format(filename),
-            "77 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "78 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "79 fibonacci 82                 yield x {0}".format(filename),
-            "88 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "89 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "90 fibonacci 82                 yield x {0}".format(filename),
-            "99 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "100 fibonacci 81             for i in range(items): {0}".format(filename),  # noqa
-            "101 fibonacci 82                 yield x {0}".format(filename),
-            "110 fibonacci 83                 x, y = y, x + y {0}".format(filename),  # noqa
-            "111 fibonacci 81             for i in range(items): {0}".format(filename)]  # noqa
+            "0 fibonacci 91             x, y = 0, 1 {0}".format(filename),
+            "1 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "2 fibonacci 93                 yield x {0}".format(filename),
+            "11 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "12 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "13 fibonacci 93                 yield x {0}".format(filename),
+            "22 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "23 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "24 fibonacci 93                 yield x {0}".format(filename),
+            "33 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "34 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "35 fibonacci 93                 yield x {0}".format(filename),
+            "44 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "45 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "46 fibonacci 93                 yield x {0}".format(filename),
+            "55 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "56 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "57 fibonacci 93                 yield x {0}".format(filename),
+            "66 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "67 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "68 fibonacci 93                 yield x {0}".format(filename),
+            "77 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "78 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "79 fibonacci 93                 yield x {0}".format(filename),
+            "88 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "89 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "90 fibonacci 93                 yield x {0}".format(filename),
+            "99 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "100 fibonacci 92             for i in range(items): {0}".format(filename),  # noqa
+            "101 fibonacci 93                 yield x {0}".format(filename),
+            "110 fibonacci 94                 x, y = y, x + y {0}".format(filename),  # noqa
+            "111 fibonacci 92             for i in range(items): {0}".format(filename)]  # noqa
 
         records = self.get_records(self.recorder)
         self.assertEqual(records, expected)
@@ -132,7 +143,7 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
         filename = self.filename
         # tuple records are not compatible with the default OnValue filters.
         recorder = ListRecorder(filter_=lambda x: x[-1] == filename)
-        logger = LineMemoryMonitor(recorder, record_type=tuple)
+        logger = self.monitor_type(recorder, record_type=tuple)
 
         @logger.attach
         def gcd(x, y):
@@ -148,12 +159,12 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "0 gcd 139             while x > 0: {0}".format(filename),
-            "1 gcd 140                 x, y = y % x, x {0}".format(filename),
-            "2 gcd 139             while x > 0: {0}".format(filename),
-            "3 gcd 140                 x, y = y % x, x {0}".format(filename),
-            "4 gcd 139             while x > 0: {0}".format(filename),
-            "5 gcd 141             return y {0}".format(filename)]
+            "0 gcd 150             while x > 0: {0}".format(filename),
+            "1 gcd 151                 x, y = y % x, x {0}".format(filename),
+            "2 gcd 150             while x > 0: {0}".format(filename),
+            "3 gcd 151                 x, y = y % x, x {0}".format(filename),
+            "4 gcd 150             while x > 0: {0}".format(filename),
+            "5 gcd 152             return y {0}".format(filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
@@ -194,6 +205,12 @@ foo()
             records.append(
                 ' '.join([str(item).rstrip() for item in filtered]))
         return records
+
+    def check_for_psutils(self):
+        try:
+            import psutil
+        except ImportError:
+            self.skipTest('Could not import psutils, skipping test.')
 
 
 if __name__ == '__main__':
