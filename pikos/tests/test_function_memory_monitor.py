@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+#------------------------------------------------------------------------------
+#  Package: Pikos toolkit
+#  File: tests/test_function_memory_monitor.py
+#  License: LICENSE.TXT
+#
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
 import unittest
 
 from pikos.recorders.list_recorder import ListRecorder
@@ -37,8 +46,8 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 3)
         records = self.get_records(recorder)
         expected = [
-            "3 call gcd 25 {0}".format(self.filename),
-            "4 return gcd 29 {0}".format(self.filename)]
+            "3 call gcd 34 {0}".format(self.filename),
+            "4 return gcd 38 {0}".format(self.filename)]
         self.assertEqual(records, expected)
 
     def test_recursive(self):
@@ -57,18 +66,18 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
         self.assertEqual(result, 1)
         records = self.get_records(recorder)
         expected = [
-            "3 call gcd 48 {0}".format(self.filename),
-            "11 call gcd 48 {0}".format(self.filename),
-            "19 call gcd 48 {0}".format(self.filename),
-            "27 call gcd 48 {0}".format(self.filename),
-            "35 call gcd 48 {0}".format(self.filename),
-            "43 call gcd 48 {0}".format(self.filename),
-            "44 return gcd 50 {0}".format(self.filename),
-            "52 return gcd 50 {0}".format(self.filename),
-            "60 return gcd 50 {0}".format(self.filename),
-            "68 return gcd 50 {0}".format(self.filename),
-            "76 return gcd 50 {0}".format(self.filename),
-            "84 return gcd 50 {0}".format(self.filename)]
+            "3 call gcd 57 {0}".format(self.filename),
+            "11 call gcd 57 {0}".format(self.filename),
+            "19 call gcd 57 {0}".format(self.filename),
+            "27 call gcd 57 {0}".format(self.filename),
+            "35 call gcd 57 {0}".format(self.filename),
+            "43 call gcd 57 {0}".format(self.filename),
+            "44 return gcd 59 {0}".format(self.filename),
+            "52 return gcd 59 {0}".format(self.filename),
+            "60 return gcd 59 {0}".format(self.filename),
+            "68 return gcd 59 {0}".format(self.filename),
+            "76 return gcd 59 {0}".format(self.filename),
+            "84 return gcd 59 {0}".format(self.filename)]
         self.assertEqual(records, expected)
 
     def test_generator(self):
@@ -92,30 +101,30 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
         self.assertSequenceEqual(result, output)
         records = self.get_records(recorder)
         expected = [
-            "3 call fibonacci 79 {0}".format(self.filename),
-            "4 c_call range 82 {0}".format(self.filename),
-            "5 c_return range 82 {0}".format(self.filename),
-            "6 return fibonacci 83 {0}".format(self.filename),
-            "19 call fibonacci 83 {0}".format(self.filename),
-            "20 return fibonacci 83 {0}".format(self.filename),
-            "34 call fibonacci 83 {0}".format(self.filename),
-            "35 return fibonacci 83 {0}".format(self.filename),
-            "49 call fibonacci 83 {0}".format(self.filename),
-            "50 return fibonacci 83 {0}".format(self.filename),
-            "64 call fibonacci 83 {0}".format(self.filename),
-            "65 return fibonacci 83 {0}".format(self.filename),
-            "79 call fibonacci 83 {0}".format(self.filename),
-            "80 return fibonacci 83 {0}".format(self.filename),
-            "94 call fibonacci 83 {0}".format(self.filename),
-            "95 return fibonacci 83 {0}".format(self.filename),
-            "109 call fibonacci 83 {0}".format(self.filename),
-            "110 return fibonacci 83 {0}".format(self.filename),
-            "124 call fibonacci 83 {0}".format(self.filename),
-            "125 return fibonacci 83 {0}".format(self.filename),
-            "139 call fibonacci 83 {0}".format(self.filename),
-            "140 return fibonacci 83 {0}".format(self.filename),
-            "154 call fibonacci 83 {0}".format(self.filename),
-            "155 return fibonacci 84 {0}".format(self.filename)]
+            "3 call fibonacci 88 {0}".format(self.filename),
+            "4 c_call range 91 {0}".format(self.filename),
+            "5 c_return range 91 {0}".format(self.filename),
+            "6 return fibonacci 92 {0}".format(self.filename),
+            "19 call fibonacci 92 {0}".format(self.filename),
+            "20 return fibonacci 92 {0}".format(self.filename),
+            "34 call fibonacci 92 {0}".format(self.filename),
+            "35 return fibonacci 92 {0}".format(self.filename),
+            "49 call fibonacci 92 {0}".format(self.filename),
+            "50 return fibonacci 92 {0}".format(self.filename),
+            "64 call fibonacci 92 {0}".format(self.filename),
+            "65 return fibonacci 92 {0}".format(self.filename),
+            "79 call fibonacci 92 {0}".format(self.filename),
+            "80 return fibonacci 92 {0}".format(self.filename),
+            "94 call fibonacci 92 {0}".format(self.filename),
+            "95 return fibonacci 92 {0}".format(self.filename),
+            "109 call fibonacci 92 {0}".format(self.filename),
+            "110 return fibonacci 92 {0}".format(self.filename),
+            "124 call fibonacci 92 {0}".format(self.filename),
+            "125 return fibonacci 92 {0}".format(self.filename),
+            "139 call fibonacci 92 {0}".format(self.filename),
+            "140 return fibonacci 92 {0}".format(self.filename),
+            "154 call fibonacci 92 {0}".format(self.filename),
+            "155 return fibonacci 93 {0}".format(self.filename)]
         self.assertEqual(records, expected)
 
     def test_function_using_tuples(self):
@@ -137,8 +146,8 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
         boo()
         self.assertEqual(result, 3)
         expected = [
-            "3 call gcd 126 {0}".format(self.filename),
-            "4 return gcd 130 {0}".format(self.filename)]
+            "3 call gcd 135 {0}".format(self.filename),
+            "4 return gcd 139 {0}".format(self.filename)]
         records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
