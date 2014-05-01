@@ -55,7 +55,8 @@ class CSVRecorder(AbstractRecorder):
     def prepare(self, record):
         """ Write the header in the csv file the first time it is called. """
         if not self._ready:
-            self._writer.writerow(record._fields)
+            if hasattr(record, '_fields'):
+                self._writer.writerow(record._fields)
             self._ready = True
 
     def finalize(self):

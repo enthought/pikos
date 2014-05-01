@@ -15,7 +15,7 @@ class TestCSVRecorder(TestCase):
     def tearDown(self):
         self.temp.close()
 
-    def test_prepare(self):
+    def test_prepare_with_namedtuple(self):
         header = 'one,two,three\r\n'
         recorder = CSVRecorder(self.temp)
         recorder.prepare(DummyRecord)
@@ -28,6 +28,18 @@ class TestCSVRecorder(TestCase):
             recorder.prepare(DummyRecord)
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
+    def test_prepare_with_tuple(self):
+        recorder = CSVRecorder(self.temp)
+        recorder.prepare(tuple)
+
+        # there is no header in this case
+        self.assertMultiLineEqual(self.temp.getvalue(), '')
+        recorder.prepare(tuple)
+        # all calls do nothing
+        for x in range(10):
+            recorder.prepare(tuple)
+        self.assertMultiLineEqual(self.temp.getvalue(), '')
+
     def test_finalize(self):
         header = 'one,two,three\r\n'
         recorder = CSVRecorder(self.temp)
@@ -37,11 +49,19 @@ class TestCSVRecorder(TestCase):
             recorder.finalize()
         self.assertMultiLineEqual(self.temp.getvalue(), header)
 
-    def test_record(self):
+    def test_record_with_namedtuple(self):
         record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one,two,three\r\n5,pikos,apikos\r\n'
         recorder = CSVRecorder(self.temp)
         recorder.prepare(DummyRecord)
+        recorder.record(record)
+        self.assertMultiLineEqual(self.temp.getvalue(), output)
+
+    def test_record_with_tuple(self):
+        record = (5, 'pikos', 'apikos')
+        output = '5,pikos,apikos\r\n'
+        recorder = CSVRecorder(self.temp)
+        recorder.prepare(tuple)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 

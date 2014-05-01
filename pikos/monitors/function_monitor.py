@@ -8,29 +8,11 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from __future__ import absolute_import
-import inspect
-from collections import namedtuple
 
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-FUNCTION_RECORD = ('index', 'type', 'function', 'lineNo', 'filename')
-FUNCTION_RECORD_TEMPLATE = u'{:<8} {:<11} {:<30} {:<5} {}'
-
-
-class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return FUNCTION_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import FunctionRecord
 
 
 class FunctionMonitor(Monitor):
@@ -60,9 +42,16 @@ class FunctionMonitor(Monitor):
         to keep track of recursive calls to the monitor's :meth:`__enter__` and
         :meth:`__exit__` methods.
 
+    _record: function object
+        The cached reference to the record function.
+
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.FunctionMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -72,11 +61,20 @@ class FunctionMonitor(Monitor):
             that implements the same interface to handle the values to be
             logged.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.FunctionMonitor.
+
         """
         self._recorder = recorder
+        self._record = recorder.record
         self._profiler = ProfileFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
+        if record_type is None:
+            self._record_type = FunctionRecord
+        else:
+            self._record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -86,8 +84,12 @@ class FunctionMonitor(Monitor):
 
         """
         if self._call_tracker('ping'):
-            self._recorder.prepare(FunctionRecord)
-            self._profiler.replace(self.on_function_event)
+            self._recorder.prepare(self._record_type)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._profiler.replace(self.on_function_event_using_tuple)
+            else:
+                self._profiler.replace(self.on_function_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -108,14 +110,30 @@ class FunctionMonitor(Monitor):
         recorder.
 
         """
-        if 'c_' == event[:2]:
-            record = FunctionRecord(
+        if '_' == event[1]:
+            record = self._record_type(
                 self._index, event, arg.__name__,
                 frame.f_lineno, frame.f_code.co_filename)
         else:
             code = frame.f_code
-            record = FunctionRecord(
+            record = self._record_type(
                 self._index, event, code.co_name,
                 frame.f_lineno, code.co_filename)
-        self._recorder.record(record)
+        self._record(record)
+        self._index += 1
+
+    def on_function_event_using_tuple(self, frame, event, arg):
+        """ Record the current function event using a tuple for record.
+
+        """
+        if '_' == event[1]:
+            record = (
+                self._index, event, arg.__name__,
+                frame.f_lineno, frame.f_code.co_filename)
+        else:
+            code = frame.f_code
+            record = (
+                self._index, event, code.co_name,
+                frame.f_lineno, code.co_filename)
+        self._record(record)
         self._index += 1

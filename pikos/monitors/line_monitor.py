@@ -9,29 +9,11 @@
 #------------------------------------------------------------------------------
 from __future__ import absolute_import
 import inspect
-from collections import namedtuple
 
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-
-LINE_RECORD = ('index', 'function', 'lineNo', 'line', 'filename')
-LINE_RECORD_TEMPLATE = u'{:<12} {:<50} {:<7} {} -- {}'
-
-
-class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return LINE_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import LineRecord
 
 
 class LineMonitor(Monitor):
@@ -61,9 +43,13 @@ class LineMonitor(Monitor):
         to keep track of recursive calls to the monitor's :meth:`__enter__` and
         :meth:`__exit__` methods.
 
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.LineMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -73,11 +59,19 @@ class LineMonitor(Monitor):
             that implements the same interface to handle the values to be
             recorded.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.LineMonitor`
+
         """
         self._recorder = recorder
         self._tracer = TraceFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
+        if record_type is None:
+            self._record_type = LineRecord
+        else:
+            self._record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -87,8 +81,12 @@ class LineMonitor(Monitor):
 
         """
         if self._call_tracker('ping'):
-            self._recorder.prepare(LineRecord)
-            self._tracer.replace(self.on_line_event)
+            self._recorder.prepare(self._record_type)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._tracer.replace(self.on_line_event_using_tuple)
+            else:
+                self._tracer.replace(self.on_line_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -114,8 +112,23 @@ class LineMonitor(Monitor):
                 inspect.getframeinfo(frame, context=1)
             if line is None:
                 line = ['<compiled string>']
-            record = LineRecord(self._index, function, lineno,
-                                line[0].rstrip(), filename)
+            record = self._record_type(
+                self._index, function, lineno, line[0].rstrip(), filename)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
+
+    def on_line_event_using_tuple(self, frame, why, arg):
+        """ Record the current line trace event using a tuple record.
+
+        """
+        if why == 'line':
+            filename, lineno, function, line, _ = \
+                inspect.getframeinfo(frame, context=1)
+            if line is None:
+                line = ['<compiled string>']
+            record = (
+                self._index, function, lineno, line[0].rstrip(), filename)
+            self._recorder.record(record)
+            self._index += 1
+        return self.on_line_event_using_tuple

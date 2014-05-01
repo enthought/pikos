@@ -19,12 +19,20 @@ class TestCSVFileRecorder(TestCase):
     def tearDown(self):
         shutil.rmtree(self.directory)
 
-    def test_prepare(self):
+    def test_prepare_with_namedtuple(self):
         header = 'one,two,three\n'
         recorder = CSVFileRecorder(filename=self.filename)
 
         with self.finalizer(recorder):
             recorder.prepare(DummyRecord)
+        self.assertRecordedLines(header)
+
+    def test_prepare_with_tuple(self):
+        header = ''
+        recorder = CSVFileRecorder(filename=self.filename)
+
+        with self.finalizer(recorder):
+            recorder.prepare(tuple)
         self.assertRecordedLines(header)
 
     def test_prepare_multiple_times(self):
@@ -48,12 +56,21 @@ class TestCSVFileRecorder(TestCase):
                 recorder.finalize()
         self.assertRecordedLines(header)
 
-    def test_record(self):
+    def test_record_with_namedtuple(self):
         record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one,two,three\n5,pikos,apikos\n'
         recorder = CSVFileRecorder(filename=self.filename)
         with self.finalizer(recorder):
             recorder.prepare(DummyRecord)
+            recorder.record(record)
+        self.assertRecordedLines(output)
+
+    def test_record_with_tuple(self):
+        record = (5, 'pikos', 'apikos')
+        output = '5,pikos,apikos\n'
+        recorder = CSVFileRecorder(filename=self.filename)
+        with self.finalizer(recorder):
+            recorder.prepare(tuple)
             recorder.record(record)
         self.assertRecordedLines(output)
 

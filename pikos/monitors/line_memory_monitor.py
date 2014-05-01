@@ -10,35 +10,13 @@
 from __future__ import absolute_import
 import inspect
 import os
-from collections import namedtuple
 
 import psutil
 
 from pikos._internal.trace_function_manager import TraceFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-
-LINE_MEMORY_RECORD = (
-    'index', 'function', 'lineNo', 'RSS', 'VMS', 'line', 'filename')
-LINE_MEMORY_RECORD_TEMPLATE = (
-    u'{:<12} | {:<30} | {:<7} | {:>15} | {:>15} | {} {}')
-LINE_MEMORY_HEADER_TEMPLATE = (
-    u'{:^12} | {:^30} | {:^7} | {:^15} | {:^15} | {} {}')
-
-
-class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line """
-        return LINE_MEMORY_HEADER_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return LINE_MEMORY_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import LineMemoryRecord
 
 
 class LineMemoryMonitor(Monitor):
@@ -73,9 +51,13 @@ class LineMemoryMonitor(Monitor):
        An instanse of :class:`psutil.Process` for the current process, used to
        get memory information in a platform independent way.
 
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.LineMemoryMonitor`
+
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -85,12 +67,20 @@ class LineMemoryMonitor(Monitor):
             class that implements the same interface to handle the values
             to be recorded.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.LineMemoryMonitor`
+
         """
         self._recorder = recorder
         self._tracer = TraceFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
         self._process = None
+        if record_type is None:
+            self._record_type = LineMemoryRecord
+        else:
+            self._record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -102,8 +92,12 @@ class LineMemoryMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
-            self._recorder.prepare(LineMemoryRecord)
-            self._tracer.replace(self.on_line_event)
+            self._recorder.prepare(self._record_type)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._tracer.replace(self.on_line_event_using_tuple)
+            else:
+                self._tracer.replace(self.on_line_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -132,9 +126,26 @@ class LineMemoryMonitor(Monitor):
                 inspect.getframeinfo(frame, context=1)
             if line is None:
                 line = ['<compiled string>']
-            record = LineMemoryRecord(self._index, function, lineno,
-                                      usage[0], usage[1], line[0],
-                                      filename)
+            record = self._record_type(
+                self._index, function, lineno, usage[0], usage[1], line[0],
+                filename)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
+
+    def on_line_event_using_tuple(self, frame, why, arg):
+        """ Record the current line trace events optimized using tuples.
+
+        """
+        if why.startswith('l'):
+            usage = self._process.get_memory_info()
+            filename, lineno, function, line, _ = \
+                inspect.getframeinfo(frame, context=1)
+            if line is None:
+                line = ['<compiled string>']
+            record = (
+                self._index, function, lineno, usage[0], usage[1], line[0],
+                filename)
+            self._recorder.record(record)
+            self._index += 1
+        return self.on_line_event_using_tuple
