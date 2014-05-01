@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+#----------------------------------------------------------------------------
+#  Package: Pikos toolkit
+#  File: tests/test_c_function_monitor.py
+#  License: LICENSE.TXT
+#
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
+#----------------------------------------------------------------------------
 import sys
 import StringIO
 import unittest
