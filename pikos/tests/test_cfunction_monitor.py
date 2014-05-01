@@ -45,8 +45,8 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call gcd 33 {0}".format(self.filename),
-            "1 return gcd 37 {0}".format(self.filename)]
+            "0 call gcd 32 {0}".format(self.filename),
+            "1 return gcd 36 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -65,38 +65,38 @@ class TestCFunctionMonitor(TestCase):
         if sys.version_info[:2] == (2, 6):
             # Python 2.6 __enter__ is called through the CALL_FUNCTION
             # bytecode and thus the c __enter__ methods appears in the
-            # function events while in 2.7 the behaviour has changes.
+            # function events while in 2.7 the behaviour has changed.
             expected = [
                 "index type function lineNo filename",
                 "-----------------------------------",
-                "0 call gcd 57 {0}".format(self.filename),
-                "6 call gcd 57 {0}".format(self.filename),
-                "12 call gcd 57 {0}".format(self.filename),
-                "18 call gcd 57 {0}".format(self.filename),
-                "24 call gcd 57 {0}".format(self.filename),
-                "30 call gcd 57 {0}".format(self.filename),
-                "31 return gcd 59 {0}".format(self.filename),
-                "35 return gcd 59 {0}".format(self.filename),
-                "39 return gcd 59 {0}".format(self.filename),
-                "43 return gcd 59 {0}".format(self.filename),
-                "47 return gcd 59 {0}".format(self.filename),
-                "51 return gcd 59 {0}".format(self.filename)]
+                "0 call gcd 56 {0}".format(self.filename),
+                "6 call gcd 56 {0}".format(self.filename),
+                "12 call gcd 56 {0}".format(self.filename),
+                "18 call gcd 56 {0}".format(self.filename),
+                "24 call gcd 56 {0}".format(self.filename),
+                "30 call gcd 56 {0}".format(self.filename),
+                "31 return gcd 58 {0}".format(self.filename),
+                "35 return gcd 58 {0}".format(self.filename),
+                "39 return gcd 58 {0}".format(self.filename),
+                "43 return gcd 58 {0}".format(self.filename),
+                "47 return gcd 58 {0}".format(self.filename),
+                "51 return gcd 58 {0}".format(self.filename)]
         else:
             expected = [
                 "index type function lineNo filename",
                 "-----------------------------------",
-                "0 call gcd 57 {0}".format(self.filename),
-                "4 call gcd 57 {0}".format(self.filename),
-                "8 call gcd 57 {0}".format(self.filename),
-                "12 call gcd 57 {0}".format(self.filename),
-                "16 call gcd 57 {0}".format(self.filename),
-                "20 call gcd 57 {0}".format(self.filename),
-                "21 return gcd 59 {0}".format(self.filename),
-                "25 return gcd 59 {0}".format(self.filename),
-                "29 return gcd 59 {0}".format(self.filename),
-                "33 return gcd 59 {0}".format(self.filename),
-                "37 return gcd 59 {0}".format(self.filename),
-                "41 return gcd 59 {0}".format(self.filename)]
+                "0 call gcd 56 {0}".format(self.filename),
+                "4 call gcd 56 {0}".format(self.filename),
+                "8 call gcd 56 {0}".format(self.filename),
+                "12 call gcd 56 {0}".format(self.filename),
+                "16 call gcd 56 {0}".format(self.filename),
+                "20 call gcd 56 {0}".format(self.filename),
+                "21 return gcd 58 {0}".format(self.filename),
+                "25 return gcd 58 {0}".format(self.filename),
+                "29 return gcd 58 {0}".format(self.filename),
+                "33 return gcd 58 {0}".format(self.filename),
+                "37 return gcd 58 {0}".format(self.filename),
+                "41 return gcd 58 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -121,30 +121,30 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call fibonacci 108 {0}".format(self.filename),
-            "1 c_call range 111 {0}".format(self.filename),
-            "2 c_return range 111 {0}".format(self.filename),
-            "3 return fibonacci 112 {0}".format(self.filename),
-            "7 call fibonacci 112 {0}".format(self.filename),
-            "8 return fibonacci 112 {0}".format(self.filename),
-            "13 call fibonacci 112 {0}".format(self.filename),
-            "14 return fibonacci 112 {0}".format(self.filename),
-            "19 call fibonacci 112 {0}".format(self.filename),
-            "20 return fibonacci 112 {0}".format(self.filename),
-            "25 call fibonacci 112 {0}".format(self.filename),
-            "26 return fibonacci 112 {0}".format(self.filename),
-            "31 call fibonacci 112 {0}".format(self.filename),
-            "32 return fibonacci 112 {0}".format(self.filename),
-            "37 call fibonacci 112 {0}".format(self.filename),
-            "38 return fibonacci 112 {0}".format(self.filename),
-            "43 call fibonacci 112 {0}".format(self.filename),
-            "44 return fibonacci 112 {0}".format(self.filename),
-            "49 call fibonacci 112 {0}".format(self.filename),
-            "50 return fibonacci 112 {0}".format(self.filename),
-            "55 call fibonacci 112 {0}".format(self.filename),
-            "56 return fibonacci 112 {0}".format(self.filename),
-            "61 call fibonacci 112 {0}".format(self.filename),
-            "62 return fibonacci 113 {0}".format(self.filename)]
+            "0 call fibonacci 107 {0}".format(self.filename),
+            "1 c_call range 110 {0}".format(self.filename),
+            "2 c_return range 110 {0}".format(self.filename),
+            "3 return fibonacci 111 {0}".format(self.filename),
+            "7 call fibonacci 111 {0}".format(self.filename),
+            "8 return fibonacci 111 {0}".format(self.filename),
+            "13 call fibonacci 111 {0}".format(self.filename),
+            "14 return fibonacci 111 {0}".format(self.filename),
+            "19 call fibonacci 111 {0}".format(self.filename),
+            "20 return fibonacci 111 {0}".format(self.filename),
+            "25 call fibonacci 111 {0}".format(self.filename),
+            "26 return fibonacci 111 {0}".format(self.filename),
+            "31 call fibonacci 111 {0}".format(self.filename),
+            "32 return fibonacci 111 {0}".format(self.filename),
+            "37 call fibonacci 111 {0}".format(self.filename),
+            "38 return fibonacci 111 {0}".format(self.filename),
+            "43 call fibonacci 111 {0}".format(self.filename),
+            "44 return fibonacci 111 {0}".format(self.filename),
+            "49 call fibonacci 111 {0}".format(self.filename),
+            "50 return fibonacci 111 {0}".format(self.filename),
+            "55 call fibonacci 111 {0}".format(self.filename),
+            "56 return fibonacci 111 {0}".format(self.filename),
+            "61 call fibonacci 111 {0}".format(self.filename),
+            "62 return fibonacci 112 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
