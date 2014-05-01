@@ -7,16 +7,18 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 import os
+import platform
+
 from setuptools import setup, find_packages, Extension, Feature
 
 try:
     from Cython.Distutils import build_ext
 except ImportError:
     from setuptools.command import build_ext
-    HAS_CYTHON = False
+    BUILD_CYTHON_MONITORS = False
     cmdclass = {}
 else:
-    HAS_CYTHON = True
+    BUILD_CYTHON_MONITORS = platform.python_implementation() == 'CPython'
     cmdclass = {'build_ext': build_ext}
 
 with open('README.rst', 'r') as readme:
@@ -40,7 +42,7 @@ features = {'real-time-lsprof': real_time_lsprof}
 
 cython_monitors = Feature(
     description='optional compile additional cython monitors',
-    standard=HAS_CYTHON,
+    standard=BUILD_CYTHON_MONITORS,
     ext_modules=[
         Extension(
             'pikos.cymonitors.monitor',
@@ -88,8 +90,6 @@ setup(
     author_email='info@enthought.com',
     description='Enthought monitoring and profiling tools',
     long_description=README_TEXT,
-    requires=['psutil'],
-    install_requires=['distribute'],
     packages=find_packages(),
     test_suite='pikos.tests',
     entry_points=dict(

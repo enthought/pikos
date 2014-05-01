@@ -65,7 +65,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
             "60 return gcd 47 {0}".format(self.filename),
             "68 return gcd 47 {0}".format(self.filename),
             "76 return gcd 47 {0}".format(self.filename),
-            "84 return gcd 47 {0}".format(self.filename),]
+            "84 return gcd 47 {0}".format(self.filename)]
         self.assertEqual(records, expected)
 
     def test_generator(self):
@@ -113,6 +113,30 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
             "140 return fibonacci 80 {0}".format(self.filename),
             "154 call fibonacci 80 {0}".format(self.filename),
             "155 return fibonacci 81 {0}".format(self.filename)]
+        self.assertEqual(records, expected)
+
+    def test_function_using_tuples(self):
+        # tuple records are not compatible with the default OnValue filters.
+        recorder = ListRecorder(filter_=lambda x: x[-1] == self.filename)
+        logger = FunctionMemoryMonitor(recorder, record_type=tuple)
+
+        @logger.attach
+        def gcd(x, y):
+            while x > 0:
+                x, y = y % x, x
+            return y
+
+        def boo():
+            pass
+
+        boo()
+        result = gcd(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "3 call gcd 123 {0}".format(self.filename),
+            "4 return gcd 127 {0}".format(self.filename)]
+        records = self.get_records(recorder)
         self.assertEqual(records, expected)
 
     def get_records(self, recorder):

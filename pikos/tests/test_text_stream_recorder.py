@@ -71,11 +71,19 @@ class TestTextStreamRecorder(TestCase):
         with self.assertRaises(RecorderError):
             recorder.finalize()
 
-    def test_formatter(self):
+    def test_formatter_with_namedtuples(self):
         record = DummyRecord(5, 'pikos', 'apikos')
         output = 'one   two   three\n-----------------\n5     pikos apikos\n'
         recorder = TextStreamRecorder(self.temp, formatted=True)
         recorder.prepare(DummyRecord)
+        recorder.record(record)
+        self.assertMultiLineEqual(self.temp.getvalue(), output)
+
+    def test_formatter_with_tuples(self):
+        record = (5, 'pikos', 'apikos')
+        output = '5 pikos apikos\n'
+        recorder = TextStreamRecorder(self.temp, formatted=True)
+        recorder.prepare(tuple)
         recorder.record(record)
         self.assertMultiLineEqual(self.temp.getvalue(), output)
 

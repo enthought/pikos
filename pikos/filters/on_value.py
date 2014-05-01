@@ -7,8 +7,10 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+
+
 class OnValue(object):
-    """ A record filter that remove the record when a value is not contained.
+    """ A record filter that returns True if record has a specific value.
 
     Attributes
     ----------
@@ -17,6 +19,10 @@ class OnValue(object):
 
     values :
         A list of values to use for the filtering.
+
+    Notes
+    -----
+    This filter only works with nametuple like records.
 
     """
     def __init__(self, field, *args):

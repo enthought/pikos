@@ -71,12 +71,12 @@ class TestLineMonitor(TestCase):
         expected = [
             "index function lineNo line filename",
             "-----------------------------------",
-            "0 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "8 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "16 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "24 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "32 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),
-            "40 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]
+            "0 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "8 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "16 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "24 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "32 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename),  # noqa
+            "40 gcd 61             return x if y == 0 else gcd(y, (x % y)) {0}".format(filename)]  # noqa
 
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
@@ -105,38 +105,69 @@ class TestLineMonitor(TestCase):
             "index function lineNo line filename",
             "-----------------------------------",
             "0 fibonacci 90             x, y = 0, 1 {0}".format(filename),
-            "1 fibonacci 91             for i in range(items): {0}".format(filename),
-            "2 fibonacci 92                 yield x {0}".format(filename),
-            "11 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "12 fibonacci 91             for i in range(items): {0}".format(filename),
-            "13 fibonacci 92                 yield x {0}".format(filename),
-            "22 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "23 fibonacci 91             for i in range(items): {0}".format(filename),
-            "24 fibonacci 92                 yield x {0}".format(filename),
-            "33 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "34 fibonacci 91             for i in range(items): {0}".format(filename),
-            "35 fibonacci 92                 yield x {0}".format(filename),
-            "44 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "45 fibonacci 91             for i in range(items): {0}".format(filename),
-            "46 fibonacci 92                 yield x {0}".format(filename),
-            "55 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "56 fibonacci 91             for i in range(items): {0}".format(filename),
-            "57 fibonacci 92                 yield x {0}".format(filename),
-            "66 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "67 fibonacci 91             for i in range(items): {0}".format(filename),
-            "68 fibonacci 92                 yield x {0}".format(filename),
-            "77 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "78 fibonacci 91             for i in range(items): {0}".format(filename),
-            "79 fibonacci 92                 yield x {0}".format(filename),
-            "88 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "89 fibonacci 91             for i in range(items): {0}".format(filename),
-            "90 fibonacci 92                 yield x {0}".format(filename),
-            "99 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "100 fibonacci 91             for i in range(items): {0}".format(filename),
-            "101 fibonacci 92                 yield x {0}".format(filename),
-            "110 fibonacci 93                 x, y = y, x + y {0}".format(filename),
-            "111 fibonacci 91             for i in range(items): {0}".format(filename)]
+            "1 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "2 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "11 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "12 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "13 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "22 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "23 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "24 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "33 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "34 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "35 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "44 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "45 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "46 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "55 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "56 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "57 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "66 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "67 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "68 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "77 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "78 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "79 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "88 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "89 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "90 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "99 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "100 fibonacci 91             for i in range(items): {0}".format(filename),  # noqa
+            "101 fibonacci 92                 yield x {0}".format(filename),  # noqa
+            "110 fibonacci 93                 x, y = y, x + y {0}".format(filename),  # noqa
+            "111 fibonacci 91             for i in range(items): {0}".format(filename)]  # noqa
 
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+
+    def test_function_using_tuples(self):
+        filename = self.filename
+        # tuple records are not compatible with the default OnValue filters.
+        recorder = TextStreamRecorder(
+            text_stream=self.stream,
+            filter_=lambda x: x[-1] == filename)
+        logger = LineMonitor(recorder, record_type=tuple)
+
+        @logger.attach
+        def gcd(x, y):
+            while x > 0:
+                x, y = y % x, x
+            return y
+
+        def boo():
+            pass
+
+        boo()
+        result = gcd(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "0 gcd 153             while x > 0: {0}".format(filename),
+            "1 gcd 154                 x, y = y % x, x {0}".format(filename),
+            "2 gcd 153             while x > 0: {0}".format(filename),
+            "3 gcd 154                 x, y = y % x, x {0}".format(filename),
+            "4 gcd 153             while x > 0: {0}".format(filename),
+            "5 gcd 155             return y {0}".format(filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 

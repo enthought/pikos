@@ -122,6 +122,32 @@ class TestFunctionMonitor(TestCase):
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
+    def test_function_using_tuples(self):
+        # tuple records are not compatible with the default OnValue filters.
+        recorder = TextStreamRecorder(
+            text_stream=self.stream,
+            filter_=lambda x: x[-1] == self.filename)
+        logger = FunctionMonitor(recorder, record_type=tuple)
+
+        @logger.attach
+        def gcd(x, y):
+            while x > 0:
+                x, y = y % x, x
+            return y
+
+        def boo():
+            pass
+
+        boo()
+        result = gcd(12, 3)
+        boo()
+        self.assertEqual(result, 3)
+        expected = [
+            "3 call gcd 132 {0}".format(self.filename),
+            "4 return gcd 136 {0}".format(self.filename)]
+        records = ''.join(self.stream.buflist).splitlines()
+        self.assertEqual(records, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

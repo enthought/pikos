@@ -10,35 +10,13 @@
 from __future__ import absolute_import
 import inspect
 import os
-from collections import namedtuple
 
 import psutil
 
 from pikos._internal.profile_function_manager import ProfileFunctionManager
 from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.monitor import Monitor
-
-FUNCTION_MEMORY_RECORD = (
-    'index', 'type', 'function', 'RSS', 'VMS', 'lineNo', 'filename')
-FUNCTION_MEMORY_RECORD_TEMPLATE = (
-    u'{:>8} | {:<11} | {:<12} | {:>15} | {:>15} | {:>6} | {}')
-FUNCTION_MEMORY_HEADER_TEMPLATE = (
-    u'{:<8} | {:<11} | {:<12} | {:<15} | {:<15} | {:>6} | {}')
-
-
-class FunctionMemoryRecord(
-        namedtuple('FunctionMemoryRecord', FUNCTION_MEMORY_RECORD)):
-
-    __slots__ = ()
-
-    @classmethod
-    def header(cls):
-        """ Return a formatted header line. """
-        return FUNCTION_MEMORY_HEADER_TEMPLATE.format(*cls._fields)
-
-    def line(self):
-        """ Return a formatted header line """
-        return FUNCTION_MEMORY_RECORD_TEMPLATE.format(*self)
+from pikos.monitors.records import FunctionMemoryRecord
 
 
 class FunctionMemoryMonitor(Monitor):
@@ -69,12 +47,20 @@ class FunctionMemoryMonitor(Monitor):
         :meth:`__exit__` methods.
 
     _process : object
-       An instanse of :class:`psutil.Process` for the current process, used to
-       get memory information in a platform independent way.
+        An instanse of :class:`psutil.Process` for the current process, used to
+        get memory information in a platform independent way.
+
+    _record_type : object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
+
+    _record_type: class object
+        A class object to be used for records. Default is
+        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
 
     """
 
-    def __init__(self, recorder):
+    def __init__(self, recorder, record_type=None):
         """ Initialize the monitoring class.
 
         Parameters
@@ -84,12 +70,20 @@ class FunctionMemoryMonitor(Monitor):
             that implements the same interface to handle the values to be
             logged.
 
+        record_type: class object
+            A class object to be used for records. Default is
+            :class:`~pikos.monitors.records.FunctionMemoryMonitor`
+
         """
         self._recorder = recorder
         self._profiler = ProfileFunctionManager()
         self._index = 0
         self._call_tracker = KeepTrack()
         self._process = None
+        if record_type is None:
+            self._record_type = FunctionMemoryRecord
+        else:
+            self._record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -101,8 +95,12 @@ class FunctionMemoryMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
-            self._recorder.prepare(FunctionMemoryRecord)
-            self._profiler.replace(self.on_function_event)
+            self._recorder.prepare(self._record_type)
+            if self._record_type is tuple:
+                # optimized function for tuples.
+                self._profiler.replace(self.on_function_event_using_tuple)
+            else:
+                self._profiler.replace(self.on_function_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -130,7 +128,21 @@ class FunctionMemoryMonitor(Monitor):
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
-        record = FunctionMemoryRecord(self._index, event, function, usage[0],
-                                      usage[1], lineno, filename)
+        record = self._record_type(
+            self._index, event, function, usage[0], usage[1], lineno, filename)
+        self._recorder.record(record)
+        self._index += 1
+
+    def on_function_event_using_tuple(self, frame, event, arg):
+        """ Record the process memory usage using a tuple as record.
+
+        """
+        usage = self._process.get_memory_info()
+        filename, lineno, function, _, _ = \
+            inspect.getframeinfo(frame, context=0)
+        if event.startswith('c_'):
+            function = arg.__name__
+        record = (
+            self._index, event, function, usage[0], usage[1], lineno, filename)
         self._recorder.record(record)
         self._index += 1
