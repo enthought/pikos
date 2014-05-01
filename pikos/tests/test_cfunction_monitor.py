@@ -54,8 +54,8 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call gcd 32 {0}".format(self.filename),
-            "1 return gcd 36 {0}".format(self.filename)]
+            "0 call gcd 41 {0}".format(self.filename),
+            "1 return gcd 45 {0}".format(self.filename)]
         records = ''.join(self.stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
@@ -130,7 +130,7 @@ class TestCFunctionMonitor(TestCase):
         expected = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "0 call fibonacci 115 {0}".format(self.filename),
+            "0 call fibonacci 116 {0}".format(self.filename),
             "1 c_call range 119 {0}".format(self.filename),
             "2 c_return range 119 {0}".format(self.filename),
             "3 return fibonacci 120 {0}".format(self.filename),
