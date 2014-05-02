@@ -97,12 +97,12 @@ class TestFunctionMonitor(TestCase):
         self.assertEqual(result, 3)
         template = [
             "3 call gcd 27 {0}",
-            "4 return gcd 31 {0}".format(self.filename)]
+            "4 return gcd 31 {0}"]
         self.check_records(template, self.stream)
 
     def check_records(self, template, stream):
         expected = [line.format(self.filename) for line in template]
-        records = ''.join(self.stream.buflist).splitlines()
+        records = ''.join(stream.buflist).splitlines()
         self.assertEqual(records, expected)
 
 
