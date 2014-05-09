@@ -116,7 +116,7 @@ The monitor records available are:
     ~pikos.monitors.records.FunctionRecord
     ~pikos.monitors.records.LineRecord
     ~pikos.monitors.records.FunctionMemoryRecord
-    ~pikos.monitors.LineMemoryRecord
+    ~pikos.monitors.records.LineMemoryRecord
 
 
 ----------------------------------
