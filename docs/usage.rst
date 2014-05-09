@@ -57,7 +57,7 @@ Monitors can be used programmatically in a number of ways.
 #. Finally the :mod:`pikos.api` module provides easy to use decorator
    factories for the standard monitors that are provided by pikos. The
    factories can optionally accept a recorder and dictate if a focused
-   monitor should be used a::
+   monitor should be used::
 
     from pikos.api import function_monitor, csv_file
 
