@@ -6,8 +6,7 @@ env:
   - CYTHON=0
   - CYTHON=1
 install:
-  - pip install psutil
-  - pip install unittest2
+  - pip install -r requirements.txt
   - if [[ $CYTHON == 1 ]]; then pip install cython; fi
   - python setup.py develop
 script: unit2 discover
