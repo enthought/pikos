@@ -13,6 +13,13 @@ Recorders
 
 -------------------------------
 
+.. autoclass:: pikos.recorders.csv_file_recorder.CSVFileRecorder
+    :no-private-members:
+
+    .. automethod:: pikos.recorders.csv_file_recorder.CSVFileRecorder.__init__
+
+-------------------------------
+
 .. autoclass:: pikos.recorders.list_recorder.ListRecorder
     :no-private-members:
 
@@ -24,6 +31,13 @@ Recorders
     :no-private-members:
 
     .. automethod:: pikos.recorders.text_stream_recorder.TextStreamRecorder.__init__
+
+-------------------------------
+
+.. autoclass:: pikos.recorders.text_file_recorder.TextFileRecorder
+    :no-private-members:
+
+    .. automethod:: pikos.recorders.text_file_recorder.TextFileRecorder.__init__
 
 -------------------------------
 
