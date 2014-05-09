@@ -113,10 +113,10 @@ The monitor records available are:
 
 .. autosummary::
 
-    ~pikos.monitors.function_monitor.FunctionRecord
-    ~pikos.monitors.line_monitor.LineRecord
-    ~pikos.monitors.function_memory_monitor.FunctionMemoryRecord
-    ~pikos.monitors.line_memory_monitor.LineMemoryRecord
+    ~pikos.monitors.records.FunctionRecord
+    ~pikos.monitors.records.LineRecord
+    ~pikos.monitors.records.FunctionMemoryRecord
+    ~pikos.monitors.LineMemoryRecord
 
 
 ----------------------------------
