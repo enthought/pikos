@@ -15,8 +15,6 @@ class TestLineMonitor(TestCase):
         self.stream = StringIO.StringIO()
         self.helper = MonitoringHelper()
         self.filename = self.helper.filename
-        # we only care about the lines that are in this file and we filter
-        # the others.
         self.recorder = TextStreamRecorder(
             text_stream=self.stream,
             filter_=OnValue('filename', self.filename))
@@ -42,8 +40,6 @@ class TestLineMonitor(TestCase):
     def test_recursive(self):
         result = self.helper.run_on_recursive_function()
         self.assertEqual(result, 1)
-
-        filename = self.filename
 
         template = [
             "index function lineNo line filename",
@@ -152,6 +148,7 @@ foo()
         expected = [line.format(self.filename) for line in template]
         records = ''.join(stream.buflist).splitlines()
         self.assertEqual(records, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

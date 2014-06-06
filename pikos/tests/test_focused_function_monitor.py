@@ -20,14 +20,18 @@ class TestFocusedFunctionMonitor(TestCase):
 
     def setUp(self):
         self.maxDiff = None
-        self.filename = __file__.replace('.pyc', '.py')
         self.stream = StringIO.StringIO()
-        # we only care about the lines that are in this file and we filter
-        # the others.
-        self.recorder = TextStreamRecorder(text_stream=self.stream)
-        self.logger = FocusedFunctionMonitor(self.recorder)
+        self.helper = MonitoringHelper()
+        self.filename = self.helper.filename
+        self.recorder = TextStreamRecorder(
+            text_stream=self.stream,
+            filter_=OnValue('filename', self.filename))
+        self.monitor = LineMonitor(self.recorder)
+        self.helper.monitor = self.monitor
 
     def test_focus_on_function(self):
+        result = self.helper.run_on_function()
+        self.assertEqual(result, 3)
 
         def gcd(x, y):
             while x > 0:

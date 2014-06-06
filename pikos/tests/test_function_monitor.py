@@ -86,20 +86,6 @@ class TestFunctionMonitor(TestCase):
             "155 return fibonacci 67 {0}"]
         self.check_records(template, self.stream)
 
-    def test_function_using_tuples(self):
-        # tuple records are not compatible with the default OnValue filters.
-        recorder = TextStreamRecorder(
-            text_stream=self.stream,
-            filter_=lambda x: x[-1] == self.filename)
-        monitor = FunctionMonitor(recorder, record_type=tuple)
-        helper = MonitoringHelper(monitor)
-        result = helper.run_on_function()
-        self.assertEqual(result, 3)
-        template = [
-            "3 call gcd 27 {0}",
-            "4 return gcd 31 {0}"]
-        self.check_records(template, self.stream)
-
     def check_records(self, template, stream):
         expected = [line.format(self.filename) for line in template]
         records = ''.join(stream.buflist).splitlines()

@@ -73,3 +73,31 @@ class MonitoringHelper(object):
         result = [value for value in fibonacci(10)]
         boo()
         return result
+
+    def run_function_with_internal(self):
+        """ Run a function under the monitor decorator.
+
+        """
+        monitor = self.monitor
+
+        def gcd(x, y):
+            while x > 0:
+                x, y = internal(x, y)
+            return y
+
+        def internal(x, y):
+            boo()
+            return y % x, x
+
+        def boo():
+            pass
+
+        @monitor.attach
+        def container(x, y):
+            boo()
+            result = gcd(x, y)
+            boo()
+            return result
+
+        boo()
+        return container(12, 3)
