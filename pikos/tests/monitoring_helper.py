@@ -74,11 +74,12 @@ class MonitoringHelper(object):
         boo()
         return result
 
-    def run_function_with_internal(self):
-        """ Run a function under the monitor decorator.
+    def run_function_for_focused(self):
+        """ Run a function under a focused monitor.
 
         """
         monitor = self.monitor
+        monitor
 
         def gcd(x, y):
             while x > 0:
