@@ -46,10 +46,10 @@ class TestLineMonitor(TestCase):
             "-----------------------------------",
             "0 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",
             "8 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",
-            "16 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",
-            "24 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",
-            "32 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",
-            "40 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}"]
+            "16 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "24 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "32 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "40 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
 
         self.check_records(template, self.stream)
 

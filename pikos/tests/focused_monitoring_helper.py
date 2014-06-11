@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/focused_monitoring_helper.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 
 class FocusedMonitoringHelper(object):
     """ A monitoring utility class to help testing 'focused' event monitors.
@@ -16,10 +17,9 @@ class FocusedMonitoringHelper(object):
     def monitor(self):
         """ The monitor instance that was recently active. """
         return self._monitor
-    
-    
+
     def __init__(self, monitor_factory):
-        #: The factory accepting a list of  functions that returns 
+        #: The factory accepting a list of  functions that returns
         #: an monitor instance to use.
         self.monitor_factory = monitor_factory
         #: The python filename where this class is defined
@@ -53,7 +53,6 @@ class FocusedMonitoringHelper(object):
 
         boo()
         return container(12, 3)
-
 
     def run_on_functions(self):
         """ Run functions under the monitor using the `attach` decorator.
@@ -90,7 +89,6 @@ class FocusedMonitoringHelper(object):
         boo()
         return result
 
-
     def run_on_recursive_function(self):
         """ Run a recursive function under the monitor decorator.
 
@@ -121,7 +119,7 @@ class FocusedMonitoringHelper(object):
         return result
 
     def run_on_decorated(self):
-        
+
         def gcd(x, y):
             while x > 0:
                 x, y = internal(x, y)
@@ -147,7 +145,6 @@ class FocusedMonitoringHelper(object):
         boo()
         return result
 
-
     def run_on_decorated_recursive(self):
         """ Run a recursive function under a focus monitoring the decorated.
 
@@ -163,4 +160,3 @@ class FocusedMonitoringHelper(object):
             return x if y == 0 else gcd(y, (x % y))
 
         return gcd(12, 3)
-

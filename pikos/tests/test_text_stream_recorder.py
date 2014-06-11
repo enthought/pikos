@@ -53,7 +53,7 @@ class TestTextStreamRecorder(TestCase):
         output = 'one two three\n-------------\n12 emilios milo\n'
 
         def not_pikos(values):
-            return not 'pikos' in values
+            return not ('pikos' in values)
 
         recorder = TextStreamRecorder(self.temp, filter_=not_pikos)
         recorder.prepare(DummyRecord)

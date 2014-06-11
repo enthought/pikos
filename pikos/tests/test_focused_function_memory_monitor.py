@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: monitors/test_focused_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import unittest
 
 from pikos.filters.on_value import OnValue
@@ -20,8 +20,9 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
     def setUp(self):
         self.check_for_psutils()
         self.maxDiff = None
-        
-        # local import to avoid errors when the optional depedency psutils is not available
+
+        # local import to avoid errors when the optional depedency psutils is
+        # not available
         from pikos.monitors.focused_function_memory_monitor import (
             FocusedFunctionMemoryMonitor)
 
@@ -124,7 +125,8 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
 
     def test_focus_on_function_using_tuples(self):
 
-        # local import to avoid errors when the optional depedency psutils is not available
+        # local import to avoid errors when the optional depedency psutils is
+        # not available
         from pikos.monitors.focused_function_memory_monitor import (
             FocusedFunctionMemoryMonitor)
 
@@ -133,10 +135,10 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
 
         def monitor_factory(functions=[]):
             return FocusedFunctionMemoryMonitor(
-                functions=functions, 
-                recorder=recorder, 
+                functions=functions,
+                recorder=recorder,
                 record_type=tuple)
-        
+
         helper = FocusedMonitoringHelper(monitor_factory)
         result = helper.run_on_function()
         self.assertEqual(result, 3)
@@ -172,9 +174,9 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
     def check_for_psutils(self):
         try:
             import psutil
+            psutil
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
-
 
 if __name__ == '__main__':
     unittest.main()

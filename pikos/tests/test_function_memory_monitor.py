@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/test_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import unittest
 
 from pikos.recorders.list_recorder import ListRecorder
@@ -33,6 +33,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
 
     def test_function(self):
         result = self.helper.run_on_function()
+        self.assertEqual(result, 3)
         template = [
             "3 call gcd 27 {0}",
             "4 return gcd 31 {0}"]
@@ -40,7 +41,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
 
     def test_recursive(self):
         result = self.helper.run_on_recursive_function()
-        self.assertEqual(result, 1)
+        self.assertEqual(result, 3)
         template = [
             "3 call gcd 47 {0}",
             "11 call gcd 47 {0}",
@@ -101,7 +102,7 @@ class TestFunctionMemoryMonitor(TestCase, TestAssistant):
 
     def check_for_psutils(self):
         try:
-            import psutil
+            import psutil  # noqa
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
 

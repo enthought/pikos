@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/gcd.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
 
 class MonitoringHelper(object):
     """ A monitoring utility class to help testing event monitors.

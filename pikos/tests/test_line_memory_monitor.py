@@ -152,7 +152,7 @@ foo()
 
     def check_for_psutils(self):
         try:
-            import psutil
+            import psutil  # noqa
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
 

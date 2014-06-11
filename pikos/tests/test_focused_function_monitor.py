@@ -22,11 +22,11 @@ class TestFocusedFunctionMonitor(TestCase):
     def setUp(self):
         self.maxDiff = None
         self.stream = StringIO.StringIO()
-        
+
         def monitor_factory(functions=[]):
             return FocusedFunctionMonitor(
                 functions=functions, recorder=self.recorder)
-        
+
         self.helper = FocusedMonitoringHelper(monitor_factory)
         self.filename = self.helper.filename
         self.recorder = TextStreamRecorder(
@@ -138,10 +138,10 @@ class TestFocusedFunctionMonitor(TestCase):
 
         def monitor_factory(functions=[]):
             return FocusedFunctionMonitor(
-                functions=functions, 
-                recorder=recorder, 
+                functions=functions,
+                recorder=recorder,
                 record_type=tuple)
-        
+
         helper = FocusedMonitoringHelper(monitor_factory)
         result = helper.run_on_function()
         self.assertEqual(result, 3)
