@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/test_line_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import unittest
 
 from pikos.filters.on_value import OnValue
-from pikos.tests.test_assistant import TestAssistant
 from pikos.tests.compat import TestCase
 from pikos.tests.monitoring_helper import MonitoringHelper
 from pikos.recorders.list_recorder import ListRecorder
 
 
-class TestLineMemoryMonitor(TestCase, TestAssistant):
+class TestLineMemoryMonitor(TestCase):
 
     def setUp(self):
         self.check_for_psutils()
@@ -117,7 +116,6 @@ class TestLineMemoryMonitor(TestCase, TestAssistant):
     def test_issue2(self):
         """ Test for issue #2.
 
-        The issues is reported in `https://github.com/sjagoe/pikos/issues/2`_
         """
         monitor = self.monitor
 

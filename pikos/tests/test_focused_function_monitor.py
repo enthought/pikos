@@ -132,7 +132,6 @@ class TestFocusedFunctionMonitor(TestCase):
         self.assertEqual(self.helper.monitor._code_trackers, {})
 
     def test_focus_on_function_using_tuples(self):
-
         recorder = TextStreamRecorder(
             text_stream=self.stream,
             filter_=lambda record: self.filename in record)
