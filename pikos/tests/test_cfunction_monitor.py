@@ -73,18 +73,18 @@ class TestCFunctionMonitor(TestCase):
             template = [
                 u"index type function lineNo filename",
                 u"-----------------------------------",
-                u"0 call gcd 47 {0}",
-                u"4 call gcd 47 {0}",
-                u"8 call gcd 47 {0}",
-                u"12 call gcd 47 {0}",
-                u"14 call gcd 47 {0}",
-                u"30 call gcd 47 {0}",
-                u"31 return gcd 49 {0}",
-                u"35 return gcd 49 {0}",
-                u"39 return gcd 49 {0}",
-                u"43 return gcd 49 {0}",
-                u"47 return gcd 49 {0}",
-                u"51 return gcd 49 {0}"]
+                u"0 call gcd 48 {0}",
+                u"4 call gcd 48 {0}",
+                u"8 call gcd 48 {0}",
+                u"12 call gcd 48 {0}",
+                u"14 call gcd 48 {0}",
+                u"30 call gcd 48 {0}",
+                u"31 return gcd 50 {0}",
+                u"35 return gcd 50 {0}",
+                u"39 return gcd 50 {0}",
+                u"43 return gcd 50 {0}",
+                u"47 return gcd 50 {0}",
+                u"51 return gcd 50 {0}"]
         else:
             template = [
                 u"index type function lineNo filename",
