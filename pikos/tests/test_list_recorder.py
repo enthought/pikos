@@ -37,7 +37,7 @@ class TestListRecorder(TestCase):
         output = [(12, 'emilios', 'milo')]
 
         def not_pikos(values):
-            return not 'pikos' in values
+            return not ('pikos' in values)
 
         recorder = ListRecorder(filter_=not_pikos)
         recorder.prepare(DummyRecord)

@@ -1,225 +1,160 @@
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: monitors/test_focused_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import unittest
 
 from pikos.filters.on_value import OnValue
 from pikos.recorders.list_recorder import ListRecorder
 from pikos.tests.compat import TestCase
+from pikos.tests.focused_monitoring_helper import FocusedMonitoringHelper
 
 
 class TestFocusedFunctionMemoryMonitor(TestCase):
 
     def setUp(self):
         self.check_for_psutils()
+        self.maxDiff = None
+
+        # local import to avoid errors when the optional depedency psutils is
+        # not available
         from pikos.monitors.focused_function_memory_monitor import (
             FocusedFunctionMemoryMonitor)
-        self.monitor_type = FocusedFunctionMemoryMonitor
-        self.filename = __file__.replace('.pyc', '.py')
-        self.maxDiff = None
-        self.recorder = ListRecorder()
+
+        def monitor_factory(functions=[]):
+            return FocusedFunctionMemoryMonitor(
+                functions=functions, recorder=self.recorder)
+
+        self.helper = FocusedMonitoringHelper(monitor_factory)
+        self.filename = self.helper.filename
+        self.recorder = ListRecorder(
+            filter_=OnValue('filename', self.filename))
 
     def test_focus_on_function(self):
-
-        def gcd(x, y):
-            while x > 0:
-                x, y = internal(x, y)
-            return y
-
-        def internal(x, y):
-            return y % x, x
-
-        def boo():
-            pass
-
-        recorder = self.recorder
-        logger = self.monitor_type(recorder, functions=[gcd])
-
-        @logger.attach
-        def container(x, y):
-            boo()
-            result = gcd(x, y)
-            boo()
-            return result
-
-        boo()
-        result = container(12, 3)
-        boo()
+        result = self.helper.run_on_function()
         self.assertEqual(result, 3)
-        expected = [
-            "0 call gcd 30 {0}".format(self.filename),
-            "1 call internal 35 {0}".format(self.filename),
-            "2 return internal 36 {0}".format(self.filename),
-            "3 call internal 35 {0}".format(self.filename),
-            "4 return internal 36 {0}".format(self.filename),
-            "5 return gcd 33 {0}".format(self.filename)]
-        records = self.get_records(recorder)
-        self.assertEqual(records, expected)
-        self.assertEqual(logger._code_trackers, {})
+        template = [
+            "0 call gcd 33 {0}",
+            "1 call internal 40 {0}",
+            "2 call boo 44 {0}",
+            "3 return boo 45 {0}",
+            "4 return internal 42 {0}",
+            "5 call internal 40 {0}",
+            "6 call boo 44 {0}",
+            "7 return boo 45 {0}",
+            "8 return internal 42 {0}",
+            "9 return gcd 36 {0}"]
+        self.check_records(template, self.recorder)
+        self.assertEqual(self.helper.monitor._code_trackers, {})
 
     def test_focus_on_functions(self):
-
-        def gcd(x, y):
-            while x > 0:
-                x, y = internal(x, y)
-            return y
-
-        def internal(x, y):
-            return y % x, x
-
-        def boo():
-            pass
-
-        def foo():
-            boo()
-            boo()
-            boo()
-
-        recorder = self.recorder
-        logger = self.monitor_type(
-            recorder, functions=[internal, foo])
-
-        @logger.attach
-        def container(x, y):
-            boo()
-            result = gcd(x, y)
-            boo()
-            foo()
-            return result
-
-        boo()
-        result = container(12, 3)
-        boo()
+        result = self.helper.run_on_functions()
         self.assertEqual(result, 3)
-        expected = [
-            "0 call internal 73 {0}".format(self.filename),
-            "1 return internal 74 {0}".format(self.filename),
-            "2 call internal 73 {0}".format(self.filename),
-            "3 return internal 74 {0}".format(self.filename),
-            "4 call foo 79 {0}".format(self.filename),
-            "5 call boo 76 {0}".format(self.filename),
-            "6 return boo 77 {0}".format(self.filename),
-            "7 call boo 76 {0}".format(self.filename),
-            "8 return boo 77 {0}".format(self.filename),
-            "9 call boo 76 {0}".format(self.filename),
-            "10 return boo 77 {0}".format(self.filename),
-            "11 return foo 82 {0}".format(self.filename)]
-        records = self.get_records(recorder)
-        self.assertEqual(records, expected)
-        self.assertEqual(logger._code_trackers, {})
+        template = [
+            "0 call gcd 62 {0}",
+            "1 call internal 67 {0}",
+            "2 return internal 68 {0}",
+            "3 call internal 67 {0}",
+            "4 return internal 68 {0}",
+            "5 return gcd 65 {0}",
+            "6 call foo 73 {0}",
+            "7 call boo 70 {0}",
+            "8 return boo 71 {0}",
+            "9 call boo 70 {0}",
+            "10 return boo 71 {0}",
+            "11 return foo 75 {0}",
+        ]
+        self.check_records(template, self.recorder)
+        self.assertEqual(self.helper.monitor._code_trackers, {})
 
     def test_focus_on_recursive(self):
-
-        def gcd(x, y):
-            foo()
-            return x if y == 0 else gcd(y, (x % y))
-
-        def boo():
-            pass
-
-        def foo():
-            pass
-
-        recorder = self.recorder
-        logger = self.monitor_type(recorder, functions=[gcd])
-
-        @logger.attach
-        def container(x, y):
-            boo()
-            result = gcd(x, y)
-            boo()
-            foo()
-            return result
-
-        boo()
-        result = container(12, 3)
-        boo()
+        result = self.helper.run_on_recursive_function()
         self.assertEqual(result, 3)
-        expected = [
-            "0 call gcd 119 {0}".format(self.filename),
-            "1 call foo 126 {0}".format(self.filename),
-            "2 return foo 127 {0}".format(self.filename),
-            "3 call gcd 119 {0}".format(self.filename),
-            "4 call foo 126 {0}".format(self.filename),
-            "5 return foo 127 {0}".format(self.filename),
-            "6 return gcd 121 {0}".format(self.filename),
-            "7 return gcd 121 {0}".format(self.filename)]
-        records = self.get_records(recorder)
-        self.assertEqual(records, expected)
-        self.assertEqual(logger._code_trackers, {})
+        template = [
+            "0 call gcd 96 {0}",
+            "1 call foo 103 {0}",
+            "2 return foo 104 {0}",
+            "3 call gcd 96 {0}",
+            "4 call foo 103 {0}",
+            "5 return foo 104 {0}",
+            "6 return gcd 98 {0}",
+            "7 return gcd 98 {0}"]
+        self.check_records(template, self.recorder)
+        self.assertEqual(self.helper.monitor._code_trackers, {})
+
+    def test_focus_on_decorated_function(self):
+        result = self.helper.run_on_decorated()
+        self.assertEqual(result, 3)
+        template = [
+            "0 call container 137 {0}",
+            "1 call gcd 123 {0}",
+            "2 call internal 128 {0}",
+            "3 call boo 132 {0}",
+            "4 return boo 133 {0}",
+            "5 return internal 130 {0}",
+            "6 call internal 128 {0}",
+            "7 call boo 132 {0}",
+            "8 return boo 133 {0}",
+            "9 return internal 130 {0}",
+            "10 return gcd 126 {0}",
+            "11 call boo 132 {0}",
+            "12 return boo 133 {0}",
+            "13 return container 141 {0}"]
+        self.check_records(template, self.recorder)
+        self.assertEqual(self.helper.monitor._code_trackers, {})
 
     def test_focus_on_decorated_recursive(self):
-
-        def foo():
-            pass
-
-        recorder = ListRecorder(filter_=OnValue('filename', self.filename))
-        logger = self.monitor_type(recorder)
-
-        @logger.attach(include_decorated=True)
-        def gcd(x, y):
-            foo()
-            return x if y == 0 else gcd(y, (x % y))
-
-        result = gcd(12, 3)
+        result = self.helper.run_on_decorated_recursive()
         self.assertEqual(result, 3)
-        expected = [
-            "0 call gcd 165 {0}".format(self.filename),
-            "1 call foo 159 {0}".format(self.filename),
-            "2 return foo 160 {0}".format(self.filename),
-            "10 call gcd 165 {0}".format(self.filename),
-            "11 call foo 159 {0}".format(self.filename),
-            "12 return foo 160 {0}".format(self.filename),
-            "13 return gcd 168 {0}".format(self.filename),
-            "21 return gcd 168 {0}".format(self.filename)]
-        records = self.get_records(recorder)
-        self.assertEqual(records, expected)
-        self.assertEqual(logger._code_trackers, {})
+        template = [
+            "0 call gcd 157 {0}",
+            "1 call foo 152 {0}",
+            "2 return foo 153 {0}",
+            "10 call gcd 157 {0}",
+            "11 call foo 152 {0}",
+            "12 return foo 153 {0}",
+            "13 return gcd 160 {0}",
+            "21 return gcd 160 {0}"]
+        self.check_records(template, self.recorder)
+        self.assertEqual(self.helper.monitor._code_trackers, {})
 
     def test_focus_on_function_using_tuples(self):
 
-        def gcd(x, y):
-            while x > 0:
-                x, y = internal(x, y)
-            return y
+        # local import to avoid errors when the optional depedency psutils is
+        # not available
+        from pikos.monitors.focused_function_memory_monitor import (
+            FocusedFunctionMemoryMonitor)
 
-        def internal(x, y):
-            return y % x, x
+        recorder = ListRecorder(
+            filter_=lambda record: self.filename in record)
 
-        def boo():
-            pass
+        def monitor_factory(functions=[]):
+            return FocusedFunctionMemoryMonitor(
+                functions=functions,
+                recorder=recorder,
+                record_type=tuple)
 
-        recorder = self.recorder
-        logger = self.monitor_type(
-            recorder, record_type=tuple, functions=[gcd])
-
-        @logger.attach
-        def container(x, y):
-            boo()
-            result = gcd(x, y)
-            boo()
-            return result
-
-        boo()
-        result = container(12, 3)
-        boo()
+        helper = FocusedMonitoringHelper(monitor_factory)
+        result = helper.run_on_function()
         self.assertEqual(result, 3)
-        expected = [
-            "0 call gcd 187 {0}".format(self.filename),
-            "1 call internal 192 {0}".format(self.filename),
-            "2 return internal 193 {0}".format(self.filename),
-            "3 call internal 192 {0}".format(self.filename),
-            "4 return internal 193 {0}".format(self.filename),
-            "5 return gcd 190 {0}".format(self.filename)]
-        records = self.get_records(recorder)
-        self.assertEqual(records, expected)
-        self.assertEqual(logger._code_trackers, {})
+        template = [
+            "0 call gcd 33 {0}",
+            "1 call internal 40 {0}",
+            "2 call boo 44 {0}",
+            "3 return boo 45 {0}",
+            "4 return internal 42 {0}",
+            "5 call internal 40 {0}",
+            "6 call boo 44 {0}",
+            "7 return boo 45 {0}",
+            "8 return internal 42 {0}",
+            "9 return gcd 36 {0}"]
+        self.check_records(template, recorder)
+        self.assertEqual(helper.monitor._code_trackers, {})
 
     def get_records(self, recorder):
         """ Remove the memory related fields.
@@ -231,9 +166,15 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
                 ' '.join([str(item).rstrip() for item in filtered]))
         return records
 
+    def check_records(self, template, recorder):
+        expected = [line.format(self.filename) for line in template]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
+
     def check_for_psutils(self):
         try:
             import psutil
+            psutil
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
 

@@ -1,12 +1,12 @@
-#-*- coding: utf-8 -*-
-#------------------------------------------------------------------------------
+# -*- coding: utf-8 -*-
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/test_pikos_monitor_decorator_factories.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from pikos.monitors.api import MonitorAttach
 from pikos.recorders.api import ListRecorder, TextStreamRecorder
 from pikos.tests import compat
@@ -90,7 +90,7 @@ class TestPikosRecorderFactories(compat.TestCase):
 
     def check_for_psutils(self):
         try:
-            import psutil
+            import psutil  # noqa
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
 
