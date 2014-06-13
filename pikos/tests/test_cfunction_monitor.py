@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
 #  File: tests/test_c_function_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import sys
 import StringIO
 import unittest
@@ -44,8 +44,8 @@ class TestCFunctionMonitor(TestCase):
         template = [
             u"index type function lineNo filename",
             u"-----------------------------------",
-            u"0 call gcd 27 {0}",
-            u"1 return gcd 31 {0}"]
+            u"0 call gcd 28 {0}",
+            u"1 return gcd 32 {0}"]
         self.check_records(template, self.stream)
 
     def test_function_using_tuples(self):
@@ -59,8 +59,8 @@ class TestCFunctionMonitor(TestCase):
         result = helper.run_on_function()
         self.assertEqual(result, 3)
         template = [
-            "0 call gcd 27 {0}",
-            "1 return gcd 31 {0}"]
+            "0 call gcd 28 {0}",
+            "1 return gcd 32 {0}"]
         self.check_records(template, self.stream)
 
     def test_recursive(self):
@@ -89,18 +89,18 @@ class TestCFunctionMonitor(TestCase):
             template = [
                 u"index type function lineNo filename",
                 u"-----------------------------------",
-                u"0 call gcd 47 {0}",
-                u"4 call gcd 47 {0}",
-                u"8 call gcd 47 {0}",
-                u"12 call gcd 47 {0}",
-                u"16 call gcd 47 {0}",
-                u"20 call gcd 47 {0}",
-                u"21 return gcd 49 {0}",
-                u"25 return gcd 49 {0}",
-                u"29 return gcd 49 {0}",
-                u"33 return gcd 49 {0}",
-                u"37 return gcd 49 {0}",
-                u"41 return gcd 49 {0}"]
+                u"0 call gcd 48 {0}",
+                u"4 call gcd 48 {0}",
+                u"8 call gcd 48 {0}",
+                u"12 call gcd 48 {0}",
+                u"16 call gcd 48 {0}",
+                u"20 call gcd 48 {0}",
+                u"21 return gcd 50 {0}",
+                u"25 return gcd 50 {0}",
+                u"29 return gcd 50 {0}",
+                u"33 return gcd 50 {0}",
+                u"37 return gcd 50 {0}",
+                u"41 return gcd 50 {0}"]
         self.check_records(template, self.stream)
 
     def test_generator(self):
@@ -110,30 +110,30 @@ class TestCFunctionMonitor(TestCase):
         template = [
             u"index type function lineNo filename",
             u"-----------------------------------",
-            u"0 call fibonacci 62 {0}",
-            u"1 c_call range 65 {0}",
-            u"2 c_return range 65 {0}",
-            u"3 return fibonacci 66 {0}",
-            u"7 call fibonacci 66 {0}",
-            u"8 return fibonacci 66 {0}",
-            u"13 call fibonacci 66 {0}",
-            u"14 return fibonacci 66 {0}",
-            u"19 call fibonacci 66 {0}",
-            u"20 return fibonacci 66 {0}",
-            u"25 call fibonacci 66 {0}",
-            u"26 return fibonacci 66 {0}",
-            u"31 call fibonacci 66 {0}",
-            u"32 return fibonacci 66 {0}",
-            u"37 call fibonacci 66 {0}",
-            u"38 return fibonacci 66 {0}",
-            u"43 call fibonacci 66 {0}",
-            u"44 return fibonacci 66 {0}",
-            u"49 call fibonacci 66 {0}",
-            u"50 return fibonacci 66 {0}",
-            u"55 call fibonacci 66 {0}",
-            u"56 return fibonacci 66 {0}",
-            u"61 call fibonacci 66 {0}",
-            u"62 return fibonacci 67 {0}"]
+            u"0 call fibonacci 63 {0}",
+            u"1 c_call range 66 {0}",
+            u"2 c_return range 66 {0}",
+            u"3 return fibonacci 67 {0}",
+            u"7 call fibonacci 67 {0}",
+            u"8 return fibonacci 67 {0}",
+            u"13 call fibonacci 67 {0}",
+            u"14 return fibonacci 67 {0}",
+            u"19 call fibonacci 67 {0}",
+            u"20 return fibonacci 67 {0}",
+            u"25 call fibonacci 67 {0}",
+            u"26 return fibonacci 67 {0}",
+            u"31 call fibonacci 67 {0}",
+            u"32 return fibonacci 67 {0}",
+            u"37 call fibonacci 67 {0}",
+            u"38 return fibonacci 67 {0}",
+            u"43 call fibonacci 67 {0}",
+            u"44 return fibonacci 67 {0}",
+            u"49 call fibonacci 67 {0}",
+            u"50 return fibonacci 67 {0}",
+            u"55 call fibonacci 67 {0}",
+            u"56 return fibonacci 67 {0}",
+            u"61 call fibonacci 67 {0}",
+            u"62 return fibonacci 68 {0}"]
         self.check_records(template, self.stream)
 
     def check_records(self, template, stream):

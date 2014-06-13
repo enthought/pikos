@@ -33,12 +33,12 @@ class TestLineMemoryMonitor(TestCase):
         self.assertEqual(result, 3)
 
         template = [
-            "0 gcd 29             while x > 0: {0}",
-            "1 gcd 30                 x, y = y % x, x {0}",
-            "2 gcd 29             while x > 0: {0}",
-            "3 gcd 30                 x, y = y % x, x {0}",
-            "4 gcd 29             while x > 0: {0}",
-            "5 gcd 31             return y {0}"]
+            "0 gcd 30             while x > 0: {0}",
+            "1 gcd 31                 x, y = y % x, x {0}",
+            "2 gcd 30             while x > 0: {0}",
+            "3 gcd 31                 x, y = y % x, x {0}",
+            "4 gcd 30             while x > 0: {0}",
+            "5 gcd 32             return y {0}"]
         self.check_records(template, self.recorder)
 
     def test_recursive(self):
@@ -46,12 +46,12 @@ class TestLineMemoryMonitor(TestCase):
         self.assertEqual(result, 1)
 
         template = [
-            "0 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "8 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "16 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "24 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "32 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "40 gcd 49             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
+            "0 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "8 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "16 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "24 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "32 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "40 gcd 50             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
         self.check_records(template, self.recorder)
 
     def test_generator(self):
@@ -60,38 +60,38 @@ class TestLineMemoryMonitor(TestCase):
         self.assertSequenceEqual(result, output)
 
         template = [
-            "0 fibonacci 64             x, y = 0, 1 {0}",
-            "1 fibonacci 65             for i in range(items): {0}",  # noqa
-            "2 fibonacci 66                 yield x {0}",
-            "11 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "12 fibonacci 65             for i in range(items): {0}",  # noqa
-            "13 fibonacci 66                 yield x {0}",
-            "22 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "23 fibonacci 65             for i in range(items): {0}",  # noqa
-            "24 fibonacci 66                 yield x {0}",
-            "33 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "34 fibonacci 65             for i in range(items): {0}",  # noqa
-            "35 fibonacci 66                 yield x {0}",
-            "44 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "45 fibonacci 65             for i in range(items): {0}",  # noqa
-            "46 fibonacci 66                 yield x {0}",
-            "55 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "56 fibonacci 65             for i in range(items): {0}",  # noqa
-            "57 fibonacci 66                 yield x {0}",
-            "66 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "67 fibonacci 65             for i in range(items): {0}",  # noqa
-            "68 fibonacci 66                 yield x {0}",
-            "77 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "78 fibonacci 65             for i in range(items): {0}",  # noqa
-            "79 fibonacci 66                 yield x {0}",
-            "88 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "89 fibonacci 65             for i in range(items): {0}",  # noqa
-            "90 fibonacci 66                 yield x {0}",
-            "99 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "100 fibonacci 65             for i in range(items): {0}",  # noqa
-            "101 fibonacci 66                 yield x {0}",
-            "110 fibonacci 67                 x, y = y, x + y {0}",  # noqa
-            "111 fibonacci 65             for i in range(items): {0}"]  # noqa
+            "0 fibonacci 65             x, y = 0, 1 {0}",
+            "1 fibonacci 66             for i in range(items): {0}",  # noqa
+            "2 fibonacci 67                 yield x {0}",
+            "11 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "12 fibonacci 66             for i in range(items): {0}",  # noqa
+            "13 fibonacci 67                 yield x {0}",
+            "22 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "23 fibonacci 66             for i in range(items): {0}",  # noqa
+            "24 fibonacci 67                 yield x {0}",
+            "33 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "34 fibonacci 66             for i in range(items): {0}",  # noqa
+            "35 fibonacci 67                 yield x {0}",
+            "44 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "45 fibonacci 66             for i in range(items): {0}",  # noqa
+            "46 fibonacci 67                 yield x {0}",
+            "55 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "56 fibonacci 66             for i in range(items): {0}",  # noqa
+            "57 fibonacci 67                 yield x {0}",
+            "66 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "67 fibonacci 66             for i in range(items): {0}",  # noqa
+            "68 fibonacci 67                 yield x {0}",
+            "77 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "78 fibonacci 66             for i in range(items): {0}",  # noqa
+            "79 fibonacci 67                 yield x {0}",
+            "88 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "89 fibonacci 66             for i in range(items): {0}",  # noqa
+            "90 fibonacci 67                 yield x {0}",
+            "99 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "100 fibonacci 66             for i in range(items): {0}",  # noqa
+            "101 fibonacci 67                 yield x {0}",
+            "110 fibonacci 68                 x, y = y, x + y {0}",  # noqa
+            "111 fibonacci 66             for i in range(items): {0}"]  # noqa
 
         self.check_records(template, self.recorder)
 
@@ -105,12 +105,12 @@ class TestLineMemoryMonitor(TestCase):
         result = helper.run_on_function()
         self.assertEqual(result, 3)
         template = [
-            "0 gcd 29             while x > 0: {0}",
-            "1 gcd 30                 x, y = y % x, x {0}",
-            "2 gcd 29             while x > 0: {0}",
-            "3 gcd 30                 x, y = y % x, x {0}",
-            "4 gcd 29             while x > 0: {0}",
-            "5 gcd 31             return y {0}"]
+            "0 gcd 30             while x > 0: {0}",
+            "1 gcd 31                 x, y = y % x, x {0}",
+            "2 gcd 30             while x > 0: {0}",
+            "3 gcd 31                 x, y = y % x, x {0}",
+            "4 gcd 30             while x > 0: {0}",
+            "5 gcd 32             return y {0}"]
         self.check_records(template, recorder)
 
     def test_issue2(self):

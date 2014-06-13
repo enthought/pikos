@@ -51,14 +51,14 @@ class TestFocusedLineMonitor(TestCase):
         template = [
             "index function lineNo line filename",
             "-----------------------------------",
-            "0 gcd 64             while x > 0: {0}",
-            "1 gcd 65                 x, y = internal(x, y) {0}",
-            "2 gcd 64             while x > 0: {0}",
-            "3 gcd 65                 x, y = internal(x, y) {0}",
-            "4 gcd 64             while x > 0: {0}",
-            "5 gcd 66             return y {0}",
-            "6 foo 75             boo() {0}",
-            "7 foo 76             boo() {0}"]
+            "0 gcd 63             while x > 0: {0}",
+            "1 gcd 64                 x, y = internal(x, y) {0}",
+            "2 gcd 63             while x > 0: {0}",
+            "3 gcd 64                 x, y = internal(x, y) {0}",
+            "4 gcd 63             while x > 0: {0}",
+            "5 gcd 65             return y {0}",
+            "6 foo 74             boo() {0}",
+            "7 foo 75             boo() {0}"]
         self.check_records(template, self.stream)
 
     def test_focus_on_recursive(self):
@@ -67,10 +67,10 @@ class TestFocusedLineMonitor(TestCase):
         template = [
             "index function lineNo line filename",
             "-----------------------------------",
-            "0 gcd 99             foo() {0}",
-            "1 gcd 100             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "2 gcd 99             foo() {0}",
-            "3 gcd 100             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
+            "0 gcd 97             foo() {0}",
+            "1 gcd 98             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "2 gcd 97             foo() {0}",
+            "3 gcd 98             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
         self.check_records(template, self.stream)
 
     def test_focus_on_decorated_function(self):
@@ -79,15 +79,15 @@ class TestFocusedLineMonitor(TestCase):
         template = [
             "index function lineNo line filename",
             "-----------------------------------",
-            "0 container 141             result = gcd(x, y) {0}",
-            "1 gcd 126             while x > 0: {0}",
-            "2 gcd 127                 x, y = internal(x, y) {0}",
-            "3 gcd 126             while x > 0: {0}",
-            "4 gcd 127                 x, y = internal(x, y) {0}",
-            "5 gcd 126             while x > 0: {0}",
-            "6 gcd 128             return y {0}",
-            "7 container 142             boo() {0}",
-            "8 container 143             return result {0}"]
+            "0 container 139             result = gcd(x, y) {0}",
+            "1 gcd 124             while x > 0: {0}",
+            "2 gcd 125                 x, y = internal(x, y) {0}",
+            "3 gcd 124             while x > 0: {0}",
+            "4 gcd 125                 x, y = internal(x, y) {0}",
+            "5 gcd 124             while x > 0: {0}",
+            "6 gcd 126             return y {0}",
+            "7 container 140             boo() {0}",
+            "8 container 141             return result {0}"]
         self.check_records(template, self.stream)
 
     def test_focus_on_decorated_recursive_function(self):
@@ -96,10 +96,10 @@ class TestFocusedLineMonitor(TestCase):
         template = [
             "index function lineNo line filename",
             "-----------------------------------",
-            "0 gcd 162             foo() {0}",
-            "1 gcd 163             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
-            "2 gcd 162             foo() {0}",
-            "3 gcd 163             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
+            "0 gcd 159             foo() {0}",
+            "1 gcd 160             return x if y == 0 else gcd(y, (x % y)) {0}",  # noqa
+            "2 gcd 159             foo() {0}",
+            "3 gcd 160             return x if y == 0 else gcd(y, (x % y)) {0}"]  # noqa
         self.check_records(template, self.stream)
 
     def test_focus_on_function_with_tuple(self):

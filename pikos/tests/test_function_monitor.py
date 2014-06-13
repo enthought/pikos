@@ -29,8 +29,8 @@ class TestFunctionMonitor(TestCase):
         template = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "3 call gcd 27 {0}",
-            "4 return gcd 31 {0}"]
+            "3 call gcd 28 {0}",
+            "4 return gcd 32 {0}"]
         self.check_records(template, self.stream)
 
     def test_recursive(self):
@@ -39,18 +39,18 @@ class TestFunctionMonitor(TestCase):
         template = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "3 call gcd 47 {0}",
-            "11 call gcd 47 {0}",
-            "19 call gcd 47 {0}",
-            "27 call gcd 47 {0}",
-            "35 call gcd 47 {0}",
-            "43 call gcd 47 {0}",
-            "44 return gcd 49 {0}",
-            "52 return gcd 49 {0}",
-            "60 return gcd 49 {0}",
-            "68 return gcd 49 {0}",
-            "76 return gcd 49 {0}",
-            "84 return gcd 49 {0}"]
+            "3 call gcd 48 {0}",
+            "11 call gcd 48 {0}",
+            "19 call gcd 48 {0}",
+            "27 call gcd 48 {0}",
+            "35 call gcd 48 {0}",
+            "43 call gcd 48 {0}",
+            "44 return gcd 50 {0}",
+            "52 return gcd 50 {0}",
+            "60 return gcd 50 {0}",
+            "68 return gcd 50 {0}",
+            "76 return gcd 50 {0}",
+            "84 return gcd 50 {0}"]
         self.check_records(template, self.stream)
 
     def test_generator(self):
@@ -60,30 +60,30 @@ class TestFunctionMonitor(TestCase):
         template = [
             "index type function lineNo filename",
             "-----------------------------------",
-            "3 call fibonacci 62 {0}",
-            "4 c_call range 65 {0}",
-            "5 c_return range 65 {0}",
-            "6 return fibonacci 66 {0}",
-            "19 call fibonacci 66 {0}",
-            "20 return fibonacci 66 {0}",
-            "34 call fibonacci 66 {0}",
-            "35 return fibonacci 66 {0}",
-            "49 call fibonacci 66 {0}",
-            "50 return fibonacci 66 {0}",
-            "64 call fibonacci 66 {0}",
-            "65 return fibonacci 66 {0}",
-            "79 call fibonacci 66 {0}",
-            "80 return fibonacci 66 {0}",
-            "94 call fibonacci 66 {0}",
-            "95 return fibonacci 66 {0}",
-            "109 call fibonacci 66 {0}",
-            "110 return fibonacci 66 {0}",
-            "124 call fibonacci 66 {0}",
-            "125 return fibonacci 66 {0}",
-            "139 call fibonacci 66 {0}",
-            "140 return fibonacci 66 {0}",
-            "154 call fibonacci 66 {0}",
-            "155 return fibonacci 67 {0}"]
+            "3 call fibonacci 63 {0}",
+            "4 c_call range 66 {0}",
+            "5 c_return range 66 {0}",
+            "6 return fibonacci 67 {0}",
+            "19 call fibonacci 67 {0}",
+            "20 return fibonacci 67 {0}",
+            "34 call fibonacci 67 {0}",
+            "35 return fibonacci 67 {0}",
+            "49 call fibonacci 67 {0}",
+            "50 return fibonacci 67 {0}",
+            "64 call fibonacci 67 {0}",
+            "65 return fibonacci 67 {0}",
+            "79 call fibonacci 67 {0}",
+            "80 return fibonacci 67 {0}",
+            "94 call fibonacci 67 {0}",
+            "95 return fibonacci 67 {0}",
+            "109 call fibonacci 67 {0}",
+            "110 return fibonacci 67 {0}",
+            "124 call fibonacci 67 {0}",
+            "125 return fibonacci 67 {0}",
+            "139 call fibonacci 67 {0}",
+            "140 return fibonacci 67 {0}",
+            "154 call fibonacci 67 {0}",
+            "155 return fibonacci 68 {0}"]
         self.check_records(template, self.stream)
 
     def check_records(self, template, stream):

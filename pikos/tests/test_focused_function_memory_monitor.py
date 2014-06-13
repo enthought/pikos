@@ -56,18 +56,18 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         result = self.helper.run_on_functions()
         self.assertEqual(result, 3)
         template = [
-            "0 call gcd 63 {0}",
-            "1 call internal 68 {0}",
-            "2 return internal 69 {0}",
-            "3 call internal 68 {0}",
-            "4 return internal 69 {0}",
-            "5 return gcd 66 {0}",
-            "6 call foo 74 {0}",
-            "7 call boo 71 {0}",
-            "8 return boo 72 {0}",
-            "9 call boo 71 {0}",
-            "10 return boo 72 {0}",
-            "11 return foo 76 {0}",
+            "0 call gcd 62 {0}",
+            "1 call internal 67 {0}",
+            "2 return internal 68 {0}",
+            "3 call internal 67 {0}",
+            "4 return internal 68 {0}",
+            "5 return gcd 65 {0}",
+            "6 call foo 73 {0}",
+            "7 call boo 70 {0}",
+            "8 return boo 71 {0}",
+            "9 call boo 70 {0}",
+            "10 return boo 71 {0}",
+            "11 return foo 75 {0}",
         ]
         self.check_records(template, self.recorder)
         self.assertEqual(self.helper.monitor._code_trackers, {})
@@ -76,14 +76,14 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         result = self.helper.run_on_recursive_function()
         self.assertEqual(result, 3)
         template = [
-            "0 call gcd 98 {0}",
-            "1 call foo 105 {0}",
-            "2 return foo 106 {0}",
-            "3 call gcd 98 {0}",
-            "4 call foo 105 {0}",
-            "5 return foo 106 {0}",
-            "6 return gcd 100 {0}",
-            "7 return gcd 100 {0}"]
+            "0 call gcd 96 {0}",
+            "1 call foo 103 {0}",
+            "2 return foo 104 {0}",
+            "3 call gcd 96 {0}",
+            "4 call foo 103 {0}",
+            "5 return foo 104 {0}",
+            "6 return gcd 98 {0}",
+            "7 return gcd 98 {0}"]
         self.check_records(template, self.recorder)
         self.assertEqual(self.helper.monitor._code_trackers, {})
 
@@ -91,20 +91,20 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         result = self.helper.run_on_decorated()
         self.assertEqual(result, 3)
         template = [
-            "0 call container 139 {0}",
-            "1 call gcd 125 {0}",
-            "2 call internal 130 {0}",
-            "3 call boo 134 {0}",
-            "4 return boo 135 {0}",
-            "5 return internal 132 {0}",
-            "6 call internal 130 {0}",
-            "7 call boo 134 {0}",
-            "8 return boo 135 {0}",
-            "9 return internal 132 {0}",
-            "10 return gcd 128 {0}",
-            "11 call boo 134 {0}",
-            "12 return boo 135 {0}",
-            "13 return container 143 {0}"]
+            "0 call container 137 {0}",
+            "1 call gcd 123 {0}",
+            "2 call internal 128 {0}",
+            "3 call boo 132 {0}",
+            "4 return boo 133 {0}",
+            "5 return internal 130 {0}",
+            "6 call internal 128 {0}",
+            "7 call boo 132 {0}",
+            "8 return boo 133 {0}",
+            "9 return internal 130 {0}",
+            "10 return gcd 126 {0}",
+            "11 call boo 132 {0}",
+            "12 return boo 133 {0}",
+            "13 return container 141 {0}"]
         self.check_records(template, self.recorder)
         self.assertEqual(self.helper.monitor._code_trackers, {})
 
@@ -112,14 +112,14 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         result = self.helper.run_on_decorated_recursive()
         self.assertEqual(result, 3)
         template = [
-            "0 call gcd 160 {0}",
-            "1 call foo 155 {0}",
-            "2 return foo 156 {0}",
-            "10 call gcd 160 {0}",
-            "11 call foo 155 {0}",
-            "12 return foo 156 {0}",
-            "13 return gcd 163 {0}",
-            "21 return gcd 163 {0}"]
+            "0 call gcd 157 {0}",
+            "1 call foo 152 {0}",
+            "2 return foo 153 {0}",
+            "10 call gcd 157 {0}",
+            "11 call foo 152 {0}",
+            "12 return foo 153 {0}",
+            "13 return gcd 160 {0}",
+            "21 return gcd 160 {0}"]
         self.check_records(template, self.recorder)
         self.assertEqual(self.helper.monitor._code_trackers, {})
 
@@ -177,6 +177,7 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
             psutil
         except ImportError:
             self.skipTest('Could not import psutils, skipping test.')
+
 
 if __name__ == '__main__':
     unittest.main()
