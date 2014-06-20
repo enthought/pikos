@@ -3,7 +3,7 @@
 #  file: setup.py
 #  License: LICENSE.TXT
 #
-#  Copyright (c) 2014, Enthought, Inc.
+#  Copyright (c) 2011-2014, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
 import os
