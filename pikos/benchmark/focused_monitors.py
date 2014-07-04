@@ -7,7 +7,7 @@
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-""" Estimate the overhead cost of using a monitor.
+""" Estimate the overhead cost of using a focused monitor.
 
 The benchmark runs the pystones benchmark under each monitor and calculates
 the overhead.
