@@ -10,6 +10,7 @@
 from pikos._internal.function_set import FunctionSet
 from pikos.monitors.attach_decorators import advanced_attach
 
+
 class FocusedLineMixin(object):
     """ Mixing class to support recording python line events `focused` on a set
     of functions.
