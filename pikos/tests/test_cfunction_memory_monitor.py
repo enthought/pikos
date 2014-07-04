@@ -1,0 +1,152 @@
+# -*- coding: utf-8 -*-
+# -----------------------------------------------------------------------------
+#  Package: Pikos toolkit
+#  File: tests/test_c_function_memory_monitor.py
+#  License: LICENSE.TXT
+#
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
+# -----------------------------------------------------------------------------
+import sys
+import unittest
+
+from pikos.filters.on_value import OnValue
+from pikos.recorders.list_recorder import ListRecorder
+from pikos.tests.compat import TestCase
+from pikos.tests.monitoring_helper import MonitoringHelper
+
+
+class TestCFunctionMemoryMonitor(TestCase):
+    """ Test for the cython implementation of the FunctionMemoryMonitor.
+    """
+
+    def setUp(self):
+        try:
+            from pikos.cymonitors.function_memory_monitor import (
+                FunctionMemoryMonitor)
+        except ImportError:
+            self.skipTest('Cython FunctionMemoryMonitor is not available')
+        self.monitor_type = FunctionMemoryMonitor
+        self.maxDiff = None
+        self.helper = MonitoringHelper()
+        self.filename = self.helper.filename
+        # we only care about the lines that are in this file and we filter
+        # the others.
+        self.recorder = ListRecorder(
+            filter_=OnValue('filename', self.filename))
+        self.monitor = self.monitor_type(self.recorder)
+        self.helper.monitor = self.monitor
+
+    def test_function(self):
+        result = self.helper.run_on_function()
+        self.assertEqual(result, 3)
+        template = [
+            u"0 call gcd 28 {0}",
+            u"1 return gcd 32 {0}"]
+        self.check_records(template, self.recorder)
+
+    def test_function_using_tuples(self):
+        # tuple records are not compatible with the default OnValue filters.
+        from pikos.cymonitors.function_memory_monitor import (
+            FunctionMemoryMonitor)
+        recorder = ListRecorder(filter_=lambda x: x[-1] == self.filename)
+        monitor = FunctionMemoryMonitor(recorder, record_type=tuple)
+        helper = MonitoringHelper(monitor)
+        result = helper.run_on_function()
+        self.assertEqual(result, 3)
+        template = [
+            "0 call gcd 28 {0}",
+            "1 return gcd 32 {0}"]
+        self.check_records(template, recorder)
+
+    def test_recursive(self):
+        result = self.helper.run_on_recursive_function()
+        self.assertEqual(result, 1)
+        if sys.version_info[:2] == (2, 6):
+            # Python 2.6 __enter__ is called through the CALL_FUNCTION
+            # bytecode and thus the c __enter__ methods appears in the
+            # function events while in 2.7 the behaviour has changed.
+            template = [
+                u"0 call gcd 48 {0}",
+                u"6 call gcd 48 {0}",
+                u"12 call gcd 48 {0}",
+                u"18 call gcd 48 {0}",
+                u"24 call gcd 48 {0}",
+                u"30 call gcd 48 {0}",
+                u"31 return gcd 50 {0}",
+                u"35 return gcd 50 {0}",
+                u"39 return gcd 50 {0}",
+                u"43 return gcd 50 {0}",
+                u"47 return gcd 50 {0}",
+                u"51 return gcd 50 {0}"]
+        else:
+            template = [
+                u"0 call gcd 48 {0}",
+                u"4 call gcd 48 {0}",
+                u"8 call gcd 48 {0}",
+                u"12 call gcd 48 {0}",
+                u"16 call gcd 48 {0}",
+                u"20 call gcd 48 {0}",
+                u"21 return gcd 50 {0}",
+                u"25 return gcd 50 {0}",
+                u"29 return gcd 50 {0}",
+                u"33 return gcd 50 {0}",
+                u"37 return gcd 50 {0}",
+                u"41 return gcd 50 {0}"]
+        self.check_records(template, self.recorder)
+
+    def test_generator(self):
+        result = self.helper.run_on_generator()
+        output = (0, 1, 1, 2, 3, 5, 8, 13, 21, 34)
+        self.assertSequenceEqual(result, output)
+        template = [
+            u"0 call fibonacci 63 {0}",
+            u"1 c_call range 66 {0}",
+            u"2 c_return range 66 {0}",
+            u"3 return fibonacci 67 {0}",
+            u"7 call fibonacci 67 {0}",
+            u"8 return fibonacci 67 {0}",
+            u"13 call fibonacci 67 {0}",
+            u"14 return fibonacci 67 {0}",
+            u"19 call fibonacci 67 {0}",
+            u"20 return fibonacci 67 {0}",
+            u"25 call fibonacci 67 {0}",
+            u"26 return fibonacci 67 {0}",
+            u"31 call fibonacci 67 {0}",
+            u"32 return fibonacci 67 {0}",
+            u"37 call fibonacci 67 {0}",
+            u"38 return fibonacci 67 {0}",
+            u"43 call fibonacci 67 {0}",
+            u"44 return fibonacci 67 {0}",
+            u"49 call fibonacci 67 {0}",
+            u"50 return fibonacci 67 {0}",
+            u"55 call fibonacci 67 {0}",
+            u"56 return fibonacci 67 {0}",
+            u"61 call fibonacci 67 {0}",
+            u"62 return fibonacci 68 {0}"]
+        self.check_records(template, self.recorder)
+
+    def check_for_psutils(self):
+        try:
+            import psutil  # noqa
+        except ImportError:
+            self.skipTest('Could not import psutils, skipping test.')
+
+    def check_records(self, template, recorder):
+        expected = [line.format(self.filename) for line in template]
+        records = self.get_records(recorder)
+        self.assertEqual(records, expected)
+
+    def get_records(self, recorder):
+        """ Remove the memory related fields.
+        """
+        records = []
+        for record in recorder.records:
+            filtered = record[:3] + record[5:]
+            records.append(
+                ' '.join([str(item).rstrip() for item in filtered]))
+        return records
+
+
+if __name__ == '__main__':
+    unittest.main()

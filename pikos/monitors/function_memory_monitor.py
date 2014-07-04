@@ -123,13 +123,13 @@ class FunctionMemoryMonitor(Monitor):
         and send it to the recorder.
 
         """
-        usage = self._process.get_memory_info()
+        rss, vms = self._process.memory_info()
         filename, lineno, function, _, _ = \
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
         record = self._record_type(
-            self._index, event, function, usage[0], usage[1], lineno, filename)
+            self._index, event, function, rss, vms, lineno, filename)
         self._recorder.record(record)
         self._index += 1
 
@@ -137,12 +137,12 @@ class FunctionMemoryMonitor(Monitor):
         """ Record the process memory usage using a tuple as record.
 
         """
-        usage = self._process.get_memory_info()
+        rss, vms = self._process.memory_info()
         filename, lineno, function, _, _ = \
             inspect.getframeinfo(frame, context=0)
         if event.startswith('c_'):
             function = arg.__name__
         record = (
-            self._index, event, function, usage[0], usage[1], lineno, filename)
+            self._index, event, function, rss, vms, lineno, filename)
         self._recorder.record(record)
         self._index += 1

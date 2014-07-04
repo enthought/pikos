@@ -50,7 +50,11 @@ cython_monitors = Feature(
         Extension(
             'pikos.cymonitors.function_monitor',
             sources=[
-                'pikos/cymonitors/function_monitor.pyx'])])
+                'pikos/cymonitors/function_monitor.pyx']),
+        Extension(
+            'pikos.cymonitors.function_memory_monitor',
+            sources=[
+                'pikos/cymonitors/function_memory_monitor.pyx'])])
 features['cython-monitors'] = cython_monitors
 
 

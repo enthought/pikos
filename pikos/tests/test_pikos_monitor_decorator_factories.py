@@ -39,8 +39,13 @@ class TestPikosRecorderFactories(compat.TestCase):
     def test_memory_on_functions(self):
         self.check_for_psutils()
         from pikos.api import memory_on_functions
-        from pikos.monitors.api import (
-            FunctionMemoryMonitor, FocusedFunctionMemoryMonitor)
+
+        # The default behaviour will use the cython monitors if available.
+        try:
+            from pikos.cymonitors.api import FunctionMemoryMonitor
+        except ImportError:
+            from pikos.monitors.api import FunctionMemoryMonitor
+        from pikos.monitors.api import FocusedFunctionMemoryMonitor
 
         self.check_monitor_decorator(
             memory_on_functions, FunctionMemoryMonitor)
