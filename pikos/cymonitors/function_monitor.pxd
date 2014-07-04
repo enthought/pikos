@@ -20,3 +20,5 @@ cdef class FunctionMonitor(Monitor):
         self, PyFrameObject *_frame, int event, object arg) except -1
     cdef int on_function_event_tuple(
         self, PyFrameObject *_frame, int event, object arg) except -1
+    cdef object _gather_info(
+            self, PyFrameObject *_frame, int event, object arg)

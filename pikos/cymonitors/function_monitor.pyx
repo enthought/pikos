@@ -83,35 +83,10 @@ cdef class FunctionMonitor(Monitor):
 
         """
         cdef:
-            object frame = <object>_frame
             object record
 
-        if event < PyTrace_C_CALL:
-            function = frame.f_code.co_name
-        else:
-            function = arg.__name__
-
-        if event == PyTrace_CALL:
-            event_str = 'call'
-        elif event == PyTrace_RETURN:
-            event_str = 'return'
-        elif event == PyTrace_C_CALL:
-            event_str = 'c_call'
-        elif event == PyTrace_C_RETURN:
-            event_str = 'c_return'
-        elif event == PyTrace_EXCEPTION:
-            event_str = 'exception'
-        elif event == PyTrace_C_EXCEPTION:
-            event_str = 'c_exception'
-        else:
-            raise RuntimeError('Unknown profile event %s' % event)
-
-        record = self.record_type(
-            self._index, event_str, function, frame.f_lineno,
-            frame.f_code.co_filename)
-
+        record = self.record_type(*self._gather_info(_frame, event, arg))
         self._recorder.record(record)
-
         self._index += 1
         return 0
 
@@ -122,6 +97,16 @@ cdef class FunctionMonitor(Monitor):
         Called on function events, it will retrieve the necessary information
         from the `frame`, create a :class:`FunctionRecord` and send it to the
         recorder.
+
+        """
+        record = self._gather_info(_frame, event, arg)
+        self._recorder.record(record)
+        self._index += 1
+        return 0
+
+    cdef object _gather_info(
+            self, PyFrameObject *_frame, int event, object arg):
+        """ Record the current info.
 
         """
         cdef:
@@ -151,8 +136,4 @@ cdef class FunctionMonitor(Monitor):
         record = (
             self._index, event_str, function, frame.f_lineno,
             frame.f_code.co_filename)
-
-        self._recorder.record(record)
-
-        self._index += 1
-        return 0
+        return record
