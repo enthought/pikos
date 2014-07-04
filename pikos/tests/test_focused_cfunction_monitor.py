@@ -7,6 +7,7 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 # -----------------------------------------------------------------------------
+import sys
 import StringIO
 import unittest
 
@@ -121,17 +122,33 @@ class TestFocusedCFunctionMonitor(TestCase):
     def test_focus_on_decorated_recursive(self):
         result = self.helper.run_on_decorated_recursive()
         self.assertEqual(result, 3)
-        template = [
-            "index type function lineNo filename",
-            "-----------------------------------",
-            "0 call gcd 157 {0}",
-            "1 call foo 152 {0}",
-            "2 return foo 153 {0}",
-            "6 call gcd 157 {0}",
-            "7 call foo 152 {0}",
-            "8 return foo 153 {0}",
-            "9 return gcd 160 {0}",
-            "13 return gcd 160 {0}"]
+        if sys.version_info[:2] == (2, 6):
+            # Python 2.6 __enter__ is called through the CALL_FUNCTION
+            # bytecode and thus the c __enter__ methods appear in the
+            # function events while in 2.7 the behaviour has changed.
+            template = [
+                "index type function lineNo filename",
+                "-----------------------------------",
+                "0 call gcd 157 {0}",
+                "1 call foo 152 {0}",
+                "2 return foo 153 {0}",
+                "8 call gcd 157 {0}",
+                "9 call foo 152 {0}",
+                "10 return foo 153 {0}",
+                "11 return gcd 160 {0}",
+                "15 return gcd 160 {0}"]
+        else:
+            template = [
+                "index type function lineNo filename",
+                "-----------------------------------",
+                "0 call gcd 157 {0}",
+                "1 call foo 152 {0}",
+                "2 return foo 153 {0}",
+                "6 call gcd 157 {0}",
+                "7 call foo 152 {0}",
+                "8 return foo 153 {0}",
+                "9 return gcd 160 {0}",
+                "13 return gcd 160 {0}"]
         self.check_records(template, self.stream)
         self.assertEqual(self.helper.monitor._code_trackers, {})
 
