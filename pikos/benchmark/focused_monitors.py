@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: benchmark/monitors.py
+#  File: benchmark/focused_monitors.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-""" Estimate the overhead cost of using a monitor.
+""" Estimate the overhead cost of using a focused monitor.
 
 The benchmark runs the pystones benchmark under each monitor and calculates
 the overhead.
@@ -22,22 +22,20 @@ from pikos.benchmark.record_counter import RecordCounter
 def pymonitors():
     """ Pure python monitors """
     from pikos.monitors.api import (
-        FunctionMonitor, LineMonitor,
-        FunctionMemoryMonitor, LineMemoryMonitor)
+        FocusedFunctionMonitor, FocusedLineMonitor,
+        FocusedFunctionMemoryMonitor, FocusedLineMemoryMonitor)
     return {
-        'FunctionMonitor': FunctionMonitor,
-        'LineMonitor': LineMonitor,
-        'FunctionMemoryMonitor': FunctionMemoryMonitor,
-        'LineMemoryMonitor': LineMemoryMonitor}
+        'FocusedFunctionMonitor': FocusedFunctionMonitor,
+        'FocusedLineMonitor': FocusedLineMonitor,
+        'FocusedFunctionMemoryMonitor': FocusedFunctionMemoryMonitor,
+        'FocusedLineMemoryMonitor': FocusedLineMemoryMonitor}
 
 
 def cymonitors():
     """ Cython monitors """
-    from pikos.cymonitors.api import FunctionMonitor
-    from pikos.cymonitors.api import FunctionMemoryMonitor
+    from pikos.cymonitors.api import FocusedFunctionMonitor
     return {
-        'CFunctionMonitor': FunctionMonitor,
-        'CFunctionMemoryMonitor': FunctionMemoryMonitor}
+        'FocusedCFunctionMonitor': FocusedFunctionMonitor}
 
 
 def run(monitors, loops, record_type=None):
@@ -64,9 +62,14 @@ def run(monitors, loops, record_type=None):
     print header
     print len(header) * '-'
     expected_time, _ = pystone.pystones(loops)
+    functions = [
+        getattr(pystone, 'Proc{}'.format(index)) for index in range(4, 7)]
     for name, monitor in monitors.iteritems():
         recorder = RecordCounter()
-        with monitor(recorder=recorder, record_type=record_type):
+        with monitor(
+                functions=functions,
+                recorder=recorder,
+                record_type=record_type):
             time, _ = pystone.pystones(loops)
         print line.format(
             name=name,
@@ -75,7 +78,7 @@ def run(monitors, loops, record_type=None):
             records='{:10d}'.format(recorder.records))
 
 
-def main(monitors, loops=1000):
+def main(monitors, loops=5000):
         print 'With default record types'
         run(monitors, loops)
         print
