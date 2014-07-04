@@ -7,17 +7,18 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from pikos.monitors.focused_monitor_mixin import FocusedMonitorMixin
 from pikos._internal.keep_track import KeepTrack
+from pikos._internal.function_set import FunctionSet
+from pikos.monitors.attach_decorators import advanced_attach
 
 
-class FocusedFunctionMixin(FocusedMonitorMixin):
-    """ Mixing class to support recording python function events in a
-    `focused` way.
+class FocusedFunctionMixin(object):
+    """ Mixing class to support recording python function events `focused` on
+    a set of functions.
 
     The method is used along a function event based monitor. It mainly
     overrides the on_function_event method to only record events when the
-    interpreter is working inside the predefined functions.
+    interpreter is working inside one of predefined functions.
 
     Public
     ------
@@ -50,7 +51,9 @@ class FocusedFunctionMixin(FocusedMonitorMixin):
             which recording will take place.
 
         """
+        functions = keywords.pop('functions', ())
         super(FocusedFunctionMixin, self).__init__(*arguments, **keywords)
+        self.functions = FunctionSet(functions)
         self._code_trackers = {}
 
     def on_function_event(self, frame, event, arg):
@@ -93,3 +96,6 @@ class FocusedFunctionMixin(FocusedMonitorMixin):
                 del self._code_trackers[code]
         elif any(self._code_trackers.itervalues()):
             event_method(frame, event, arg)
+
+    # Override the default attach method to support arguments.
+    attach = advanced_attach

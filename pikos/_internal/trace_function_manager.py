@@ -53,4 +53,3 @@ class TraceFunctionManager(object):
             del self.previous
         else:
             raise RuntimeError('A profile function has not been set')
-

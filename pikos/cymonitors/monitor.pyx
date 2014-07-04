@@ -7,7 +7,7 @@
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #----------------------------------------------------------------------------
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos.monitors.attach_decorators import basic_attach
 from pikos.monitors.monitor import Monitor as PyMonitor
 
 
@@ -19,15 +19,14 @@ cdef class Monitor:
     def disable(self):
         pass
 
-    def attach(self, function):
-        monitor_attach = MonitorAttach(self)
-        return monitor_attach(function)
-
     def __enter__(self):
         self.enable()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disable()
+
+    # Use a basic attach decorator.
+    attach = basic_attach
 
 
 PyMonitor.register(Monitor)
