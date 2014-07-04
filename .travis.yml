@@ -9,4 +9,4 @@ install:
   - pip install -r requirements.txt
   - if [[ $CYTHON == 1 ]]; then pip install cython; fi
   - python setup.py develop
-script: unit2 discover
+script: unit2 discover -v
