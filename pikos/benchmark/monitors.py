@@ -25,8 +25,7 @@ def pymonitors():
         FunctionMonitor, LineMonitor,
         FunctionMemoryMonitor, LineMemoryMonitor)
     return {
-        'FunctionMonitor': lambda recorder, record_type: FunctionMonitor(
-            recorder, None if record_type is None else tuple),
+        'FunctionMonitor': FunctionMonitor,
         'LineMonitor': LineMonitor,
         'FunctionMemoryMonitor': FunctionMemoryMonitor,
         'LineMemoryMonitor': LineMemoryMonitor}
@@ -58,11 +57,10 @@ def run(monitors, loops, record_type=None):
     """
     header = (
         "Overhead time | Relative overhead | "
-        "{:^10} |  Per record  | {:^{length}}".format(
+        "{:^10} | {:^{length}}".format(
             'Records', 'Name',
             length=max(len(key) for key in monitors) - 4))
-    line = ('{time:>13} | {relative:>17} | {records:>10} '
-            '| {time_per_record:.6e} | {name}')
+    line = ('{time:>13} | {relative:>17} | {records:>10} | {name}')
     print header
     print len(header) * '-'
     expected_time, _ = pystone.pystones(loops)
@@ -70,12 +68,10 @@ def run(monitors, loops, record_type=None):
         recorder = RecordCounter()
         with monitor(recorder=recorder, record_type=record_type):
             time, _ = pystone.pystones(loops)
-        time_per_record = (time - expected_time) / recorder.records
         print line.format(
             name=name,
             time='{:2.2f}'.format(time - expected_time),
             relative='{:.2%}'.format((time - expected_time) / expected_time),
-            time_per_record=time_per_record,
             records='{:10d}'.format(recorder.records))
 
 
