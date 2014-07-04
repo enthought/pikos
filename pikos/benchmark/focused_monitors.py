@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: benchmark/monitors.py
+#  File: benchmark/focused_monitors.py
 #  License: LICENSE.TXT
 #
-#  Copyright (c) 2012, Enthought, Inc.
+#  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
 """ Estimate the overhead cost of using a monitor.
