@@ -24,6 +24,11 @@ def basic_attach(instance, function):
     function : callable
         The function to wrap
 
+    Returns
+    -------
+     fn : callable
+        A MonitorAttach instance.
+
     """
     monitor_attach = MonitorAttach(instance)
     return monitor_attach(function)
