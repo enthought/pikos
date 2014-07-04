@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/test_focused_function_monitor.py
+#  File: monitors/test_focused_cfunction_monitor.py
 #  License: LICENSE.TXT
 #
-#  Copyright (c) 2012, Enthought, Inc.
+#  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 # -----------------------------------------------------------------------------
 import StringIO
