@@ -139,7 +139,7 @@ def memory_on_functions(recorder=None, focus_on=None):
         recorder = screen()
     if focus_on is None:
         try:
-            from pikos.cmonitors.function_memory_monitor import (
+            from pikos.cymonitors.function_memory_monitor import (
                 FunctionMemoryMonitor)
         except ImportError:
             from pikos.monitors.function_memory_monitor import (
