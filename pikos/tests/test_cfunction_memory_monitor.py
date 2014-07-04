@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: tests/test_c_function_monitor.py
+#  File: tests/test_c_function_memory_monitor.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
