@@ -28,11 +28,6 @@ cdef class FunctionMonitor(Monitor):
 
     """
 
-    cdef public object _recorder
-    cdef int _index
-    cdef object _call_tracker
-    cdef object record_type
-
     def __init__(self, recorder, record_type=None):
         """ Constructor
 
