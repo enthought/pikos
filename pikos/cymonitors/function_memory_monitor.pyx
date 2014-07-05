@@ -11,7 +11,7 @@ from cpython.pystate cimport (
     PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_RETURN,  Py_tracefunc,
     PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_LINE, PyTrace_C_RETURN)
 
-from .monitor cimport Monitor
+from .function_monitor cimport FunctionMonitor
 from .pytrace cimport PyEval_SetProfile, PyFrameObject
 
 import os
@@ -21,7 +21,7 @@ from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.records import FunctionMemoryRecord
 
 
-cdef class FunctionMemoryMonitor(Monitor):
+cdef class FunctionMemoryMonitor(FunctionMonitor):
     """ Record process memory on python function events.
 
     The class hooks on the setprofile function to receive function events and
@@ -74,13 +74,12 @@ cdef class FunctionMemoryMonitor(Monitor):
             The record type to use. Default is to use a FunctionRecord.
 
         """
+        if record_type is None:
+            record_type = FunctionMemoryRecord
+        super(FunctionMemoryMonitor, self).__init__(recorder, record_type)
         self._recorder = recorder
         self._call_tracker = KeepTrack()
         self._process = None
-        if record_type is None:
-            self.record_type = FunctionMemoryRecord
-        else:
-            self.record_type = record_type
 
     def enable(self):
         """ Enable the monitor.
@@ -92,12 +91,7 @@ cdef class FunctionMemoryMonitor(Monitor):
         if self._call_tracker('ping'):
             self._process = psutil.Process(os.getpid())
             self._recorder.prepare(self.record_type)
-            if self.record_type == tuple:
-                # optimized function for tuples.
-                PyEval_SetProfile(
-                    <Py_tracefunc>self.on_function_event_tuple, self)
-            else:
-                PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
+            PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
 
     def disable(self):
         """ Disable the monitor.
@@ -111,56 +105,9 @@ cdef class FunctionMemoryMonitor(Monitor):
             self._recorder.finalize()
             self._process = None
 
-    cdef int on_function_event(
-            self, PyFrameObject *_frame, int event, object arg) except -1:
-        """ Record the current function event.
-
-        Called on function events, it will retrieve the necessary information
-        from the `frame`, create a :class:`FunctionRecord` and send it to the
-        recorder.
-
-        """
-        cdef:
-            object frame = <object>_frame
-            object record
-
-        if event < PyTrace_C_CALL:
-            function = frame.f_code.co_name
-        else:
-            function = arg.__name__
-
-        if event == PyTrace_CALL:
-            event_str = 'call'
-        elif event == PyTrace_RETURN:
-            event_str = 'return'
-        elif event == PyTrace_C_CALL:
-            event_str = 'c_call'
-        elif event == PyTrace_C_RETURN:
-            event_str = 'c_return'
-        elif event == PyTrace_EXCEPTION:
-            event_str = 'exception'
-        elif event == PyTrace_C_EXCEPTION:
-            event_str = 'c_exception'
-        else:
-            raise RuntimeError('Unknown profile event %s' % event)
-
-        rss, vms = self._process.memory_info()
-        record = self.record_type(
-            self._index, event_str, function, rss, vms, frame.f_lineno,
-            frame.f_code.co_filename)
-
-        self._recorder.record(record)
-
-        self._index += 1
-        return 0
-
-    cdef int on_function_event_tuple(
-            self, PyFrameObject *_frame, int event, object arg) except -1:
-        """ Record the current function event.
-
-        Called on function events, it will retrieve the necessary information
-        from the `frame`, create a :class:`FunctionRecord` and send it to the
-        recorder.
+    cdef object _gather_info(
+            self, PyFrameObject *_frame, int event, object arg):
+        """ Record the current info.
 
         """
         cdef:
@@ -191,8 +138,4 @@ cdef class FunctionMemoryMonitor(Monitor):
         record = (
             self._index, event_str, function, rss, vms, frame.f_lineno,
             frame.f_code.co_filename)
-
-        self._recorder.record(record)
-
-        self._index += 1
-        return 0
+        return record
