@@ -83,18 +83,6 @@ cdef class FocusedFunctionMonitor(FunctionMonitor):
         if self._tracker_check(_frame, event):
             FunctionMonitor.on_function_event(self, _frame, event, arg)
 
-    cdef int on_function_event_tuple(
-            self, PyFrameObject *_frame, int event, object arg) except -1:
-        """ Record the function event if we are inside one of the functions.
-
-        .. note::
-
-          Method optimized for tuples as records.
-
-        """
-        if self._tracker_check(_frame, event):
-            FunctionMonitor.on_function_event_tuple(self, _frame, event, arg)
-
     cdef bint _tracker_check(self, PyFrameObject *_frame, int event):
         """ Check if any function tracker is currently active.
 
