@@ -15,10 +15,9 @@ cdef class FunctionMonitor(Monitor):
     cdef int _index
     cdef object _call_tracker
     cdef object record_type
+    cdef bint use_tuple
 
     cdef int on_function_event(
-        self, PyFrameObject *_frame, int event, object arg) except -1
-    cdef int on_function_event_tuple(
         self, PyFrameObject *_frame, int event, object arg) except -1
     cdef object _gather_info(
             self, PyFrameObject *_frame, int event, object arg)

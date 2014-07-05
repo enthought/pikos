@@ -46,6 +46,8 @@ cdef class FunctionMonitor(Monitor):
             self.record_type = FunctionRecord
         else:
             self.record_type = record_type
+        if self.record_type == tuple:
+            self.use_tuple = True
 
     def enable(self):
         """ Enable the monitor.
@@ -56,11 +58,7 @@ cdef class FunctionMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(self.record_type)
-            if self.record_type == tuple:
-                PyEval_SetProfile(
-                    <Py_tracefunc>self.on_function_event_tuple, self)
-            else:
-                PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
+            PyEval_SetProfile(<Py_tracefunc>self.on_function_event, self)
 
     def disable(self):
         """ Disable the monitor.
@@ -85,21 +83,9 @@ cdef class FunctionMonitor(Monitor):
         cdef:
             object record
 
-        record = self.record_type(*self._gather_info(_frame, event, arg))
-        self._recorder.record(record)
-        self._index += 1
-        return 0
-
-    cdef int on_function_event_tuple(
-            self, PyFrameObject *_frame, int event, object arg) except -1:
-        """ Record the current function event.
-
-        Called on function events, it will retrieve the necessary information
-        from the `frame`, create a :class:`FunctionRecord` and send it to the
-        recorder.
-
-        """
         record = self._gather_info(_frame, event, arg)
+        if not self.use_tuple:
+            record = self.record_type(*self._gather_info(_frame, event, arg))
         self._recorder.record(record)
         self._index += 1
         return 0
