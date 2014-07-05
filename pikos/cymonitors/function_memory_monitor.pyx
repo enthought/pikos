@@ -56,12 +56,6 @@ cdef class FunctionMemoryMonitor(FunctionMonitor):
 
     """
 
-    cdef public object _recorder
-    cdef public object record_type
-    cdef int _index
-    cdef object _call_tracker
-    cdef object _process
-
     def __init__(self, recorder, record_type=None):
         """ Constructor
 
