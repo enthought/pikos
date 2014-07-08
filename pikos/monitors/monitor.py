@@ -9,7 +9,7 @@
 #------------------------------------------------------------------------------
 import abc
 
-from pikos.monitors.attach_decorators import basic_attach
+from pikos._internal.attach_decorators import basic_attach
 
 
 class Monitor(object):

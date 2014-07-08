@@ -14,7 +14,7 @@ from .pytrace cimport PyFrameObject
 
 from pikos._internal.keep_track import KeepTrack
 from pikos._internal.function_set import FunctionSet
-from pikos.monitors.attach_decorators import advanced_attach
+from pikos._internal.attach_decorators import advanced_attach
 
 
 cdef class FocusedFunctionMonitor(FunctionMonitor):
