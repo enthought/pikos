@@ -25,14 +25,6 @@ class FocusedLineMixin(object):
         A set of function or method objects inside which recording will
         take place.
 
-    Private
-    -------
-    _code_trackers : dictionary
-        A dictionary of KeepTrack instances associated with the code object
-        of each function in `functions`. It is used to keep track and check
-        that we are inside the execution of one these functions when we
-        record data.
-
     """
 
     def __init__(self, *arguments, **keywords):
@@ -50,6 +42,7 @@ class FocusedLineMixin(object):
             which recording will take place.
 
         """
+        # FIXME: There should be a better way to do this
         functions = keywords.pop('functions', ())
         super(FocusedLineMixin, self).__init__(*arguments, **keywords)
         self.functions = FunctionSet(functions)
@@ -64,21 +57,6 @@ class FocusedLineMixin(object):
             event_method = super(FocusedLineMixin, self).on_line_event
             event_method(frame, why, arg)
         return self.on_line_event
-
-    def on_line_event_using_tuple(self, frame, why, arg):
-        """ Record the line event if we are inside the functions.
-
-        .. note::
-
-          Method is optimized for tuple records.
-
-        """
-        code = frame.f_code
-        if code in self.functions:
-            event_method = super(
-                FocusedLineMixin, self).on_line_event_using_tuple
-            event_method(frame, why, arg)
-        return self.on_line_event_using_tuple
 
     # Override the default attach method to support arguments.
     attach = advanced_attach

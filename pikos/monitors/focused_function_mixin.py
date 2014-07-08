@@ -26,14 +26,6 @@ class FocusedFunctionMixin(object):
         A set of function or method objects inside which recording will
         take place.
 
-    Private
-    -------
-    _code_trackers : dictionary
-        A dictionary of KeepTrack instances associated with the code object
-        of each function in `functions`. It is used to keep track and check
-        that we are inside the execution of one these functions when we
-        record data.
-
     """
 
     def __init__(self, *arguments, **keywords):
@@ -62,18 +54,6 @@ class FocusedFunctionMixin(object):
         """
         if self._tracker_check(frame, event):
             super(FocusedFunctionMixin, self).on_function_event(
-                frame, event, arg)
-
-    def on_function_event_using_tuple(self, frame, event, arg):
-        """ Record the function event if we are inside one of the functions.
-
-        .. note::
-
-          Method optimized for tuples as records.
-
-        """
-        if self._tracker_check(frame, event):
-            super(FocusedFunctionMixin, self).on_function_event_using_tuple(
                 frame, event, arg)
 
     def _tracker_check(self, frame, event):

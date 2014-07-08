@@ -23,7 +23,7 @@ class FocusedMonitorAttach(MonitorAttach):
         Parameters
         ----------
         obj : object
-            A contect manager to monitor, inspect or profile the decorated
+            A context manager to monitor, inspect or profile the decorated
             function while it is executed.
 
         include_decorated : boolean

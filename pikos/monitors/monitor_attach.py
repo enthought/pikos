@@ -16,17 +16,8 @@ from pikos._internal.util import is_context_manager
 class MonitorAttach(object):
     """ The monitor attach decorator.
 
-    Private
-    -------
-    _function : callable
-        The callable to execute inside the monitor context manager. It can be a
-        normal callable object or a generator.
 
-    _monitor_object : object
-        The monitor object that implements the context manager interface.
-
-
-    The class can be instanciated by the user or used as a decorator for
+    The class can be instantiated by the user or used as a decorator for
     functions, methods and generators.
 
     Usage
