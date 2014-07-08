@@ -49,6 +49,9 @@ class FunctionMonitor(Monitor):
         A class object to be used for records. Default is
         :class:`~pikos.monitors.records.FunctionMonitor`
 
+    _use_tuple: bool
+        When set a shorter recording root is selected.
+
     """
 
     def __init__(self, recorder, record_type=None):
@@ -75,6 +78,7 @@ class FunctionMonitor(Monitor):
             self._record_type = FunctionRecord
         else:
             self._record_type = record_type
+        self._use_tuple = self._record_type is tuple
 
     def enable(self):
         """ Enable the monitor.
@@ -85,11 +89,7 @@ class FunctionMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(self._record_type)
-            if self._record_type is tuple:
-                # optimized function for tuples.
-                self._profiler.replace(self.on_function_event_using_tuple)
-            else:
-                self._profiler.replace(self.on_function_event)
+            self._profiler.replace(self.on_function_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -110,30 +110,22 @@ class FunctionMonitor(Monitor):
         recorder.
 
         """
-        if '_' == event[1]:
-            record = self._record_type(
-                self._index, event, arg.__name__,
-                frame.f_lineno, frame.f_code.co_filename)
-        else:
-            code = frame.f_code
-            record = self._record_type(
-                self._index, event, code.co_name,
-                frame.f_lineno, code.co_filename)
+        record = self._gather_info(frame, event, arg)
+        if not self._use_tuple:
+            record = self._record_type(*record)
         self._record(record)
         self._index += 1
 
-    def on_function_event_using_tuple(self, frame, event, arg):
-        """ Record the current function event using a tuple for record.
+    def _gather_info(self, frame, event, arg):
+        """ Gather information for the record.
 
         """
         if '_' == event[1]:
-            record = (
+            return (
                 self._index, event, arg.__name__,
                 frame.f_lineno, frame.f_code.co_filename)
         else:
             code = frame.f_code
-            record = (
+            return (
                 self._index, event, code.co_name,
                 frame.f_lineno, code.co_filename)
-        self._record(record)
-        self._index += 1

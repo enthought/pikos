@@ -40,8 +40,8 @@ class LineMonitor(Monitor):
 
     _call_tracker : object
         An instance of the :class:`~pikos._internal.keep_track` utility class
-        to keep track of recursive calls to the monitor's :meth:`__enter__` and
-        :meth:`__exit__` methods.
+        to keep track of recursive calls to the monitor's
+        :meth:`__enter__` and :meth:`__exit__` methods.
 
     _record_type: class object
         A class object to be used for records. Default is
@@ -72,6 +72,7 @@ class LineMonitor(Monitor):
             self._record_type = LineRecord
         else:
             self._record_type = record_type
+        self._use_tuple = self._record_type is tuple
 
     def enable(self):
         """ Enable the monitor.
@@ -82,11 +83,7 @@ class LineMonitor(Monitor):
         """
         if self._call_tracker('ping'):
             self._recorder.prepare(self._record_type)
-            if self._record_type is tuple:
-                # optimized function for tuples.
-                self._tracer.replace(self.on_line_event_using_tuple)
-            else:
-                self._tracer.replace(self.on_line_event)
+            self._tracer.replace(self.on_line_event)
 
     def disable(self):
         """ Disable the monitor.
@@ -108,27 +105,19 @@ class LineMonitor(Monitor):
 
         """
         if why == 'line':
-            filename, lineno, function, line, _ = \
-                inspect.getframeinfo(frame, context=1)
-            if line is None:
-                line = ['<compiled string>']
-            record = self._record_type(
-                self._index, function, lineno, line[0].rstrip(), filename)
+            record = self._gather_info(frame)
+            if not self._use_tuple:
+                record = self._record_type(*record)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
 
-    def on_line_event_using_tuple(self, frame, why, arg):
-        """ Record the current line trace event using a tuple record.
+    def _gather_info(self, frame):
+        """ Gather information into a tuple.
 
         """
-        if why == 'line':
-            filename, lineno, function, line, _ = \
-                inspect.getframeinfo(frame, context=1)
-            if line is None:
-                line = ['<compiled string>']
-            record = (
-                self._index, function, lineno, line[0].rstrip(), filename)
-            self._recorder.record(record)
-            self._index += 1
-        return self.on_line_event_using_tuple
+        filename, lineno, function, line, _ = inspect.getframeinfo(
+            frame, context=1)
+        if line is None:
+            line = ['<compiled string>']
+        return self._index, function, lineno, line[0].rstrip(), filename
