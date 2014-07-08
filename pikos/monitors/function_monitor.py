@@ -21,37 +21,6 @@ class FunctionMonitor(Monitor):
     The class hooks on the setprofile function to receive function events and
     record them.
 
-    Private
-    -------
-    _recorder : object
-        A recorder object that implementes the
-        :class:`~pikos.recorder.AbstractRecorder` interface.
-
-    _profiler : object
-        An instance of the
-        :class:`~pikos._internal.profiler_functions.ProfilerFunctions` utility
-        class that is used to set and unset the setprofile function as required
-        by the monitor.
-
-    _index : int
-        The current zero based record index. Each function event will increase
-        the index by one.
-
-    _call_tracker : object
-        An instance of the :class:`~pikos._internal.keep_track` utility class
-        to keep track of recursive calls to the monitor's :meth:`__enter__` and
-        :meth:`__exit__` methods.
-
-    _record: function object
-        The cached reference to the record function.
-
-    _record_type: class object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMonitor`
-
-    _use_tuple: bool
-        When set a shorter recording root is selected.
-
     """
 
     def __init__(self, recorder, record_type=None):
@@ -60,9 +29,9 @@ class FunctionMonitor(Monitor):
         Parameters
         ----------
         recorder : object
-            A subclass of :class:`~pikos.recorders.AbstractRecorder` or a class
-            that implements the same interface to handle the values to be
-            logged.
+            A subclass of :class:`~pikos.recorders.AbstractRecorder` or a
+            class that implements the same interface to handle the values
+            to be logged.
 
         record_type: class object
             A class object to be used for records. Default is

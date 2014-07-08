@@ -22,31 +22,6 @@ class LineMonitor(Monitor):
     The class hooks on the settrace function to receive trace events and
     record when a line of code is about to be executed.
 
-    Private
-    -------
-    _recorder : object
-        A recorder object that implementes the
-        :class:`~pikos.recorder.AbstractRecorder` interface.
-
-    _tracer : object
-        An instance of the
-        :class:`~pikos._internal.trace_functions.TraceFunctionManager` utility
-        class that is used to set and unset the settrace function as required
-        by the monitor.
-
-    _index : int
-        The current zero based record index. Each `line` trace event will
-        increase the index by one.
-
-    _call_tracker : object
-        An instance of the :class:`~pikos._internal.keep_track` utility class
-        to keep track of recursive calls to the monitor's
-        :meth:`__enter__` and :meth:`__exit__` methods.
-
-    _record_type: class object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.LineMonitor`
-
     """
 
     def __init__(self, recorder, record_type=None):
