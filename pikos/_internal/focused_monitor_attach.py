@@ -7,7 +7,7 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos._internal.monitor_attach import MonitorAttach
 
 
 class FocusedMonitorAttach(MonitorAttach):
