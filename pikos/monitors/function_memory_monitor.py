@@ -102,7 +102,7 @@ class FunctionMemoryMonitor(FunctionMonitor):
             self._recorder.finalize()
             self._process = None
 
-    def _gather_info(self, frame, event, arg):
+    def gather_info(self, frame, event, arg):
         """ Gather information for the record.
 
         """

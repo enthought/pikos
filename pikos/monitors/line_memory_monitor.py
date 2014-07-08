@@ -101,7 +101,7 @@ class LineMemoryMonitor(LineMonitor):
             self._recorder.finalize()
             self._process = None
 
-    def _gather_info(self, frame):
+    def gather_info(self, frame):
         """ Gather memory information for the line.
         """
         rss, vms = self._process.memory_info()

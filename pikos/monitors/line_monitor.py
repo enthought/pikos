@@ -105,14 +105,14 @@ class LineMonitor(Monitor):
 
         """
         if why == 'line':
-            record = self._gather_info(frame)
+            record = self.gather_info(frame)
             if not self._use_tuple:
                 record = self._record_type(*record)
             self._recorder.record(record)
             self._index += 1
         return self.on_line_event
 
-    def _gather_info(self, frame):
+    def gather_info(self, frame):
         """ Gather information into a tuple.
 
         """

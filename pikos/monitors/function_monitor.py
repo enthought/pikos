@@ -110,13 +110,13 @@ class FunctionMonitor(Monitor):
         recorder.
 
         """
-        record = self._gather_info(frame, event, arg)
+        record = self.gather_info(frame, event, arg)
         if not self._use_tuple:
             record = self._record_type(*record)
         self._record(record)
         self._index += 1
 
-    def _gather_info(self, frame, event, arg):
+    def gather_info(self, frame, event, arg):
         """ Gather information for the record.
 
         """
