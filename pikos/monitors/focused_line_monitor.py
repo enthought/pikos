@@ -28,7 +28,7 @@ class FocusedLineMonitor(FocusedLineMixin, LineMonitor):
     Private
     -------
     _recorder : object
-        A recorder object that implementes the
+        A recorder object that implements the
         :class:`~pikos.recorder.AbstractRecorder` interface.
 
     _tracer : object
