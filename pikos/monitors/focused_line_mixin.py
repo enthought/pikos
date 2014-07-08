@@ -50,6 +50,7 @@ class FocusedLineMixin(object):
             which recording will take place.
 
         """
+        # FIXME: There should be a better way to do this
         functions = keywords.pop('functions', ())
         super(FocusedLineMixin, self).__init__(*arguments, **keywords)
         self.functions = FunctionSet(functions)
@@ -64,21 +65,6 @@ class FocusedLineMixin(object):
             event_method = super(FocusedLineMixin, self).on_line_event
             event_method(frame, why, arg)
         return self.on_line_event
-
-    def on_line_event_using_tuple(self, frame, why, arg):
-        """ Record the line event if we are inside the functions.
-
-        .. note::
-
-          Method is optimized for tuple records.
-
-        """
-        code = frame.f_code
-        if code in self.functions:
-            event_method = super(
-                FocusedLineMixin, self).on_line_event_using_tuple
-            event_method(frame, why, arg)
-        return self.on_line_event_using_tuple
 
     # Override the default attach method to support arguments.
     attach = advanced_attach

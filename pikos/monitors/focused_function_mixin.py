@@ -64,18 +64,6 @@ class FocusedFunctionMixin(object):
             super(FocusedFunctionMixin, self).on_function_event(
                 frame, event, arg)
 
-    def on_function_event_using_tuple(self, frame, event, arg):
-        """ Record the function event if we are inside one of the functions.
-
-        .. note::
-
-          Method optimized for tuples as records.
-
-        """
-        if self._tracker_check(frame, event):
-            super(FocusedFunctionMixin, self).on_function_event_using_tuple(
-                frame, event, arg)
-
     def _tracker_check(self, frame, event):
         """ Check if any function tracker is currently active.
 
