@@ -9,7 +9,7 @@
 #------------------------------------------------------------------------------
 import warnings
 
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos._internal.monitor_attach import MonitorAttach
 
 
 def screen(filter_=None):

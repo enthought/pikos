@@ -7,7 +7,7 @@
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
 #----------------------------------------------------------------------------
-from pikos.monitors.attach_decorators import basic_attach
+from pikos._internal.attach_decorators import basic_attach
 from pikos.monitors.monitor import Monitor as PyMonitor
 
 

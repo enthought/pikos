@@ -24,7 +24,7 @@ from pikos.monitors.function_monitor import FunctionMonitor
 from pikos.monitors.line_monitor import LineMonitor
 from pikos.monitors.focused_function_monitor import FocusedFunctionMonitor
 from pikos.monitors.focused_line_monitor import FocusedLineMonitor
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos._internal.monitor_attach import MonitorAttach
 from pikos.monitors.monitor import Monitor
 
 try:

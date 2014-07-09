@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/monitor_attach.py
+#  File: _internal/monitor_attach.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos._internal.monitor_attach import MonitorAttach
 
 
 class FocusedMonitorAttach(MonitorAttach):

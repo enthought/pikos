@@ -9,7 +9,7 @@
 #------------------------------------------------------------------------------
 from pikos._internal.keep_track import KeepTrack
 from pikos._internal.function_set import FunctionSet
-from pikos.monitors.attach_decorators import advanced_attach
+from pikos._internal.attach_decorators import advanced_attach
 
 
 class FocusedFunctionMixin(object):

@@ -8,7 +8,7 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from pikos._internal.function_set import FunctionSet
-from pikos.monitors.attach_decorators import advanced_attach
+from pikos._internal.attach_decorators import advanced_attach
 
 
 class FocusedLineMixin(object):

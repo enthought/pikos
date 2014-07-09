@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: monitors/attach_decorator.py
+#  File: _internal/attach_decorator.py
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from pikos.monitors.focused_monitor_attach import FocusedMonitorAttach
-from pikos.monitors.monitor_attach import MonitorAttach
+from pikos._internal.focused_monitor_attach import FocusedMonitorAttach
+from pikos._internal.monitor_attach import MonitorAttach
 
 
 def basic_attach(instance, function):
