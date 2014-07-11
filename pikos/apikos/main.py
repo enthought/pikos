@@ -1,9 +1,8 @@
-
 from envisage.core_plugin import CorePlugin
 from envisage.ui.tasks.tasks_plugin import TasksPlugin
 
 from pikos.apikos.application import ApikosApplication
-from pikos.apikos.plugin import ApikosPlugin
+from pikos.apikos.tasks.plugin import ApikosPlugin
 
 
 def main(argv):

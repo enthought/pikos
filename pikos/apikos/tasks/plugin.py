@@ -11,7 +11,7 @@ from envisage.api import Plugin
 from envisage.ui.tasks.api import TaskFactory
 from traits.api import List
 
-from pikos.apikos.constants import TASKS
+from pikos.apikos.tasks.constants import TASKS
 
 
 class ApikosPlugin(Plugin):
@@ -19,7 +19,7 @@ class ApikosPlugin(Plugin):
 
     """
     # The plugin's unique identifier.
-    id = 'pikos.live'
+    id = 'apikos.plugin'
 
     # The plugin's name (suitable for displaying to the user).
     name = 'Pikos Live Profiling'

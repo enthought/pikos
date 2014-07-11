@@ -10,13 +10,13 @@
 from pyface.tasks.action.api import SMenu, SMenuBar
 from pyface.tasks.api import Task, EditorAreaPane
 
-from pikos.apikos.constants import APIKOS_TASK
+from pikos.apikos.tasks.constants import APIKOS_TASK
 
 
 class ApikosTask(Task):
 
     id = APIKOS_TASK
-    name = 'Pikos'
+    name = 'Monitoring Session'
 
     def _menu_bar_default(self):
         return SMenuBar(SMenu(id='File', name='&File'))

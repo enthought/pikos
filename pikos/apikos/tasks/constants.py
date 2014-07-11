@@ -8,4 +8,4 @@
 #  All rights reserved.
 #----------------------------------------------------------------------------
 TASKS = 'envisage.ui.tasks.tasks'
-APIKOS_TASK = 'pikos.apikos.task'
+APIKOS_TASK = 'apikos.task'
