@@ -9,7 +9,7 @@
 #----------------------------------------------------------------------------
 from cpython.pystate cimport (
     PyTrace_CALL, PyTrace_EXCEPTION, PyTrace_RETURN,  Py_tracefunc,
-    PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_LINE, PyTrace_C_RETURN)
+    PyTrace_C_CALL, PyTrace_C_EXCEPTION, PyTrace_C_RETURN)
 
 from .function_monitor cimport FunctionMonitor
 from .pytrace cimport PyEval_SetProfile, PyFrameObject
@@ -17,7 +17,6 @@ from .pytrace cimport PyEval_SetProfile, PyFrameObject
 import os
 import psutil
 
-from pikos._internal.keep_track import KeepTrack
 from pikos.monitors.records import FunctionMemoryRecord
 
 
@@ -26,33 +25,6 @@ cdef class FunctionMemoryMonitor(FunctionMonitor):
 
     The class hooks on the setprofile function to receive function events and
     record the current process memory when they happen.
-
-    Private
-    -------
-    _recorder : object
-        A recorder object that implementes the
-        :class:`~pikos.recorder.AbstractRecorder` interface.
-
-    _index : int
-        The current zero based record index. Each function event will increase
-        the index by one.
-
-    _call_tracker : object
-        An instance of the :class:`~pikos._internal.keep_track` utility class
-        to keep track of recursive calls to the monitor's :meth:`__enter__` and
-        :meth:`__exit__` methods.
-
-    _process : object
-        An instanse of :class:`psutil.Process` for the current process, used to
-        get memory information in a platform independent way.
-
-    _record_type : object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
-
-    _record_type: class object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
 
     """
 
@@ -71,8 +43,6 @@ cdef class FunctionMemoryMonitor(FunctionMonitor):
         if record_type is None:
             record_type = FunctionMemoryRecord
         super(FunctionMemoryMonitor, self).__init__(recorder, record_type)
-        self._recorder = recorder
-        self._call_tracker = KeepTrack()
         self._process = None
 
     def enable(self):

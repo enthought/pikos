@@ -21,11 +21,6 @@ from pikos.monitors.function_monitor import FunctionRecord
 cdef class FunctionMonitor(Monitor):
     """ A Cython based monitor for function events.
 
-    Private
-    -------
-    _recorder : Recorder
-        reference to the recorder instance used by this monitor.
-
     """
 
     def __init__(self, recorder, record_type=None):
@@ -46,8 +41,8 @@ cdef class FunctionMonitor(Monitor):
             self.record_type = FunctionRecord
         else:
             self.record_type = record_type
-        if self.record_type == tuple:
-            self.use_tuple = True
+        if self.record_type is tuple:
+            self._use_tuple = True
 
     def enable(self):
         """ Enable the monitor.
@@ -84,7 +79,7 @@ cdef class FunctionMonitor(Monitor):
             object record
 
         record = self._gather_info(_frame, event, arg)
-        if not self.use_tuple:
+        if not self._use_tuple:
             record = self.record_type(*self._gather_info(_frame, event, arg))
         self._recorder.record(record)
         self._index += 1
