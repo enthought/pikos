@@ -12,12 +12,12 @@ from .pytrace cimport PyFrameObject
 
 cdef class FunctionMonitor(Monitor):
     cdef public object _recorder
+    cdef public object record_type
     cdef int _index
     cdef object _call_tracker
-    cdef object record_type
     cdef bint _use_tuple
 
     cdef int on_function_event(
         self, PyFrameObject *_frame, int event, object arg) except -1
     cdef object _gather_info(
-            self, PyFrameObject *_frame, int event, object arg)
+        self, PyFrameObject *_frame, int event, object arg)
