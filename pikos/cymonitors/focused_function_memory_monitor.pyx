@@ -24,44 +24,11 @@ cdef class FocusedFunctionMemoryMonitor(FunctionMemoryMonitor):
     The class hooks on the setprofile function to receive function events and
     record them if they take place inside the provided functions.
 
-    Public
-    ------
+    Attributes
+    ----------
     functions : FunctionSet
         A set of function or method objects inside which recording will
         take place.
-
-    Private
-    -------
-    _recorder : object
-        A recorder object that implementes the
-        :class:`~pikos.recorder.AbstractRecorder` interface.
-
-    _index : int
-        The current zero based record index. Each function event will increase
-        the index by one.
-
-    _call_tracker : object
-        An instance of the :class:`~pikos._internal.keep_track` utility class
-        to keep track of recursive calls to the monitor's :meth:`__enter__` and
-        :meth:`__exit__` methods.
-
-    _process : object
-        An instanse of :class:`psutil.Process` for the current process, used to
-        get memory information in a platform independent way.
-
-    _record_type : object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
-
-    _record_type: class object
-        A class object to be used for records. Default is
-        :class:`~pikos.monitors.records.FunctionMemoryMonitor`
-
-    _code_trackers : dictionary
-        A dictionary of KeepTrack instances associated with the code object
-        of each function in `functions`. It is used to keep track and check
-        that we are inside the execution of one these functions when we
-        record data.
 
     """
 
