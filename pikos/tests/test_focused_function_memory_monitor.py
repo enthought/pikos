@@ -35,6 +35,9 @@ class TestFocusedFunctionMemoryMonitor(TestCase):
         self.recorder = ListRecorder(
             filter_=OnValue('filename', self.filename))
 
+    def tearDown(self):
+        sys.setprofile(None)
+
     def test_focus_on_function(self):
         result = self.helper.run_on_function()
         self.assertEqual(result, 3)
