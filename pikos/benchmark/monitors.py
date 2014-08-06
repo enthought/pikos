@@ -35,9 +35,11 @@ def cymonitors():
     """ Cython monitors """
     from pikos.cymonitors.api import FunctionMonitor
     from pikos.cymonitors.api import FunctionMemoryMonitor
+    from pikos.cymonitors.api import LineMonitor
     return {
         'CFunctionMonitor': FunctionMonitor,
-        'CFunctionMemoryMonitor': FunctionMemoryMonitor}
+        'CFunctionMemoryMonitor': FunctionMemoryMonitor,
+        'CLineMontor': LineMonitor}
 
 
 def run(monitors, loops, record_type=None):
