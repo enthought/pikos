@@ -115,7 +115,13 @@ def monitor_lines(recorder=None, focus_on=None):
     if recorder is None:
         recorder = screen()
     if focus_on is None:
-        from pikos.monitors.line_monitor import LineMonitor
+        try:
+            from pikos.cymonitors.api import LineMonitor
+        except ImportError:
+            from pikos.monitors.api import LineMonitor
+            warnings.warn(
+                'Cython monitors are not available '
+                'falling back to pure python')
         monitor = LineMonitor(recorder)
     else:
         from pikos.monitors.focused_line_monitor import FocusedLineMonitor

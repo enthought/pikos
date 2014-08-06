@@ -30,7 +30,13 @@ class TestPikosRecorderFactories(compat.TestCase):
 
     def test_monitor_lines(self):
         from pikos.api import monitor_lines
-        from pikos.monitors.api import LineMonitor, FocusedLineMonitor
+
+        # The default behaviour will use the cython monitors if available.
+        try:
+            from pikos.cymonitors.api import LineMonitor
+        except ImportError:
+            from pikos.monitors.api import LineMonitor
+        from pikos.monitors.api import FocusedLineMonitor
 
         self.check_monitor_decorator(monitor_lines, LineMonitor)
         self.check_focused_monitor_decorator(
