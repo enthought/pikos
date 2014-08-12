@@ -7,6 +7,7 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 # -----------------------------------------------------------------------------
+import sys
 import unittest
 
 from pikos.filters.on_value import OnValue

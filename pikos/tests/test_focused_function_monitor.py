@@ -7,6 +7,7 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 # -----------------------------------------------------------------------------
+import sys
 import StringIO
 import unittest
 
