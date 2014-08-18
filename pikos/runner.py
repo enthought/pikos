@@ -53,13 +53,12 @@ def get_function(function_path):
     Parameters
     ----------
     function_path : string
-        a string with the path to the function. The expected format is::
+        A string with the path to the function. The expected format is:
 
-                `<packages>.<module>.<function>`
+            - `<function>`
+            - `<packages>.<module>.<function>`
+            - `<packages>.<module>.<class>.<method>`
 
-           or::
-
-                `<packages>.<module>.<class>.<method>`
 
     """
     try:
