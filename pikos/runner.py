@@ -29,10 +29,10 @@ def run_code_under_monitor(script, monitor):
     Parameters
     ----------
     script : str
-       The filename of the script to run.
+        The filename of the script to run.
 
     monitor : object
-       The monitor (i.e. context manager object) to use.
+        The monitor (i.e. context manager object) to use.
 
     """
     sys.path.insert(0, os.path.dirname(script))
@@ -53,7 +53,7 @@ def get_function(function_path):
     Parameters
     ----------
     function_path : string
-       a string with the path to the function. The expected format is::
+        a string with the path to the function. The expected format is::
 
                 `<packages>.<module>.<function>`
 
@@ -66,8 +66,47 @@ def get_function(function_path):
         return importlib.import_module(function_path)
     except ImportError:
         components = function_path.split('.')
-        module = importlib.import_module('.'.join(components[:-1]))
-        return getattr(module, components[-1])
+        try:
+            module = importlib.import_module('.'.join(components[:-1]))
+        except ImportError:
+            module = importlib.import_module('.'.join(components[:-2]))
+            class_object = getattr(module, components[-2])
+            return getattr(class_object, components[-1])
+        else:
+            return getattr(module, components[-1])
+
+
+def get_focused_on(script, focused_on):
+    """ .
+
+    Parameters
+    ----------
+    script : string
+        The path of the script.
+
+    focused_on : string
+        The string of comma separate method paths to retrieve the function
+        objects for.
+
+    """
+    if focused_on is not None:
+        functions = []
+        for item in focused_on.split(','):
+            cleaned_item = item.strip()
+            try:
+                function = get_function(cleaned_item)
+            except (ImportError, ValueError):
+                module = os.path.splitext(
+                    os.path.basename(script))[0]
+                try:
+                    function = get_function('.'.join((module, cleaned_item)))
+                except (ImportError, ValueError):
+                    raise ValueError(
+                        'Cannot find function: {0}'.format(cleaned_item))
+            functions.append(function)
+    else:
+        functions = None
+    return functions
 
 
 def main():
@@ -103,26 +142,10 @@ def main():
     else:
         recorder = screen()
 
-    if args.focused_on is not None:
-        sys.path.insert(0, os.path.dirname(args.script))
-        functions = []
-        for item in args.focused_on.split(','):
-            cleaned_item = item.strip()
-            try:
-                function = get_function(cleaned_item)
-            except (ImportError, ValueError):
-                module = os.path.splitext(
-                    os.path.basename(args.script))[0]
-                try:
-                    function = get_function('.'.join((module, cleaned_item)))
-                except (ImportError, ValueError):
-                    raise ValueError(
-                        'Cannot find function: {0}'.format(cleaned_item))
-            functions.append(function)
-    else:
-        functions = None
-
-    monitor = MONITORS[args.monitor](recorder=recorder, focus_on=functions)
+    script = args.script
+    sys.path.insert(0, os.path.dirname(script))
+    focus_on = get_focused_on(script, focused_on=args.focused_on)
+    monitor = MONITORS[args.monitor](recorder=recorder, focus_on=focus_on)
     run_code_under_monitor(args.script, monitor)
 
 
