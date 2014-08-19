@@ -34,6 +34,9 @@ class TestTraceFunctionsManager(TestCase):
         self.bar = bar
         self.monitor = MockNativeMonitor()
 
+    def tearDown(self):
+        sys.settrace(self.old)
+
     def test_preserving_previous_function(self):
 
         sys.settrace(self.bar)
@@ -61,8 +64,6 @@ class TestTraceFunctionsManager(TestCase):
             self.monitor._profile.recover()
         self.assertIs(sys.gettrace(), self.old)
 
-    def tearDown(self):
-        sys.settrace(self.old)
 
 if __name__ == '__main__':
     unittest.main()

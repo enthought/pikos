@@ -38,6 +38,9 @@ class TestCFunctionMonitor(TestCase):
         self.monitor = FunctionMonitor(self.recorder)
         self.helper.monitor = self.monitor
 
+    def tearDown(self):
+        sys.setprofile(None)
+
     def test_function(self):
         result = self.helper.run_on_function()
         self.assertEqual(result, 3)
