@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from pikos.runner import get_function, get_focused_on
@@ -25,24 +26,30 @@ class TestRunner(unittest.TestCase):
         self.assertEqual(function.func_code, DummyClass.method.func_code)
 
     def test_focused_on_script_method(self):
-        functions = get_focused_on(__file__, 'module_function')
+        functions = get_focused_on(
+            self._script_file(), 'module_function')
         self.assertEqual(len(functions), 1)
         function = functions[0]
         self.assertEqual(function.func_code, module_function.func_code)
 
     def test_get_focused_on_script_class_method(self):
-        functions = get_focused_on(__file__, 'DummyClass.method')
+        functions = get_focused_on(
+            self._script_file(), 'DummyClass.method')
         self.assertEqual(len(functions), 1)
         function = functions[0]
         self.assertEqual(function.func_code, DummyClass.method.func_code)
 
     def test_get_focused_with_multiple_functions(self):
         functions = get_focused_on(
-            __file__, 'module_function, DummyClass.method')
+            self._script_file(), 'module_function, DummyClass.method')
         self.assertEqual(len(functions), 2)
         self.assertEqual(
             [functions[0].func_code, functions[1].func_code],
             [module_function.func_code, DummyClass.method.func_code])
+
+    def _script_file(self):
+        module_file = os.path.splitext(__file__)[0]
+        return '.'.join((module_file, 'py'))
 
 
 if __name__ == '__main__':
