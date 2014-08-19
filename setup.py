@@ -21,6 +21,14 @@ else:
     BUILD_CYTHON_MONITORS = platform.python_implementation() == 'CPython'
     cmdclass = {'build_ext': build_ext}
 
+try:
+    import unittest2
+except ImportError:
+    test_suite = 'unittest2.collector'
+else:
+    test_suite = 'pikos.tests'
+
+
 with open('README.rst', 'r') as readme:
     README_TEXT = readme.read()
 
@@ -109,7 +117,7 @@ setup(
     description='Enthought monitoring and profiling tools',
     long_description=README_TEXT,
     packages=find_packages(),
-    test_suite='pikos.tests',
+    test_suite=test_suite,
     entry_points=dict(
         console_scripts=['pikos-run = pikos.runner:main']),
     cmdclass=cmdclass,
