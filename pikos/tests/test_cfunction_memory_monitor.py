@@ -146,8 +146,7 @@ class TestCFunctionMemoryMonitor(TestCase):
         records = []
         for record in recorder.records:
             filtered = record[:3] + record[5:]
-            records.append(
-                ' '.join([str(item).rstrip() for item in filtered]))
+            records.append(' '.join([str(item) for item in filtered]))
         return records
 
 
