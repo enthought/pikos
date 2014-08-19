@@ -11,5 +11,4 @@ install:
   - if [[ $CYTHON == 1 ]]; then pip install cython; fi
   - python setup.py develop
 script:
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then unit2 discover; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then python setup.py test; fi
+  - python setup.py test
