@@ -7,6 +7,7 @@ env:
   - CYTHON=1
 install:
   - pip install -r requirements.txt
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install -r requirements-2.6.txt; fi
   - if [[ $CYTHON == 1 ]]; then pip install cython; fi
   - python setup.py develop
 script: unit2 discover -v
