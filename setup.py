@@ -24,9 +24,9 @@ else:
 try:
     import unittest2
 except ImportError:
-    test_suite = 'unittest2.collector'
-else:
     test_suite = 'pikos.tests'
+else:
+    test_suite = 'unittest2.collector'
 
 
 with open('README.rst', 'r') as readme:
