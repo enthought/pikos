@@ -81,5 +81,5 @@ class LineMemoryMonitor(LineMonitor):
         if line is None:
             line = ['<compiled string>']
         return (
-            self._index, function, lineno, rss, vms, line[0],
+            self._index, function, lineno, rss, vms, line[0].rstrip(),
             filename)
