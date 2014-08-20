@@ -75,9 +75,9 @@ class FunctionSet(collections.MutableSet):
             code = function.func_code
         except AttributeError:
             if inspect.isbuiltin(function):
-                msg = "Built-in functions are not supported: {0}"
+                msg = "Built-in functions are not supported for: {0}"
             else:
-                msg = "Could not extract a code object for the object {0}"
+                msg = "Could not extract a code object for: {0}"
             warnings.warn(msg.format(function))
         else:
             if code not in self._code_map:
