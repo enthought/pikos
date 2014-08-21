@@ -8,10 +8,7 @@
 #  All rights reserved.
 #----------------------------------------------------------------------------
 from .function_monitor cimport FunctionMonitor
-from .pytrace cimport PyFrameObject
+
 
 cdef class FunctionMemoryMonitor(FunctionMonitor):
     cdef object _process
-
-    cdef object _gather_info(
-            self, PyFrameObject *_frame, int event, object arg)
