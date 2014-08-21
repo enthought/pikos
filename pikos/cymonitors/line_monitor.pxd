@@ -13,11 +13,11 @@ from .pytrace cimport PyFrameObject
 cdef class LineMonitor(Monitor):
     cdef public object _recorder
     cdef public object record_type
-    cdef int _index
-    cdef object _call_tracker
-    cdef bint _use_tuple
-
-    cdef object _record_info(self, frame)
+    cdef int index
+    cdef object call_tracker
+    cdef bint use_tuple
+    cdef object record_info(self, frame)
+    cdef object gather_info(self, frame)
 
 cdef int on_line_event(
     LineMonitor monitor,

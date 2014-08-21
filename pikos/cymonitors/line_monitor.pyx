@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: cymonitors/line_monitor.py
+#  File: cymonitors/line_monitor.pyx
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
@@ -35,12 +35,12 @@ cdef class LineMonitor(Monitor):
 
         """
         self._recorder = recorder
-        self._call_tracker = KeepTrack()
+        self.call_tracker = KeepTrack()
         if record_type is None:
             self.record_type = LineRecord
         else:
             self.record_type = record_type
-        self._use_tuple = self.record_type is tuple
+        self.use_tuple = self.record_type is tuple
 
     def enable(self):
         """ Enable the monitor.
@@ -49,7 +49,7 @@ cdef class LineMonitor(Monitor):
         set the setprofile hooks and initialize the recorder.
 
         """
-        if self._call_tracker('ping'):
+        if self.call_tracker('ping'):
             self._recorder.prepare(self.record_type)
             PyEval_SetTrace(<Py_tracefunc>on_line_event, self)
 
@@ -60,7 +60,7 @@ cdef class LineMonitor(Monitor):
         unset the setprofile hooks and finalize the recorder.
 
         """
-        if self._call_tracker('pong'):
+        if self.call_tracker('pong'):
             PyEval_SetTrace(NULL, None)
             self._recorder.finalize()
 
@@ -68,16 +68,30 @@ cdef class LineMonitor(Monitor):
         # We need to define a callable incase settrace(gettrace()) happens.
         # see http://nedbatchelder.com/text/trace-function.html for more info
         if why[0] == 'l':
-            self._record_info(frame)
+            self.record_info(frame)
         return self
 
-    cdef object _record_info(self, frame):
+    cdef object record_info(self, frame):
         """ Record the current info.
 
         """
         cdef:
             object record
-            object code
+
+        record = self.gather_info(frame)
+        if not self.use_tuple:
+            record = self.record_type(*record)
+
+        self._recorder.record(record)
+        self.index += 1
+
+    cdef object gather_info(self, frame):
+        """ Gather info.
+
+        """
+        cdef:
+            object code, filename, line
+            int lineno
 
         code = frame.f_code
         filename = code.co_filename
@@ -86,12 +100,9 @@ cdef class LineMonitor(Monitor):
         if len(line) == 0:
             line = '<compiled string>'
         record = (
-            self._index, code.co_name, frame.f_lineno, line.rstrip(),
+            self.index, code.co_name, frame.f_lineno, line.rstrip(),
             filename)
-        if not self._use_tuple:
-            record = self.record_type(*record)
-        self._recorder.record(record)
-        self._index += 1
+        return record
 
 
 cdef int on_line_event(
@@ -106,5 +117,5 @@ cdef int on_line_event(
     # Make the frame right in case settrace(gettrace()) happens
     frame.f_trace = monitor
     if event == PyTrace_LINE:
-        monitor._record_info(frame)
+        monitor.record_info(frame)
     return 0
