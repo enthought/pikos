@@ -53,13 +53,10 @@ cdef class FocusedLineMonitor(LineMonitor):
         super(FocusedLineMonitor, self).__init__(recorder, record_type)
         self.functions = FunctionSet(functions)
 
-    cdef record_info(self, _frame):
+    cdef record_info(self, frame):
         """ Record the current info.
 
         """
-        cdef:
-            object frame = <object>_frame
-
         code = frame.f_code
         if code in self.functions:
             LineMonitor.record_info(self, frame)
