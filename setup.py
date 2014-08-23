@@ -68,6 +68,10 @@ cython_monitors = Feature(
             sources=[
                 'pikos/cymonitors/focused_function_monitor.pyx']),
         Extension(
+            'pikos.cymonitors.focused_line_monitor',
+            sources=[
+                'pikos/cymonitors/focused_line_monitor.pyx']),
+        Extension(
             'pikos.cymonitors.function_memory_monitor',
             sources=[
                 'pikos/cymonitors/function_memory_monitor.pyx']),
