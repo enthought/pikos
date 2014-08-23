@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: cymonitors/line_monitor.pyx
+#  File: cymonitors/line_memory_monitor.pyx
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
@@ -9,17 +9,19 @@
 #----------------------------------------------------------------------------
 from cpython.pystate cimport Py_tracefunc, PyTrace_LINE
 
-from .monitor cimport Monitor
+from .line_monitor cimport LineMonitor
 from .pytrace cimport PyEval_SetTrace, PyFrameObject
 
+import os
+import psutil
 from linecache import getline
 
-from pikos._internal.keep_track import KeepTrack
-from pikos.monitors.records import LineRecord
+from pikos.monitors.records import LineMemoryRecord
 
 
-cdef class LineMonitor(Monitor):
-    """ A Cython based monitor for line events.
+cdef class LineMemoryMonitor(LineMonitor):
+    """ A Cython based monitor recording memory info on line events.
+
     """
 
     def __init__(self, recorder, record_type=None):
@@ -34,13 +36,10 @@ cdef class LineMonitor(Monitor):
             The record type to use. Default is to use a FunctionRecord.
 
         """
-        self._recorder = recorder
-        self.call_tracker = KeepTrack()
         if record_type is None:
-            self.record_type = LineRecord
-        else:
-            self.record_type = record_type
-        self.use_tuple = self.record_type is tuple
+            record_type = LineMemoryRecord
+        super(LineMemoryMonitor, self).__init__(recorder, record_type)
+        self.process = None
 
     def enable(self):
         """ Enable the monitor.
@@ -50,6 +49,7 @@ cdef class LineMonitor(Monitor):
 
         """
         if self.call_tracker('ping'):
+            self.process = psutil.Process(os.getpid())
             self._recorder.prepare(self.record_type)
             PyEval_SetTrace(<Py_tracefunc>on_line_event, self)
 
@@ -63,36 +63,17 @@ cdef class LineMonitor(Monitor):
         if self.call_tracker('pong'):
             PyEval_SetTrace(NULL, None)
             self._recorder.finalize()
+            self.process = None
 
-    def __call__(self, frame, why, arg):
-        # We need to define a callable incase settrace(gettrace()) happens.
-        # see http://nedbatchelder.com/text/trace-function.html for more info
-        if why[0] == 'l':
-            self.record_info(frame)
-        return self
-
-    cdef object record_info(self, frame):
+    cdef object gather_info(self, frame):
         """ Record the current info.
 
         """
         cdef:
             object record
+            object code
 
-        record = self.gather_info(frame)
-        if not self.use_tuple:
-            record = self.record_type(*record)
-
-        self._recorder.record(record)
-        self.index += 1
-
-    cdef object gather_info(self, frame):
-        """ Gather info.
-
-        """
-        cdef:
-            object code, filename, line
-            int lineno
-
+        rss, vms = self.process.memory_info()
         code = frame.f_code
         filename = code.co_filename
         lineno = frame.f_lineno
@@ -100,8 +81,8 @@ cdef class LineMonitor(Monitor):
         if len(line) == 0:
             line = '<compiled string>'
         record = (
-            self.index, code.co_name, frame.f_lineno, line.rstrip(),
-            filename)
+            self.index, code.co_name, frame.f_lineno, rss, vms,
+            line.rstrip(), filename)
         return record
 
 
