@@ -71,7 +71,7 @@ cdef class LineMonitor(Monitor):
             self.record_info(frame)
         return self
 
-    cdef object record_info(self, frame):
+    cdef record_info(self, frame):
         """ Record the current info.
 
         """
