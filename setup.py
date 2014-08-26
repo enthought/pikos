@@ -83,7 +83,7 @@ cython_monitors = Feature(
             'pikos.cymonitors.line_memory_monitor',
             sources=[
                 'pikos/cymonitors/line_memory_monitor.pyx']),
-       Extension(
+        Extension(
             'pikos.cymonitors.focused_line_memory_monitor',
             sources=[
                 'pikos/cymonitors/focused_line_memory_monitor.pyx'])])
@@ -106,7 +106,7 @@ def write_version_py(filename=None):
 #  File: version.py
 #  License: LICENSE.TXT
 #
-#  Copyright (c) 2012, Enthought, Inc.
+#  Copyright (c) 2012-14, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
 version = '%s'
