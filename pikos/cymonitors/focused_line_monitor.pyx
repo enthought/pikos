@@ -36,8 +36,6 @@ cdef class FocusedLineMonitor(LineMonitor):
 
     """
 
-    cdef public object functions
-
     def __init__(self, functions, recorder, record_type=None):
         """ Constructor
 
