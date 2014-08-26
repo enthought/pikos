@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #----------------------------------------------------------------------------
 #  Package: Pikos toolkit
-#  File: cymonitors/focused_line_memory_monitor.py
+#  File: cymonitors/focused_line_memory_monitor.pyx
 #  License: LICENSE.TXT
 #
 #  Copyright (c) 2014, Enthought, Inc.
