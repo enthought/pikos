@@ -165,11 +165,14 @@ class FunctionContainer(object):
 class CurrentFunctionContainer(object):
     """ Class holding the currently used function event method in pikos.
 
+    The current function is a little slower since it makes a function call
+    in order to provide more flexibility in extending the related monitors.
+
     """
 
     def __init__(self):
         monitor = FunctionMonitor(recorder=RecordCounter(), record_type=tuple)
-        self.current = monitor.on_function_event_using_tuple
+        self.current = monitor.on_function_event
 
 
 class SlotsFunctionContainer(object):
@@ -275,9 +278,9 @@ def main():
     profiler.disable()
 
     profiler.dump_stats('function_event.stats')
-    line_profiler = LineProfiler(SlotsFunctionContainer.step_nine)
+    line_profiler = LineProfiler(CurrentFunctionContainer().current)
     line_profiler.enable()
-    function_runner('step_nine')
+    function_runner('current')
     line_profiler.disable()
     line_profiler.dump_stats('function_event.line_stats')
     line_profiler.print_stats()
