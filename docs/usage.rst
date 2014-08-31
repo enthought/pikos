@@ -99,11 +99,14 @@ The standard pikos monitors can be also used throught a command prompt tool,
 Example
 -------
 
-Running `pikos-run function_memory examples/mandelbrot_set_example.py
---recording csv --focused-on=mandelbrot` from the root directory will run the
-`mandelbrot` example and record the memory usage on function entry and exit
-while inside the `mandelbrot` method. The monitoring information will be
-recorded in csv format in the `monitor_records.csv` (default filename).
+Running::
+
+    pikos-run function_memory examples/mandelbrot_set_example.py --recording csv --focused-on=mandelbrot 
+
+from the root directory will run the `mandelbrot` example and record the 
+memory usage on function entry and exit while inside the `mandelbrot` method. 
+The monitoring information will be recorded in csv format in the 
+`monitor_records.csv` (default filename).
 
 Code
 ~~~~
