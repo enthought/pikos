@@ -9,6 +9,6 @@ that could offer deterministic memory allocation/deallocation of a python proces
 in a resonable amount of time. In fact still now most of the tools are aimed at 
 finding memory leaks and work on memory snapshots or give memory usage at time 
 intervals (average memory usage). These tools are not usefull when looking for 
-temporary allocations/dealloations and distingusing (in alien code) those that 
-could easily lead into *out of memory errors*. After setting up the goals and we 
-started working into formalizing out ideas and pikos was born.
+temporary allocations/dealloations and distingusing (in alien code) code snipets 
+that could easily lead into *out of memory errors*. After setting up the goals and 
+we started working into formalizing out ideas and pikos was born.
