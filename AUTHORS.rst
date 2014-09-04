@@ -11,4 +11,4 @@ finding memory leaks and work on memory snapshots or give memory usage at time
 intervals (average memory usage). These tools are not usefull when looking for 
 temporary allocations/dealloations and distingusing (in alien code) code snipets 
 that could easily lead into *out of memory errors*. After setting up the goals and 
-we started working into formalizing out ideas and pikos was born.
+we started working into formalizing our ideas and thus pikos was *born*.
