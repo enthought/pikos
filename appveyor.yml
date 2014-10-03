@@ -1,7 +1,9 @@
 build: false
 environment:
 
-  - PYTHON: "C:/Python27"
+  matrix:
+
+    - PYTHON: "C:/Python27"
 
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + "C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;" + $Env:path
