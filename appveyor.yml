@@ -9,6 +9,6 @@ install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
   - ps: pip install enstaller
-  - ps: enpkg psutil cython
+  - ps: enpkg -q psutil cython
 test_script:
   - cmd /v:on /e:on /k "setenv x64; python setup.py test"
