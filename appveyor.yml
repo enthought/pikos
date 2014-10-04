@@ -1,20 +1,22 @@
 build: false
 environment:
 
-  matrix:
-  - python: "C:/Python27-64"
-    cython: "true"
+  global:
+    python: "C:/Python27-64"
+    distutils_use_sdk: 1
 
-  - python: "C:/Python27-64"
-    cython: "false"
+  matrix:
+  - cython: "true"
+  - cython: "false"
 
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + "C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;" + $Env:path
   - ps: $Env:DISTUTILS_USE_SDK = 1
+  - ps: WindowsSdkVer.exe -version:v7.0
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
-  - ps: if ($Env:cython -eq "true") {cmd /v:on /e:on /k "setenv /x64 && pip install cython"}
-  - ps: cmd /v:on /e:on /k "setenv /x64 && pip install -r requirements.txt"
+  - ps: if ($Env:cython -eq "true") {cmd /v:on /e:on /c "setenv /x64 && pip install cython"}
+  - ps: cmd /v:on /e:on /c "setenv /x64 && pip install -r requirements.txt"
 test_script:
-  - cmd /v:on /e:on /k "setenv /x64 && python setup.py test"
+  - cmd /v:on /e:on /c "setenv /x64 && python setup.py test"
