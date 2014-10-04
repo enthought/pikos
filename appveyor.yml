@@ -13,12 +13,10 @@ environment:
 
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + "C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;" + $Env:path
-  - ps: $Env:DISTUTILS_USE_SDK = 1
-  - ps: $sdkver -q -version:v7.0
+  - cmd: %sdkver% -q -version:v7.0"
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
-  - ps: if ($Env:cython -eq "true") {cmd /v:on /e:on /c "setenv /x64 && $pip install cython"}
-  - ps: cmd /v:on /e:on /c "setenv /x64 && $pip install -r requirements.txt"
+  - ps: cmd /v:on /e:on /c ./appveyor_install.cmd
 test_script:
-  - cmd /v:on /e:on /c "setenv /x64 && python setup.py test"
+  - ps: cmd /v:on /e:on /c ./appveyor_test.cmd
