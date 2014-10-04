@@ -4,7 +4,6 @@ environment:
   global:
     distutils_use_sdk: 1
     sdkver: "C:/Program Files/Microsoft SDKs/Windows/v7.0/Setup/WindowsSdkVer.exe"
-    pip: "C:/Python27-x64/Scripts/pip.exe"
     python: "C:/Python27-x64"
 
   matrix:
