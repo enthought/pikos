@@ -1,4 +1,4 @@
 "%sdkver%" -q -version:v7.0
-setenv /x64
-if %cython% EQU "true" pip install cython
+call setenv /x64
+if %cython%=='true' (pip install cython)
 pip install -r requirements.txt
