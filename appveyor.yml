@@ -2,10 +2,10 @@ build: false
 environment:
 
   matrix:
-  - python: "C:/Python27"
+  - python: "C:/Python27-64"
     cython: "true"
 
-  - python: "C:/Python27"
+  - python: "C:/Python27-64"
     cython: "false"
 
 init:
@@ -14,7 +14,7 @@ init:
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
-  - ps: if ($Env:cython -eq "true") {pip install cython}
-  - ps: pip install -r requirements.txt
+  - ps: if ($Env:cython -eq "true") {cmd /v:on /e:on /k "setenv /x64 && pip install cython"}
+  - ps: cmd /v:on /e:on /k "setenv /x64 && pip install -r requirements.txt"
 test_script:
-  - cmd /v:on /e:on /k "setenv /x64; python setup.py test"
+  - cmd /v:on /e:on /k "setenv /x64 && python setup.py test"
