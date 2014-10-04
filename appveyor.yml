@@ -3,10 +3,10 @@ environment:
 
   matrix:
   - python: "C:/Python27"
-    cython = "true"
+    cython: "true"
 
   - python: "C:/Python27"
-    cython = "false"
+    cython: "false"
 
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + "C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;" + $Env:path
