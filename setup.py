@@ -14,11 +14,10 @@ from setuptools import setup, find_packages, Extension, Feature
 try:
     from Cython.Distutils import build_ext
 except ImportError:
-    from setuptools.command import build_ext
-    BUILD_CYTHON_MONITORS = False
+    CAN_BUILD_CYTHON_MONITORS = False
     cmdclass = {}
 else:
-    BUILD_CYTHON_MONITORS = platform.python_implementation() == 'CPython'
+    CAN_BUILD_CYTHON_MONITORS = platform.python_implementation() == 'CPython'
     cmdclass = {'build_ext': build_ext}
 
 try:
@@ -50,7 +49,7 @@ features = {'real-time-lsprof': real_time_lsprof}
 
 cython_monitors = Feature(
     description='optional compile additional cython monitors',
-    standard=BUILD_CYTHON_MONITORS,
+    standard=CAN_BUILD_CYTHON_MONITORS,
     ext_modules=[
         Extension(
             'pikos.cymonitors.monitor',
