@@ -16,6 +16,6 @@ init:
 install:
   - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
   - ps: python C:/get-pip.py
-  - ps: cmd /v:on /e:on /c ".\appveyor_install.cmd"
+  - ps: cmd /v:on /e:on /c ".\appveyor-install.cmd"
 test_script:
-  - ps: cmd /v:on /e:on /c ".\appveyor_test.cmd"
+  - ps: cmd /v:on /e:on /c ".\appveyor-test.cmd"
