@@ -8,8 +8,8 @@ environment:
     python: "C:/Python27-x64"
 
   matrix:
-  - cython: "true"
-  - cython: "false"
+  - cython: 1
+  - cython: 0
 
 init:
   - ps: $Env:path = $Env:python + ";" + $Env:python + "\scripts;" + "C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;" + $Env:path
