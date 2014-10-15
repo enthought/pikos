@@ -35,7 +35,7 @@ class FunctionMonitor(Monitor):
 
         record_type: class object
             A class object to be used for records. Default is
-            :class:`~pikos.monitors.records.FunctionMonitor.
+            :class:`~pikos.monitors.records.FunctionMonitor`.
 
         """
         self._recorder = recorder
