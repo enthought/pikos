@@ -31,6 +31,19 @@ LINE_MEMORY_HEADER_TEMPLATE = (
 
 
 class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
+    """ The record tuple for function events.
+
+    ========== ================================================
+    Field      Description
+    ========== ================================================
+    `index`    The current index of the record.
+    `type`     The type of the event (see Python trace method).
+    `function` The name of the function.
+    `lineNo`   The line number when the function is defined.
+    `filename` The filename where the function is defined.
+    ========== ================================================
+
+    """
 
     __slots__ = ()
 
@@ -39,6 +52,19 @@ class FunctionRecord(namedtuple('FunctionRecord', FUNCTION_RECORD)):
 
 
 class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
+    """ The record for line trace events.
+
+    ========== ================================================
+    Field      Description
+    ========== ================================================
+    `index`    The current index of the record.
+    `function` The name of the function.
+    `lineNo`   The line number when the function is defined.
+    `line`     The line that is going to be executed.
+    `filename` The filename where the function is defined.
+    ========== ================================================
+
+    """
 
     __slots__ = ()
 
@@ -48,6 +74,21 @@ class LineRecord(namedtuple('LineRecord', LINE_RECORD)):
 
 class FunctionMemoryRecord(
         namedtuple('FunctionMemoryRecord', FUNCTION_MEMORY_RECORD)):
+    """ The record tuple for memory usage on function events.
+
+    ========== ================================================
+    Field      Description
+    ========== ================================================
+    `index`    The current index of the record.
+    `type`     The type of the event (see Python trace method).
+    `function` The name of the function.
+    `RSS`      The resident memory counter.
+    `VMS`      The virtual memory counter.
+    `lineNo`   The line number when the function is defined.
+    `filename` The filename where the function is defined.
+    ========== ================================================
+
+    """
 
     __slots__ = ()
 
@@ -56,6 +97,20 @@ class FunctionMemoryRecord(
 
 
 class LineMemoryRecord(namedtuple('LineMemoryRecord', LINE_MEMORY_RECORD)):
+    """ The record tuple for memory usage on line events.
+
+    ========== ================================================
+    Field      Description
+    ========== ================================================
+    `index`    The current index of the record.
+    `function` The name of the function
+    `RSS`      The resident memory counter.
+    `VMS`      The virtual memory counter.
+    `lineNo`   The line number when the function is defined.
+    `filename` The filename where the function is defined.
+    ========== ================================================
+
+    """
 
     __slots__ = ()
 
