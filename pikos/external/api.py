@@ -9,30 +9,40 @@
 #------------------------------------------------------------------------------
 __all__ = [
     'PythonCProfiler',
-    'YappiProfiler',
-    'LineProfiler',
-    'yappi_profile',
-    'line_profile'
 ]
 
+import warnings
+
 from pikos.external.python_cprofiler import PythonCProfiler
-from pikos.external.yappi_profiler import YappiProfiler
-from pikos.external.line_profiler import LineProfiler
+
+try:
+    from pikos.external.yappi_profiler import YappiProfiler
+except ImportError:
+    warnings.warn(
+        'YappiProfiler cannot be imported and will not be available')
+else:
+    def yappi_profile(buildins=None):
+        """ Factory function that returns a yappi monitor.
+
+        """
+        return YappiProfiler(buildins)
+    __all__.extend(['YappiProfiler', 'yappi_profile'])
 
 
-def yappi_profile(buildins=None):
-    """ Factory function that returns a yappi monitor.
+try:
+    from pikos.external.line_profiler import LineProfiler
+except ImportError:
+    warnings.warn(
+        'LineProfile cannot be imported and will not be available')
+else:
+    def line_profile(*args, **kwrds):
+        """ Factory function that returns a line profiler.
 
-    """
-    return YappiProfiler(buildins)
+        Please refer to
+        `<http://packages.python.org/line_profiler/ for more information>_`
+        for initialization options.
 
+        """
+        return LineProfiler(*args, **kwrds)
 
-def line_profile(*args, **kwrds):
-    """ Factory function that returns a line profiler.
-
-    Please refer to
-    `<http://packages.python.org/line_profiler/ for more information>_`
-    for initialization options.
-
-    """
-    return LineProfiler(*args, **kwrds)
+    __all__.extend(['LineProfiler', 'line_profile'])
