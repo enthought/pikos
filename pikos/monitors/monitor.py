@@ -13,7 +13,7 @@ from pikos._internal.attach_decorators import basic_attach
 
 
 class Monitor(object):
-    """ Base class of Pikos provides monitors.
+    """ Base class of Pikos provided monitors.
 
     The class provides the `.attach` decorating method to attach a pikos
     monitor to a function or method. Subclasses might need to provide their

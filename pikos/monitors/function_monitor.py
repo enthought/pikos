@@ -29,13 +29,12 @@ class FunctionMonitor(Monitor):
         Parameters
         ----------
         recorder : object
-            A subclass of :class:`~pikos.recorders.AbstractRecorder` or a
-            class that implements the same interface to handle the values
-            to be logged.
+            A subclass of :class:`~.AbstractRecorder` or a class that
+            implements the same interface to handle the values to be logged.
 
-        record_type: class object
+        record_type : type
             A class object to be used for records. Default is
-            :class:`~pikos.monitors.records.FunctionMonitor`.
+            :class:`~.FunctionRecord`.
 
         """
         self._recorder = recorder
