@@ -83,8 +83,7 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 
-autodoc_default_flags = ['undoc-members', 'private-members', 'members',
-                         'show-inheritance']
+autodoc_default_flags = ['undoc-members', 'members', 'show-inheritance']
 
 autodoc_member_order = 'bysource'
 
