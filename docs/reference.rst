@@ -125,6 +125,7 @@ The monitor records available are:
     :hidden:
 
     monitors
+    records
     recorders
     filters
     external
