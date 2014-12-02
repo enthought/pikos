@@ -23,6 +23,10 @@ Key aims of Pikos are:
 .. image:: https://ci.appveyor.com/api/projects/status/wqvek4l2k0arj2od
     :target: https://ci.appveyor.com/project/itziakos/pikos
 
+.. image:: https://readthedocs.org/projects/pikos/badge/?version=master
+    :target: https://readthedocs.org/projects/pikos/?badge=master
+    :alt: Documentation Status
+    
 Repository
 ----------
 
