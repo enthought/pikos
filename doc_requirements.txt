@@ -1,2 +1,2 @@
-psutil
+-r requirements.txt
 refactordoc
