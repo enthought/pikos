@@ -2,9 +2,9 @@ Library Reference
 =================
 
 Pikos is designed in layers.  At the top layer we find the
-:class:`~pikos.monitors.monitor.Monitor` a decorator that acts as the entry
-point for the `monitors`_ provided by pikos. The next layer is the various
-monitors that are responsible to collect information (e.g. memory) during
+:class:`~.Monitor` a decorator that acts as the entry point for the
+`monitors`_ provided by pikos. The next layer is the various monitors
+that are responsible to collect information (e.g. memory) during
 the execution of the decorated function. The retrieved information is
 recorded through the `recorders`_ and controlled with the `filters`_.
 
@@ -32,6 +32,7 @@ to recorder that has been associated with the current monitor.
 Pikos currently provides the following monitors:
 
 .. autosummary::
+   :nosignatures:
 
     ~pikos.monitors.function_monitor.FunctionMonitor
     ~pikos.monitors.line_monitor.LineMonitor
@@ -48,6 +49,7 @@ External Monitors
 Pikos can act as entry point for external libraries and profilers.
 
 .. autosummary::
+   :nosignatures:
 
    ~pikos.external.python_cprofiler.PythonCProfiler
    ~pikos.external.line_profiler.LineProfiler
@@ -68,6 +70,7 @@ recordered is controlled by a filter function
 Pikos currently provides the following recorders:
 
 .. autosummary::
+   :nosignatures:
 
     ~pikos.recorders.text_stream_recorder.TextStreamRecorder
     ~pikos.recorders.text_file_recorder.TextFileRecorder
@@ -92,6 +95,7 @@ up monitoring only of the desired code.
 Pikos currently provides the following predefined filters:
 
 .. autosummary::
+   :nosignatures:
 
     ~pikos.filters.on_value.OnValue
     ~pikos.filters.on_change.OnChange
@@ -106,12 +110,13 @@ optionally used to format the output.
 .. note::
 
     Currently only the
-    :class:`~pikos.recorders.test_stream_recorder.TextStreamRecorder`
+    :class:`~pikos.recorders.text_stream_recorder.TextStreamRecorder`
     can take advantage of the additional format information.
 
 The monitor records available are:
 
 .. autosummary::
+   :nosignatures:
 
     ~pikos.monitors.records.FunctionRecord
     ~pikos.monitors.records.LineRecord
@@ -125,6 +130,7 @@ The monitor records available are:
     :hidden:
 
     monitors
+    records
     recorders
     filters
     external

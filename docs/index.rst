@@ -11,7 +11,6 @@ Contents
    :maxdepth: 2
 
    reference
-   live
 
 Indices and tables
 ==================
@@ -20,3 +19,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. toctree::
+   :hidden:
+
+   usage

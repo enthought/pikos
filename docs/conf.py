@@ -13,10 +13,6 @@
 
 import sys, os
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('./_extensions'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -87,8 +83,7 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 
-autodoc_default_flags = ['undoc-members', 'private-members', 'members',
-                         'show-inheritance']
+autodoc_default_flags = ['undoc-members', 'members', 'show-inheritance']
 
 autodoc_member_order = 'bysource'
 
