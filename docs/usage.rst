@@ -1,4 +1,4 @@
-Usage
+\Usage
 =====
 
 The main component in the pikos toolset is the `Monitor`. A monitor creates
@@ -105,7 +105,7 @@ Given the code bellow:
 
 Running::
 
-    pikos-run function_memory examples/mandelbrot_set_example.py --recording csv --focused-on=mandelbrot
+    pikos-run line_memory examples/mandelbrot_set_example.py --recording csv --focused-on=mandelbrot
 
 from the root directory will run the `mandelbrot` example and record the
 memory usage on function entry and exit while inside the `mandelbrot` method.
