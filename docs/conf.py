@@ -12,10 +12,38 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys
 
 
-# -- General configuration -----------------------------------------------------
+def mock_modules():
+
+    from mock import MagicMock
+
+    try:
+        import yappi  # noqa
+    except ImportError:
+        MOCK_MODULES = ['yappi']
+    else:
+        MOCK_MODULES = []
+
+    try:
+        import zmq  # noqa
+    except ImportError:
+        MOCK_MODULES.append('zmq')
+
+    class Mock(MagicMock):
+
+        @classmethod
+        def __getattr__(cls, name):
+            return Mock()
+
+        def __call__(self, *args, **kwards):
+            return Mock()
+
+    sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+    print 'mocking {}'.format(MOCK_MODULES)
+
+# -- General configuration ----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.0'
