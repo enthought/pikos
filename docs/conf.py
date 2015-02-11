@@ -31,6 +31,11 @@ def mock_modules():
     except ImportError:
         MOCK_MODULES.append('zmq')
 
+    try:
+        import line_profiler  # noqa
+    except ImportError:
+        MOCK_MODULES.append('line_profiler')
+
     class Mock(MagicMock):
 
         @classmethod
@@ -44,6 +49,9 @@ def mock_modules():
     print 'mocking {}'.format(MOCK_MODULES)
 
 # -- General configuration ----------------------------------------------------
+
+
+mock_modules()
 
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.0'
