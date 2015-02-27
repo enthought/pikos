@@ -1,4 +1,4 @@
-\Usage
+Usage
 =====
 
 The main component in the pikos toolset is the `Monitor`. A monitor creates
